@@ -12,6 +12,7 @@ The idea of this project is to aggregate and analyze investment news with machin
   In the future I will try to make the UI prettier and maybe connect some companies’ fundamentals to the project. Feel free to give suggestions! Here is link to my [LinkedIn](https://www.linkedin.com/in/aku-koskela-93179a234)
 
 <br>
+<br>
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0.
 
