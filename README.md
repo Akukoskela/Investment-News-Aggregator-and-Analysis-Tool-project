@@ -3,7 +3,8 @@
 ## Info
 The idea of this project is to aggregate and analyse investment news with machine learning. I want to test how machine learnign can be used with investment sector and if it (or this software) can be used when doing investment decisions.
 
-* ## moi
+* ## [Backend](https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project/blob/master/python_scripts/backend-code.py)
+  I use python for backend. 
 * ## hei
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0.
