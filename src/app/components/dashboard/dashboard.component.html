@@ -1,0 +1,15 @@
+<h1>Dashboard</h1>
+<button (click)="getNews()">get news</button><br>
+<a href="/home"><button>To home</button></a><br>
+
+<div class="page">
+<div class="articles-container">
+
+    <div *ngFor="let article of articles">
+        <h3>{{article.title}}</h3>
+        <p>{{article.description}}</p>
+        <a href="{{article.url}}">Read more</a>
+    </div>
+</div>
+
+</div>
