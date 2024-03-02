@@ -5,7 +5,7 @@ The idea of this project is to aggregate and analyze investment news with machin
 
 * ## [Backend](https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project/blob/master/python_scripts/backend-code.py) (Python and Supabase)
    The code fetches investment news with a keyword ("oil industry" for example) from NewsAPI's interface. Then I use TextBlob library to make sentiment analysis from each news article and send the data to database. My 
-   database locates in SupaBase which is alternative for Google Firebase.
+   database locates in SupaBase which is alternative for Google Firebase. The backend code doesn't run on its own right now so it needs to run manually. It is in this project repository only for that it is easy to find.
 * ## [Frontend](https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project/tree/master/src/app) (Angular)
   I use Angular to make the data look prettier for the user. Right now, the project contains only 2 components which are Home and Dashboard. Components use the supabaseService that can be found inside [services](https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project/tree/master/src/app/services) folder. Service fetches the wanted data from Supabase.
 * ## Future
