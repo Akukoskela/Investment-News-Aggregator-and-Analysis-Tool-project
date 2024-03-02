@@ -1,5 +1,8 @@
 # InvestmentNewsAggregatorAndAnalysisToolProject
 
+## Info
+The idea of this project is to aggregate and analyse investment news with machine learning. I want to test how machine learnign can be used with investment sector and if it can be used when doing investment decisions.    
+
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0.
 
 ## Development server
