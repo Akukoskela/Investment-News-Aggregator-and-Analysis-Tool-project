@@ -1,15 +1,15 @@
 # Investment News Aggregator and Analysis Tool Project
 
 ## Info
-The idea of this project is to aggregate and analyse investment news with machine learning. I want to test how machine learnign can be used with investment sector and if it (or this software) can be used when doing investment decisions.
+The idea of this project is to aggregate and analyze investment news with machine learning. I want to test how machine learning can be used with investment sector and if it (or this software) can be used when doing investment decisions.
 
 * ## [Backend](https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project/blob/master/python_scripts/backend-code.py) (Python and Supabase)
    The code fetches investment news with a keyword ("oil industry" for example) from NewsAPI's interface. Then I use TextBlob library to make sentiment analysis from each news article and send the data to database. My 
-   database locates in SupaBase wich is alternative for Google Firebase.
+   database locates in SupaBase which is alternative for Google Firebase.
 * ## [Frontend](https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project/tree/master/src/app) (Angular)
-  I use Angular to make the data look prettier for the user. Right now the project contains only 2 components wich are Home and Dashboard. Components use the supabaseService that can be found inside [services](https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project/tree/master/src/app/services) folder. Service fetches the wanted data from Supabase.
+  I use Angular to make the data look prettier for the user. Right now, the project contains only 2 components which are Home and Dashboard. Components use the supabaseService that can be found inside [services](https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project/tree/master/src/app/services) folder. Service fetches the wanted data from Supabase.
 * ## Future
-  In the future I try to make the UI more prettier and maybe connect some companies fundamentals to the project. Feel free to give suggestions! Here is link to my [LinkedIn](https://www.linkedin.com/in/aku-koskela-93179a234)
+  In the future I will try to make the UI prettier and maybe connect some companies’ fundamentals to the project. Feel free to give suggestions! Here is link to my [LinkedIn](https://www.linkedin.com/in/aku-koskela-93179a234)
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 15.2.0.
 
