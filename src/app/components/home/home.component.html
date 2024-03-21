@@ -1,3 +1,30 @@
-<h1>home component</h1>
+<div class="whole-page">
+    <h1>home component</h1>
 
-<a href="/dashboard"><button>To dashboard</button></a>
+    <a href="/dashboard"><button>To dashboard</button></a>
+
+    <div class="table-container">
+        <table mat-table [dataSource]="parsedData"  style="background-color: #f1f1f1;" >
+
+            <ng-container matColumnDef="industry" >
+                <th mat-header-cell *matHeaderCellDef style="font-size: x-large;"> Industry </th>
+                <td mat-cell *matCellDef="let data" class="cell"> {{data.industry}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="polarity">
+                <th mat-header-cell *matHeaderCellDef style="font-size: x-large;"> Mean Polarity </th>
+                <td mat-cell *matCellDef="let data" class="cell"> {{data.polarity}} </td>
+            </ng-container>
+
+            <ng-container matColumnDef="numberOfArticles">
+                <th mat-header-cell *matHeaderCellDef style="font-size: x-large"> Articles Analysed </th>
+                <td mat-cell *matCellDef="let data" class="cell"> {{data.numberOfArticles}} </td>
+            </ng-container>
+
+
+            <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+            <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+
+        </table>
+    </div>
+</div>

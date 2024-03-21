@@ -11,10 +11,14 @@ import { CommonModule } from '@angular/common';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
-  articles:any;
-constructor(private supabaseService: SupabaseService) {}
+  articles: any;
+  constructor(private supabaseService: SupabaseService) { }
 
-async getNews(){
-this.articles = await this.supabaseService.getData('crowdstrike');
-}
+  async ngOnInit(){
+    await this.getNews();
+  }
+  
+  async getNews() {
+    this.articles = await this.supabaseService.getData('crowdstrike');
+  }
 }

@@ -1,0 +1,23 @@
+.whole-page {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 10vh;
+    width: 60%;
+    background-color: #f1f1f1;
+    border-radius: 2vh;
+    padding: 5vh;
+}
+
+.cell {
+    font-size: large;
+    padding: 3.5vh;
+    font-weight: 450;
+
+}
+
