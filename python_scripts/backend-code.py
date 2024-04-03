@@ -10,6 +10,16 @@ key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsbW
 supabase: Client = create_client(url, key)
 articlesSentToSupabase=0
 
+# List of database tables and search words that way that in every object, there is name of the database table first and the search word to NewsAPI second  
+listOfTablesAndSearchwords=[
+    {'berkshire_hathaway','berkshire hathaway'},
+    {'crowdstrike','crowdstrike'},
+    {'healthcare_industry','healthcare industry'},
+    {'microsoft','microsoft'},
+    {'petroleum_industry','petroleum industry'},
+    {'technology_industry','technology industry'}
+    ]
+
 
 async def fetch_and_send_data():
     # Variables
