@@ -1,14 +1,14 @@
+<mat-toolbar style="background-color: lightskyblue;">
+    <span style="margin-top:1vh"><h1 style="font-weight:450 ;">Home</h1></span>
+  </mat-toolbar>
 <div class="whole-page">
-    <h1>home component</h1>
-
-    <a href="/dashboard"><button>To dashboard</button></a>
-
     <div class="table-container">
         <table mat-table [dataSource]="parsedData"  style="background-color: #f1f1f1;" >
 
             <ng-container matColumnDef="industry" >
                 <th mat-header-cell *matHeaderCellDef style="font-size: x-large;"> Industry </th>
-                <td mat-cell *matCellDef="let data" class="cell"> {{data.industry}} </td>
+                <td mat-cell *matCellDef="let data" class="cell"> <button mat-button (click)="navigateToDashboard(data.tableName)" style="font-size: large;"> {{data.industry}} </button> </td>
+                
             </ng-container>
 
             <ng-container matColumnDef="polarity">

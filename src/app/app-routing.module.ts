@@ -10,7 +10,7 @@ const routes: Routes = [
       )
   },
   {
-    path: 'dashboard',
+    path: 'dashboard/:industryName',
     loadComponent: () =>
       import('./components/dashboard/dashboard.component').then(
         (com) => com.DashboardComponent

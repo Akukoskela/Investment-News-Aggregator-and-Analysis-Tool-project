@@ -1,13 +1,16 @@
 import { Component } from '@angular/core';
 import { MatTableModule } from '@angular/material/table';
+import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
+import { MatButtonModule } from '@angular/material/button';
+import {MatToolbarModule} from '@angular/material/toolbar';
 
 @Component({
   standalone: true,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [MatTableModule]
+  imports: [MatTableModule, MatButtonModule, MatToolbarModule]
 })
 export class HomeComponent {
   crowdstrikeData: any;
@@ -19,7 +22,7 @@ export class HomeComponent {
 
   parsedData: any
 
-  constructor(private supabaseService: SupabaseService) { }
+  constructor(private supabaseService: SupabaseService,private router: Router) { }
 
   async ngOnInit() {
     this.crowdstrikeData = await this.getData('crowdstrike')
@@ -75,16 +78,20 @@ export class HomeComponent {
     const meanPolarityOfSixth = sum6 / sixth.length
 
     this.parsedData = [
-      { industry: 'Crowdstrike', polarity: meanPolarityOfFirst, numberOfArticles: first.length },
-      { industry: 'Berkshire Hathaway', polarity: meanPolarityOfSecond, numberOfArticles: second.length },
-      { industry: 'Healthcare Industry', polarity: meanPolarityOfThird, numberOfArticles: third.length },
-      { industry: 'Microsoft', polarity: meanPolarityOfFourth, numberOfArticles: fourth.length },
-      { industry: 'Petroleum Industry', polarity: meanPolarityOfFifth, numberOfArticles: fifth.length },
-      { industry: 'Technology Industry', polarity: meanPolarityOfSixth, numberOfArticles: sixth.length }
+      { industry: 'Crowdstrike',tableName:'crowdstrike', polarity: meanPolarityOfFirst, numberOfArticles: first.length },
+      { industry: 'Berkshire Hathaway',tableName:'berkshire_hathaway', polarity: meanPolarityOfSecond, numberOfArticles: second.length },
+      { industry: 'Healthcare Industry',tableName:'healthcare_industry', polarity: meanPolarityOfThird, numberOfArticles: third.length },
+      { industry: 'Microsoft',tableName:'microsoft', polarity: meanPolarityOfFourth, numberOfArticles: fourth.length },
+      { industry: 'Petroleum Industry',tableName:'petroleum_industry', polarity: meanPolarityOfFifth, numberOfArticles: fifth.length },
+      { industry: 'Technology Industry',tableName:'technology_industry', polarity: meanPolarityOfSixth, numberOfArticles: sixth.length }
     ]
 
   }
 
   columnsToDisplay = ['industry', 'polarity', 'numberOfArticles'];
+
+  navigateToDashboard(industryName: any) {
+    this.router.navigate(['dashboard', industryName]);
+  }
 
 }
