@@ -10,23 +10,23 @@ key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsbW
 supabase: Client = create_client(url, key)
 articlesSentToSupabase=0
 
-# List of database tables and search words that way that in every object, there is name of the database table first and the search word to NewsAPI second  
+# List of database tables and search words in that way that in every individual list, there is name of the database table first and the search word to NewsAPI second  
 listOfTablesAndSearchwords=[
-    {'berkshire_hathaway','berkshire hathaway'},
-    {'crowdstrike','crowdstrike'},
-    {'healthcare_industry','healthcare industry'},
-    {'microsoft','microsoft'},
-    {'petroleum_industry','petroleum industry'},
-    {'technology_industry','technology industry'}
+    ['berkshire_hathaway','berkshire hathaway'],
+    ['crowdstrike','crowdstrike'],
+    ['healthcare_industry','healthcare industry'],
+    ['microsoft','microsoft'],
+    ['petroleum_industry','petroleum industry'],
+    ['technology_industry','technology industry']
     ]
 
 
-async def fetch_and_send_data():
+async def fetch_and_send_data(database_table, search_word):
     # Variables
     numberOfArticlesAnalysed = 0
     articlesWithError = []
     # API endpoint URL
-    api_url = 'https://newsapi.org/v2/everything?q=technology industry&from=2024-02-18&language=en&sortBy=relevancy&apiKey=1246daf94c8a4d459ab5eb2d88a31833'
+    api_url = 'https://newsapi.org/v2/everything?q='+search_word+'&from=2024-03-06&language=en&sortBy=relevancy&apiKey=1246daf94c8a4d459ab5eb2d88a31833'
 
     # Make a GET request to the API
     response = requests.get(api_url)
@@ -63,7 +63,7 @@ async def fetch_and_send_data():
 
             # Count the number of articles that got analysed
             numberOfArticlesAnalysed =numberOfArticlesAnalysed + 1
-            await send_data_to_supabase('technology_industry', i['source']['name'], i['title'], i['description'], i['url'], i['urlToImage'], i['publishedAt'], article.text, sentiment.polarity)
+            await send_data_to_supabase(database_table, i['source']['name'], i['title'], i['description'], i['url'], i['urlToImage'], i['publishedAt'], article.text, sentiment.polarity)
 
         # Print the outcome of the analysis
         print('Analysed ', numberOfArticlesAnalysed, ' articles. Articles with error: ', len(articlesWithError))
@@ -108,7 +108,8 @@ async def send_data_to_supabase(table, source, title, description, url, urlToIma
         articlesSentToSupabase += 1
    
 async def main():
-    await fetch_and_send_data()
+    for i in range(0, 7):
+        await fetch_and_send_data(listOfTablesAndSearchwords[i][0],listOfTablesAndSearchwords[i][1])
     global articlesSentToSupabase
     print('Articles sent to database: ',articlesSentToSupabase)
 
