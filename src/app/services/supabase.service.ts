@@ -28,4 +28,41 @@ export class SupabaseService {
       return error
     }
   }
+
+  async getTop5GoodNews(table: any) {
+    const { data, error } = await this.supabase_client
+      .from(table)
+      .select()
+
+    if (data) {
+      const sortedByPolarity = data.sort((a, b) => b.polarity - a.polarity);
+      // Get the top 5 objects with the highest polarity
+      const top5PolarityObjects = sortedByPolarity.slice(0, 5);
+      return top5PolarityObjects
+    }
+    else {
+      console.log(error)
+      return error
+    }
+  }
+
+  async getTop5BadNews(table: any) {
+    const { data, error } = await this.supabase_client
+      .from(table)
+      .select()
+
+    if (data) {
+      const sortedByPolarity = data.sort((a, b) => a.polarity - b.polarity);
+      // Get the top 5 objects with the highest polarity
+      const top5PolarityObjects = sortedByPolarity.slice(0, 5);
+      return top5PolarityObjects
+    }
+    else {
+      console.log(error)
+      return error
+    }
+  }
 }
+
+
+
