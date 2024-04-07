@@ -1,16 +1,40 @@
-<h1>Dashboard</h1>
-<button (click)="getNews()">get news</button><br>
-<a href="/home"><button>To home</button></a><br>
-
-{{this.industryName}}
-<div class="page">
-<div class="articles-container">
-
-    <div *ngFor="let article of articles">
-        <h3>{{article.title}}</h3>
-        <p>{{article.description}}</p>
-        <a href="{{article.url}}">Read more</a>
+<mat-toolbar>
+    <div class="industry-name">
+        {{this.industryName}}'s Dashboard
     </div>
-</div>
+</mat-toolbar>
+
+<div class="page">
+
+    <div class="left-side-container">
+        <div class="first-left-container">
+            <div class="polarity-container">
+                Total Polarity: 0.66
+            </div>
+            <div class="total-articles-container">
+                Articles analysed: 206
+            </div>
+        </div>
+
+        <div class="chart-container">
+            moi
+        </div>
+    </div>
+
+    <div class="right-side-container">
+        <div id="good-news-container" class="top-news">
+            <div class="news-text">
+                Top 5 good news
+                <hr width="80%" color="black" />
+            </div>
+        </div>
+        <div id="bad-news-container" class="top-news">
+            <div class="news-text">
+                Top 5 bad news
+                <hr width="80%" color="black" />
+            </div>
+        </div>
+    </div>
+
 
 </div>

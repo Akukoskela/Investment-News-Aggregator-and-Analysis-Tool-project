@@ -40,27 +40,20 @@ async def fetch_and_send_data(database_table, search_word):
             try:
                 # URL of the news article
                 article_url = i['url']
-
                 # Create an Article object
                 article = Article(article_url)
-
                 # Download the article
                 article.download()
-
                 # Parse the article
                 article.parse()
-
                 # Create a TextBlob object with the content of the news
                 blob = TextBlob(article.text)
-
                 # Sentiment Analysis
                 sentiment = blob.sentiment
-
             except Exception as error:
                 print('Textblob error with article: ', i['title'], '. Error:', error,'\n\n')
                 articlesWithError.append({i['title'], i['url']})
                 continue
-
             # Count the number of articles that got analysed
             numberOfArticlesAnalysed =numberOfArticlesAnalysed + 1
             await send_data_to_supabase(database_table, i['source']['name'], i['title'], i['description'], i['url'], i['urlToImage'], i['publishedAt'], article.text, sentiment.polarity)
@@ -108,7 +101,8 @@ async def send_data_to_supabase(table, source, title, description, url, urlToIma
         articlesSentToSupabase += 1
    
 async def main():
-    for i in range(0, 7):
+    #we have 5 companies right now so we use the fetch_and_send_data function with each of them 
+    for i in range(0, 6):
         await fetch_and_send_data(listOfTablesAndSearchwords[i][0],listOfTablesAndSearchwords[i][1])
     global articlesSentToSupabase
     print('Articles sent to database: ',articlesSentToSupabase)
