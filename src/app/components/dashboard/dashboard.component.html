@@ -15,7 +15,7 @@
 
     <div class="left-side-container">
         <div class="industry-name">{{this.industryName}}
-            <hr width="80%" color="black" />
+            <hr width="60%" color="black" />
         </div>
         <div class="first-left-container">
             <div class="polarity-container">
@@ -39,10 +39,12 @@
             </div>
             <div class="articles-container">
                 <div *ngFor="let article of top5GoodArticles" class="article-container">
-                    <div style="display: flex; flex-direction: row;">
-                        <div class="article-title">{{article.title}}</div>
-                        <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
-                    </div>
+                    <a href="{{article.url}}">
+                        <div style="display: flex; flex-direction: row;">
+                            <div class="article-title">{{article.title}}</div>
+                            <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
+                        </div>
+                    </a>
                     <hr width="80%" color="gray" />
 
                 </div>
@@ -56,10 +58,12 @@
             </div>
             <div class="articles-container">
                 <div *ngFor="let article of top5BadArticles" class="article-container">
-                    <div style="display: flex; flex-direction: row;">
-                        <div class="article-title">{{article.title}}</div>
-                        <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
-                    </div>
+                    <a href="{{article.url}}">
+                        <div style="display: flex; flex-direction: row;">
+                            <div class="article-title">{{article.title}}</div>
+                            <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
+                        </div>
+                    </a>
                     <hr width="80%" color="gray" />
                 </div>
             </div>
