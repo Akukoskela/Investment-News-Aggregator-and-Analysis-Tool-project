@@ -1,12 +1,22 @@
 <mat-toolbar>
-    <div class="industry-name">
-        {{this.industryName}}'s Dashboard
+    <a class="arrow" href="home">
+        <span class="material-icons" style="font-size: 5vh;">
+            arrow_back
+        </span>
+    </a>
+    <div class="toolbar-text">
+        Dashboard
     </div>
 </mat-toolbar>
+
+
 
 <div class="page">
 
     <div class="left-side-container">
+        <div class="industry-name">{{this.industryName}}
+            <hr width="80%" color="black" />
+        </div>
         <div class="first-left-container">
             <div class="polarity-container">
                 Polarity: {{this.polarity}}
@@ -17,7 +27,7 @@
         </div>
 
         <div class="chart-container">
-            moi
+            moiukfytvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvj
         </div>
     </div>
 
@@ -27,11 +37,31 @@
                 Top 5 good news
                 <hr width="80%" color="black" />
             </div>
+            <div class="articles-container">
+                <div *ngFor="let article of top5GoodArticles" class="article-container">
+                    <div style="display: flex; flex-direction: row;">
+                        <div class="article-title">{{article.title}}</div>
+                        <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
+                    </div>
+                    <hr width="80%" color="gray" />
+
+                </div>
+            </div>
+
         </div>
         <div id="bad-news-container" class="top-news">
             <div class="news-text">
                 Top 5 bad news
                 <hr width="80%" color="black" />
+            </div>
+            <div class="articles-container">
+                <div *ngFor="let article of top5BadArticles" class="article-container">
+                    <div style="display: flex; flex-direction: row;">
+                        <div class="article-title">{{article.title}}</div>
+                        <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
+                    </div>
+                    <hr width="80%" color="gray" />
+                </div>
             </div>
         </div>
     </div>

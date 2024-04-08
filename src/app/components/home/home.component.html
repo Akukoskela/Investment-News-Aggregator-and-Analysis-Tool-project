@@ -1,19 +1,19 @@
-<mat-toolbar style="background-color: lightskyblue;">
+<mat-toolbar>
     <span style="margin-top:1vh"><h1 style="font-weight:450 ;">Home</h1></span>
   </mat-toolbar>
 <div class="whole-page">
     <div class="table-container">
-        <table mat-table [dataSource]="parsedData"  style="background-color: #f1f1f1;" >
+        <table mat-table [dataSource]="parsedData"  style="background-color: white;" >
 
             <ng-container matColumnDef="industry" >
                 <th mat-header-cell *matHeaderCellDef style="font-size: x-large;"> Industry </th>
-                <td mat-cell *matCellDef="let data" class="cell"> <button mat-button (click)="navigateToDashboard(data.tableName)" style="font-size: large;"> {{data.industry}} </button> </td>
+                <td mat-cell *matCellDef="let data" class="cell"> <button mat-button (click)="navigateToDashboard(data.industry,data.tableName)" style="font-size: large;"> {{data.industry}} </button> </td>
                 
             </ng-container>
 
             <ng-container matColumnDef="polarity">
                 <th mat-header-cell *matHeaderCellDef style="font-size: x-large;"> Mean Polarity </th>
-                <td mat-cell *matCellDef="let data" class="cell"> {{data.polarity}} </td>
+                <td mat-cell *matCellDef="let data" class="cell"> {{data.polarity.toFixed(3)}} </td>
             </ng-container>
 
             <ng-container matColumnDef="numberOfArticles">

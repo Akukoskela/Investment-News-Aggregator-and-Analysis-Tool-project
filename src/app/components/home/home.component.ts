@@ -90,8 +90,8 @@ export class HomeComponent {
 
   columnsToDisplay = ['industry', 'polarity', 'numberOfArticles'];
 
-  navigateToDashboard(industryName: any) {
-    this.router.navigate(['dashboard', industryName]);
+  navigateToDashboard(industryName: any,tableName:any) {
+    this.router.navigate(['dashboard', industryName,tableName]);
   }
 
 }
