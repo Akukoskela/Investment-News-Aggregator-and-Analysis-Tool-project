@@ -4,11 +4,12 @@ import { NgFor } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, MatToolbarModule,MatIconModule],
+  imports: [CommonModule, RouterModule, MatToolbarModule, MatIconModule, NgxChartsModule],
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
@@ -16,22 +17,49 @@ import {MatIconModule} from '@angular/material/icon';
 export class DashboardComponent {
   articles: any;
   industryName: any;
-  tableName:any;
+  tableName: any;
   polarity: any;
   numberOfArticles: any;
   top5GoodArticles: any;
   top5BadArticles: any;
+  lineChartData: any;
 
   constructor(private supabaseService: SupabaseService, private route: ActivatedRoute) { }
 
   async ngOnInit() {
     this.route.params.subscribe(params => {
       this.industryName = params['industryName'];
-      this.tableName=params['tableName']
+      this.tableName = params['tableName']
     });
     await this.getNews();
-    console.log('good: ',this.top5GoodArticles)
-    console.log('bad: ',this.top5BadArticles)
+    this.setChart();
+    console.log('chart data: ', this.lineChartData)
+    console.log('example data: ', [
+      {
+        "name": "France",
+        "series": [
+          {
+            "value": 4407,
+            "name": "2016-09-19T05:35:52.103Z"
+          },
+          {
+            "value": 3683,
+            "name": "2016-09-21T03:37:21.998Z"
+          },
+          {
+            "value": 4279,
+            "name": "2016-09-22T18:56:04.479Z"
+          },
+          {
+            "value": 4538,
+            "name": "2016-09-23T23:18:28.296Z"
+          },
+          {
+            "value": 6851,
+            "name": "2016-09-22T06:57:22.626Z"
+          }
+        ]
+      }])
   }
 
   async getNews() {
@@ -52,4 +80,38 @@ export class DashboardComponent {
     this.top5BadArticles = await this.supabaseService.getTop5BadNews(this.tableName);
   }
 
+
+  setChart() {
+    this.lineChartData = []
+    const objectX: { name: String, series: Array<object> } = { name: this.industryName, series: [] };
+    for (const i of this.articles) {
+      const object: { name: Date, value: Number } = { name: new Date(2024, 2, 5), value: 1 };
+
+      const dateString = i.published_at;
+
+      // Convert the date string to a Date object
+      let dateObject = new Date(dateString);
+
+      // Convert the Date object to an ISO 8601 string
+      object.name = dateObject
+
+
+      const polarity = i.polarity
+      object.value = parseFloat(polarity)
+      objectX.series.push(object)
+    }
+    this.lineChartData.push(objectX)
+
+  }
+
+  // Chart options
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
+  showLegend = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Date';
+  showYAxisLabel = true;
+  yAxisLabel = 'Polarity';
+  timeline = true;
 }

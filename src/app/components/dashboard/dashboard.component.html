@@ -15,7 +15,7 @@
 
     <div class="left-side-container">
         <div class="industry-name">{{this.industryName}}
-            <hr width="60%" color="black" />
+            <hr width="60%" color="#A8385D" />
         </div>
         <div class="first-left-container">
             <div class="polarity-container">
@@ -27,7 +27,21 @@
         </div>
 
         <div class="chart-container">
-            moiukfytvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvj
+            <ngx-charts-line-chart
+            
+      [scheme]="'cool'"
+      [results]="lineChartData"
+      [gradient]="gradient"
+      [xAxis]="showXAxis"
+      [yAxis]="showYAxis"
+      [legend]="showLegend"
+      [showXAxisLabel]="showXAxisLabel"
+      [showYAxisLabel]="showYAxisLabel"
+      [xAxisLabel]="xAxisLabel"
+      [yAxisLabel]="yAxisLabel"
+      [timeline]="timeline"
+      style="fill: white;">
+  </ngx-charts-line-chart>
         </div>
     </div>
 
@@ -35,7 +49,7 @@
         <div id="good-news-container" class="top-news">
             <div class="news-text">
                 Top 5 good news
-                <hr width="80%" color="black" />
+                <hr width="80%" color="#A8385D"/>
             </div>
             <div class="articles-container">
                 <div *ngFor="let article of top5GoodArticles" class="article-container">
@@ -45,7 +59,8 @@
                             <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
                         </div>
                     </a>
-                    <hr width="80%" color="gray" />
+                    <br>
+                    <hr width="60%" color="#A8385D" />
 
                 </div>
             </div>
@@ -54,7 +69,7 @@
         <div id="bad-news-container" class="top-news">
             <div class="news-text">
                 Top 5 bad news
-                <hr width="80%" color="black" />
+                <hr width="80%" color="#A8385D" />
             </div>
             <div class="articles-container">
                 <div *ngFor="let article of top5BadArticles" class="article-container">
@@ -64,7 +79,8 @@
                             <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
                         </div>
                     </a>
-                    <hr width="80%" color="gray" />
+                    <br>
+                    <hr width="60%" color="#A8385D" />
                 </div>
             </div>
         </div>
