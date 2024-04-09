@@ -27,21 +27,13 @@
         </div>
 
         <div class="chart-container">
-            <ngx-charts-line-chart
-            
-      [scheme]="'cool'"
-      [results]="lineChartData"
-      [gradient]="gradient"
-      [xAxis]="showXAxis"
-      [yAxis]="showYAxis"
-      [legend]="showLegend"
-      [showXAxisLabel]="showXAxisLabel"
-      [showYAxisLabel]="showYAxisLabel"
-      [xAxisLabel]="xAxisLabel"
-      [yAxisLabel]="yAxisLabel"
-      [timeline]="timeline"
-      style="fill: white;">
-  </ngx-charts-line-chart>
+            <div class="chart">
+                <ngx-charts-line-chart [scheme]="'cool'" [results]="lineChartData" [gradient]="gradient"
+                    [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                    [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                    [timeline]="timeline" style="fill: white;">
+                </ngx-charts-line-chart>
+            </div>
         </div>
     </div>
 
@@ -49,7 +41,7 @@
         <div id="good-news-container" class="top-news">
             <div class="news-text">
                 Top 5 good news
-                <hr width="80%" color="#A8385D"/>
+                <hr width="80%" color="#A8385D" />
             </div>
             <div class="articles-container">
                 <div *ngFor="let article of top5GoodArticles" class="article-container">
