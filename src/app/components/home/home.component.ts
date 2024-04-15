@@ -4,13 +4,17 @@ import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { MatButtonModule } from '@angular/material/button';
 import {MatToolbarModule} from '@angular/material/toolbar';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { MatIconModule } from '@angular/material/icon';
+
+
 
 @Component({
   standalone: true,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [MatTableModule, MatButtonModule, MatToolbarModule]
+  imports: [MatTableModule, MatButtonModule, MatToolbarModule,NgxChartsModule,MatIconModule]
 })
 export class HomeComponent {
   crowdstrikeData: any;
@@ -94,4 +98,40 @@ export class HomeComponent {
     this.router.navigate(['dashboard', industryName,tableName]);
   }
 
+  // Chart options
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
+  showLegend = true;
+  showXAxisLabel = true;
+  xAxisLabel = 'Date';
+  showYAxisLabel = true;
+  yAxisLabel = 'Polarity';
+  timeline = true;
+  lineChartData: any = [
+    {
+      "name": "France",
+      "series": [
+        {
+          "value": 4407,
+          "name": "2016-09-19T05:35:52.103Z"
+        },
+        {
+          "value": 3683,
+          "name": "2016-09-21T03:37:21.998Z"
+        },
+        {
+          "value": 4279,
+          "name": "2016-09-22T18:56:04.479Z"
+        },
+        {
+          "value": 4538,
+          "name": "2016-09-23T23:18:28.296Z"
+        },
+        {
+          "value": 6851,
+          "name": "2016-09-22T06:57:22.626Z"
+        }
+      ]
+    }]
 }

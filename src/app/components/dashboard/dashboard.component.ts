@@ -33,33 +33,6 @@ export class DashboardComponent {
     });
     await this.getNews();
     this.setChart();
-    console.log('chart data: ', this.lineChartData)
-    console.log('example data: ', [
-      {
-        "name": "France",
-        "series": [
-          {
-            "value": 4407,
-            "name": "2016-09-19T05:35:52.103Z"
-          },
-          {
-            "value": 3683,
-            "name": "2016-09-21T03:37:21.998Z"
-          },
-          {
-            "value": 4279,
-            "name": "2016-09-22T18:56:04.479Z"
-          },
-          {
-            "value": 4538,
-            "name": "2016-09-23T23:18:28.296Z"
-          },
-          {
-            "value": 6851,
-            "name": "2016-09-22T06:57:22.626Z"
-          }
-        ]
-      }])
   }
 
   async getNews() {
