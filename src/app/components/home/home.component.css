@@ -8,6 +8,11 @@ mat-toolbar{
     border-color: #A8385D;
     border-bottom-width: 0.3vh;
 }
+
+.project-name{
+    margin-left: 50vh;
+    margin-top: 1vh;
+}
 .whole-page {
     display: flex;
     align-items: center;
