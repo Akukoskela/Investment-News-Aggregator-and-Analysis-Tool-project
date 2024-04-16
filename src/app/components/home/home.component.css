@@ -27,13 +27,13 @@ body{
 
 .table-container {
     display: flex;
-    width: 40%;
+    width: 80vh;
     background-color: #1B1E27;
     border-radius: 1vh;
     padding: 5vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-
 }
+
 th{
     color: white;
 }
@@ -43,7 +43,7 @@ td{
 }
 
 .cell {
-    font-size: large;
+    font-size: medium;
     padding: 3.5vh;
     font-weight: 450;
     color: white;
@@ -55,19 +55,20 @@ td{
 }
 
 .button{
-    font-size: large; 
+    font-size: medium; 
     color: white !important;
     border-radius: 1vh;
     padding: 1.5vh;
+    width: fit-content;
 }
 
-svg{
-    
-}
+svg:hover{
+    transition: all .2s ease-in-out;
+    transform: scale(1.1);}
 
 .info-container{
     display: flex;
-    width: 40%;
+    width: 80%;
     color:white;
     background-color: #1B1E27;
     border-radius: 2vh;
