@@ -3,18 +3,16 @@ import { MatTableModule } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { MatButtonModule } from '@angular/material/button';
-import {MatToolbarModule} from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatIconModule } from '@angular/material/icon';
-
-
 
 @Component({
   standalone: true,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [MatTableModule, MatButtonModule, MatToolbarModule,NgxChartsModule,MatIconModule]
+  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule]
 })
 export class HomeComponent {
   crowdstrikeData: any;
@@ -23,79 +21,135 @@ export class HomeComponent {
   microsoft: any
   petroleum_industry: any
   technology_industry: any
-
+  bayer: any
+  industries: any = []
   parsedData: any
-
-  constructor(private supabaseService: SupabaseService,private router: Router) { }
+  lineChartData:any=[]  
+    
+  constructor(private supabaseService: SupabaseService, private router: Router) { }
 
   async ngOnInit() {
-    this.crowdstrikeData = await this.getData('crowdstrike')
-    this.berkshire_hathawayData = await this.getData('berkshire_hathaway')
-    this.healthcare_industryData = await this.getData('healthcare_industry')
-    this.microsoft = await this.getData('microsoft')
-    this.petroleum_industry = await this.getData('petroleum_industry')
-    this.technology_industry = await this.getData('technology_industry')
-
-    await this.parseDataToTable(this.crowdstrikeData,this.berkshire_hathawayData,this.healthcare_industryData,this.microsoft,this.petroleum_industry,this.technology_industry)
+    await this.getData();
+    await this.parseDataToTable(this.crowdstrikeData, this.berkshire_hathawayData, this.healthcare_industryData, this.microsoft, this.petroleum_industry, this.technology_industry, this.bayer);
+     this.setChart();
   }
 
-  async getData(table: string) {
-    return await this.supabaseService.getData(table);
+  async getData() {
+    this.crowdstrikeData = await this.supabaseService.getData('crowdstrike')
+    this.berkshire_hathawayData = await this.supabaseService.getData('berkshire_hathaway')
+    this.healthcare_industryData = await this.supabaseService.getData('healthcare_industry')
+    this.microsoft = await this.supabaseService.getData('microsoft')
+    this.petroleum_industry = await this.supabaseService.getData('petroleum_industry')
+    this.technology_industry = await this.supabaseService.getData('technology_industry')
+    this.bayer = await this.supabaseService.getData('bayer')
+
+    this.industries.push([this.crowdstrikeData, 'Crowdstrike'], [this.berkshire_hathawayData, 'Berkshire Hathaway'], [this.healthcare_industryData, 'Healthcare Industry'],[this.microsoft, 'Microsoft'], [this.petroleum_industry, 'Petroleum Industry'], [this.technology_industry, 'Technology Industry'], [this.bayer, 'Bayer AG'])
   }
 
-  async parseDataToTable(first: any,second:any,third:any,fourth:any,fifth:any,sixth:any) {
+  async parseDataToTable(crowdstrike: any, berkshireHarhaway: any, healtcareIndustry: any, microsoft: any, petroleunIndustry: any, technologyIndustry: any, bayer: any) {
 
     let sum1: any = 0
-    for (let i = 0; i < first.length; i++) {
-      sum1 = sum1 + first[i].polarity
+    for (let i = 0; i < crowdstrike.length; i++) {
+      sum1 = sum1 + crowdstrike[i].polarity
     }
-    const meanPolarityOfFirst = sum1 / first.length
+    const meanPolarityOfCrowdstrike = sum1 / crowdstrike.length
 
     let sum2: any = 0
-    for (let i = 0; i < second.length; i++) {
-      sum2 = sum2 + second[i].polarity
+    for (let i = 0; i < berkshireHarhaway.length; i++) {
+      sum2 = sum2 + berkshireHarhaway[i].polarity
     }
-    const meanPolarityOfSecond = sum2 / second.length
+    const meanPolarityOfBerkshire = sum2 / berkshireHarhaway.length
 
     let sum3: any = 0
-    for (let i = 0; i < third.length; i++) {
-      sum3 = sum3 + third[i].polarity
+    for (let i = 0; i < healtcareIndustry.length; i++) {
+      sum3 = sum3 + healtcareIndustry[i].polarity
     }
-    const meanPolarityOfThird = sum3 / third.length
+    const meanPolarityOfHealtcareIndustry = sum3 / healtcareIndustry.length
 
     let sum4: any = 0
-    for (let i = 0; i < fourth.length; i++) {
-      sum4 = sum4 + fourth[i].polarity
+    for (let i = 0; i < microsoft.length; i++) {
+      sum4 = sum4 + microsoft[i].polarity
     }
-    const meanPolarityOfFourth = sum4 / fourth.length
+    const meanPolarityOfMicrosoft = sum4 / microsoft.length
 
     let sum5: any = 0
-    for (let i = 0; i < fifth.length; i++) {
-      sum5 = sum5 + fifth[i].polarity
+    for (let i = 0; i < petroleunIndustry.length; i++) {
+      sum5 = sum5 + petroleunIndustry[i].polarity
     }
-    const meanPolarityOfFifth = sum5 / fifth.length
+    const meanPolarityOfPetroleumIndustry = sum5 / petroleunIndustry.length
 
     let sum6: any = 0
-    for (let i = 0; i < sixth.length; i++) {
-      sum6 = sum6 + sixth[i].polarity
+    for (let i = 0; i < technologyIndustry.length; i++) {
+      sum6 = sum6 + technologyIndustry[i].polarity
     }
-    const meanPolarityOfSixth = sum6 / sixth.length
+    const meanPolarityOfTechnologyIndustry = sum6 / technologyIndustry.length
+
+    let sum7: any = 0
+    for (let i = 0; i < bayer.length; i++) {
+      sum7 = sum7 + bayer[i].polarity
+    }
+    const meanPolarityOfBayer = sum7 / bayer.length
 
     this.parsedData = [
-      { industry: 'Crowdstrike',tableName:'crowdstrike', polarity: meanPolarityOfFirst, numberOfArticles: first.length },
-      { industry: 'Berkshire Hathaway',tableName:'berkshire_hathaway', polarity: meanPolarityOfSecond, numberOfArticles: second.length },
-      { industry: 'Healthcare Industry',tableName:'healthcare_industry', polarity: meanPolarityOfThird, numberOfArticles: third.length },
-      { industry: 'Microsoft',tableName:'microsoft', polarity: meanPolarityOfFourth, numberOfArticles: fourth.length },
-      { industry: 'Petroleum Industry',tableName:'petroleum_industry', polarity: meanPolarityOfFifth, numberOfArticles: fifth.length },
-      { industry: 'Technology Industry',tableName:'technology_industry', polarity: meanPolarityOfSixth, numberOfArticles: sixth.length }
+      { industry: 'Crowdstrike', tableName: 'crowdstrike', polarity: meanPolarityOfCrowdstrike, numberOfArticles: crowdstrike.length },
+      { industry: 'Berkshire Hathaway', tableName: 'berkshire_hathaway', polarity: meanPolarityOfBerkshire, numberOfArticles: berkshireHarhaway.length },
+      { industry: 'Healthcare Industry', tableName: 'healthcare_industry', polarity: meanPolarityOfHealtcareIndustry, numberOfArticles: healtcareIndustry.length },
+      { industry: 'Microsoft', tableName: 'microsoft', polarity: meanPolarityOfMicrosoft, numberOfArticles: microsoft.length },
+      { industry: 'Petroleum Industry', tableName: 'petroleum_industry', polarity: meanPolarityOfPetroleumIndustry, numberOfArticles: petroleunIndustry.length },
+      { industry: 'Technology Industry', tableName: 'technology_industry', polarity: meanPolarityOfTechnologyIndustry, numberOfArticles: technologyIndustry.length },
+      { industry: 'Bayer AG', tableName: 'bayer', polarity: meanPolarityOfBayer, numberOfArticles: bayer.length },
     ]
 
   }
 
   columnsToDisplay = ['industry', 'polarity', 'numberOfArticles'];
 
-  navigateToDashboard(industryName: any,tableName:any) {
-    this.router.navigate(['dashboard', industryName,tableName]);
+  navigateToDashboard(industryName: any, tableName: any) {
+    this.router.navigate(['dashboard', industryName, tableName]);
+  }
+
+  setChart() {
+    let list=[]
+    for (const i of this.industries) {
+      const objectX: { name: string, series: Array<{ name: Date, value: number }> } = { name: i[1], series: [] };
+
+      // Create a map to store the total polarities and count of articles per day
+      const dailyData: Map<string, { totalPolarity: number, articleCount: number }> = new Map();
+
+      for (const article of i[0]) {
+        const dateString = new Date(article.published_at).toISOString().slice(0, 10); // Get the date in 'YYYY-MM-DD' format
+
+        if (!dailyData.has(dateString)) {
+          dailyData.set(dateString, { totalPolarity: 0, articleCount: 0 });
+        }
+
+        let dailyInfo = dailyData.get(dateString);
+        dailyInfo!.totalPolarity += parseFloat(article.polarity);
+        dailyInfo!.articleCount++;
+      }
+
+      // Variables to accumulate total polarities and counts across days
+      let cumulativePolarity = 0;
+      let cumulativeCount = 0;
+
+      // Create the series data by iterating over the sorted dates
+      const sortedDates = Array.from(dailyData.keys()).sort();
+      for (const date of sortedDates) {
+        const dailyInfo = dailyData.get(date);
+        cumulativePolarity += dailyInfo!.totalPolarity;
+        cumulativeCount += dailyInfo!.articleCount;
+
+        const averagePolarity = cumulativePolarity / cumulativeCount;
+        objectX.series.push({
+          name: new Date(date), // Convert string back to Date for the chart
+          value: averagePolarity
+        });
+      }
+      console.log(objectX)
+      list.push(objectX);
+    }
+    this.lineChartData=list
+    console.log('linechart dat',this.lineChartData)
   }
 
   // Chart options
@@ -108,30 +162,4 @@ export class HomeComponent {
   showYAxisLabel = true;
   yAxisLabel = 'Polarity';
   timeline = true;
-  lineChartData: any = [
-    {
-      "name": "France",
-      "series": [
-        {
-          "value": 4407,
-          "name": "2016-09-19T05:35:52.103Z"
-        },
-        {
-          "value": 3683,
-          "name": "2016-09-21T03:37:21.998Z"
-        },
-        {
-          "value": 4279,
-          "name": "2016-09-22T18:56:04.479Z"
-        },
-        {
-          "value": 4538,
-          "name": "2016-09-23T23:18:28.296Z"
-        },
-        {
-          "value": 6851,
-          "name": "2016-09-22T06:57:22.626Z"
-        }
-      ]
-    }]
 }

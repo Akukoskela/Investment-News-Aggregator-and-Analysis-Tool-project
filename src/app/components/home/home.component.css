@@ -30,7 +30,7 @@ body{
     width: 80vh;
     background-color: #1B1E27;
     border-radius: 1vh;
-    padding: 5vh;
+    padding: 4vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -43,7 +43,7 @@ td{
 }
 
 .cell {
-    font-size: medium;
+    font-size: 1rem;
     padding: 3.5vh;
     font-weight: 450;
     color: white;
@@ -55,7 +55,7 @@ td{
 }
 
 .button{
-    font-size: medium; 
+    font-size:1rem; 
     color: white !important;
     border-radius: 1vh;
     padding: 1.5vh;

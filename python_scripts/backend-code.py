@@ -17,7 +17,8 @@ listOfTablesAndSearchwords=[
     ['healthcare_industry','healthcare industry'],
     ['microsoft','microsoft'],
     ['petroleum_industry','petroleum industry'],
-    ['technology_industry','technology industry']
+    ['technology_industry','technology industry'],
+    ['bayer','bayer ag']
     ]
 
 
@@ -26,7 +27,7 @@ async def fetch_and_send_data(database_table, search_word):
     numberOfArticlesAnalysed = 0
     articlesWithError = []
     # API endpoint URL
-    api_url = 'https://newsapi.org/v2/everything?q='+search_word+'&from=2024-03-06&language=en&sortBy=relevancy&apiKey=1246daf94c8a4d459ab5eb2d88a31833'
+    api_url = 'https://newsapi.org/v2/everything?q='+search_word+'&from=2024-03-24&language=en&sortBy=relevancy&apiKey=1246daf94c8a4d459ab5eb2d88a31833'
 
     # Make a GET request to the API
     response = requests.get(api_url)
@@ -101,8 +102,8 @@ async def send_data_to_supabase(table, source, title, description, url, urlToIma
         articlesSentToSupabase += 1
    
 async def main():
-    #we have 5 companies right now so we use the fetch_and_send_data function with each of them 
-    for i in range(0, 6):
+    #we have 7 companies right now so we use the fetch_and_send_data function with each of them 
+    for i in range(0, 7):
         await fetch_and_send_data(listOfTablesAndSearchwords[i][0],listOfTablesAndSearchwords[i][1])
     global articlesSentToSupabase
     print('Articles sent to database: ',articlesSentToSupabase)
