@@ -6,13 +6,15 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatIconModule } from '@angular/material/icon';
+import {MatTooltipModule} from '@angular/material/tooltip' 
+
 
 @Component({
   standalone: true,
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule]
+  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule,MatTooltipModule]
 })
 export class HomeComponent {
   crowdstrikeData: any;
@@ -24,7 +26,7 @@ export class HomeComponent {
   bayer: any
   industries: any = []
   parsedData: any
-  lineChartData:any=[]  
+  lineChartData:any=[]
     
   constructor(private supabaseService: SupabaseService, private router: Router) { }
 
@@ -157,6 +159,7 @@ export class HomeComponent {
   showYAxis = true;
   gradient = false;
   showLegend = true;
+  legendPosition='below'
   showXAxisLabel = true;
   xAxisLabel = 'Date';
   showYAxisLabel = true;

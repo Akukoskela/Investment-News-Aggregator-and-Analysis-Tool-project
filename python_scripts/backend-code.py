@@ -27,7 +27,7 @@ async def fetch_and_send_data(database_table, search_word):
     numberOfArticlesAnalysed = 0
     articlesWithError = []
     # API endpoint URL
-    api_url = 'https://newsapi.org/v2/everything?q='+search_word+'&from=2024-03-24&language=en&sortBy=relevancy&apiKey=1246daf94c8a4d459ab5eb2d88a31833'
+    api_url = 'https://newsapi.org/v2/everything?q='+search_word+'&from=2024-04-10&language=en&sortBy=relevancy&apiKey=1246daf94c8a4d459ab5eb2d88a31833'
 
     # Make a GET request to the API
     response = requests.get(api_url)

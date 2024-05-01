@@ -2,7 +2,7 @@
   "name": "investment-news-aggregator-and-analysis-tool-project",
   "version": "0.0.0",
   "scripts": {
-    "deploy": "ng build --base-href \"https://Akukoskela.github.io/Investment-News-Aggregator-and-Analysis-Tool-project/\" && gh-pages -d dist/investment-news-aggregator-and-analysis-tool-project",
+    "deploy": "ng build --base-href \"https://Akukoskela.github.io/Investment-News-Aggregator-and-Analysis-Tool-project/\" && gh-pages -d dist",
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",

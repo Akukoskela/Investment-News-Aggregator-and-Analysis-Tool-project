@@ -9,96 +9,107 @@
     </div>
 </mat-toolbar>
 <div class="page" style="display: flex; flex-direction: column;">
-    <div style="display: flex; flex-direction: row;">
+    <div class="page-content">
 
-    <div class="left-side-container">
-        <div class="industry-name">{{this.industryName}}
-            <hr width="60%" color="#A8385D" />
-        </div>
-        <div class="first-left-container">
-          <p>{{this.infoText}}</p>
-        </div>
-
-        <div class="chart-container">
-            <div class="chart">
-                <ngx-charts-line-chart [scheme]="'cool'" [results]="lineChartData" [gradient]="gradient"
-                    [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
-                    [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
-                    [timeline]="timeline" style="fill: white;">
-                </ngx-charts-line-chart>
+        <div class="left-side-container">
+            <div class="industry-name">{{this.industryName}}
+                <hr width="60%" color="#A8385D" />
             </div>
-        </div>
-    </div>
-
-    <div class="right-side-container">
-
-        <div style="display: flex; justify-content: end; height:20%; width: 100%; ">
-        <div class="industry-logo-container">
-            <img src="{{this.industryLogo}}" alt="Industry logo">
-        </div>
-    </div>
-
-        <div style="display: flex; flex-direction: column;">
-
-            <div style="display: flex; flex-direction: row; width: 90%; justify-content: center;">
-                <div class="polarity-container">
-                    Polarity: {{this.polarity}}
-                </div>
-                <div class="total-articles-container">
-                    Articles analysed: {{this.numberOfArticles}}
-                </div>
-
+            <div class="first-left-container">
+                <p>{{this.infoText}}</p>
             </div>
 
-            <div style="display: flex; flex-direction: row;">
-                <div id="good-news-container" class="top-news">
-                    <div class="news-text">
-                        Top 5 good news
-                        <hr width="80%" color="#A8385D" />
+            <div class="chart-container">
+                <div class="chart-header">
+                    <p>Cumulative line chart</p>
+                    <span class="material-symbols-outlined">
+                        <mat-icon matTooltip=" Cumulative line chart or cumulative frequency chart, is a graphical representation that shows the cumulative sum or total of a series of values over time or another dimension.">info</mat-icon>
+                    </span>
+                </div>
+                <div class="chart">
+                    <ngx-charts-line-chart [scheme]="'cool'" [results]="lineChartData" [gradient]="gradient"
+                        [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
+                        [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
+                        [timeline]="timeline" style="fill: white;">
+                    </ngx-charts-line-chart>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-side-container">
+
+            <div class="logo-container-container">
+                <div class="industry-logo-container">
+                    <img src="{{this.industryLogo}}" alt="Industry logo">
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column;">
+
+                <div class="polarity-and-articles">
+                    <div class="polarity-container">
+                        Polarity: {{this.polarity}}
                     </div>
-                    <div class="articles-container">
-                        <div *ngFor="let article of top5GoodArticles" class="article-container">
-                            <a href="{{article.url}}">
-                                <div style="display: flex; flex-direction: row;">
-                                    <div class="article-title">{{article.title}}</div>
-                                    <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
-                                </div>
-                            </a>
-                            <br>
-                            <hr width="60%" color="#A8385D" />
+                    <div class="total-articles-container">
+                        Articles analysed: {{this.numberOfArticles}}
+                    </div>
 
+                </div>
+
+                <div class="news-container">
+                    <div id="good-news-container" class="top-news">
+                        <div class="news-text">
+                            Top 5 good news
+                            <hr width="80%" color="#A8385D" />
+                        </div>
+                        <div class="articles-container">
+                            <div *ngFor="let article of top5GoodArticles" class="article-container">
+                                <a href="{{article.url}}">
+                                    <div style="display: flex; flex-direction: row;">
+                                        <div class="article-title">{{article.title}}</div>
+                                        <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
+                                    </div>
+                                </a>
+                                <br>
+                                <hr width="60%" color="#A8385D" />
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div id="bad-news-container" class="top-news">
+                        <div class="news-text">
+                            Top 5 bad news
+                            <hr width="80%" color="#A8385D" />
+                        </div>
+                        <div class="articles-container">
+                            <div *ngFor="let article of top5BadArticles" class="article-container">
+                                <a href="{{article.url}}">
+                                    <div style="display: flex; flex-direction: row;">
+                                        <div class="article-title">{{article.title}}</div>
+                                        <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
+                                    </div>
+                                </a>
+                                <br>
+                                <hr width="60%" color="#A8385D" />
+                            </div>
                         </div>
                     </div>
-
-                </div>
-                <div id="bad-news-container" class="top-news">
-                    <div class="news-text">
-                        Top 5 bad news
-                        <hr width="80%" color="#A8385D" />
-                    </div>
-                    <div class="articles-container">
-                        <div *ngFor="let article of top5BadArticles" class="article-container">
-                            <a href="{{article.url}}">
-                                <div style="display: flex; flex-direction: row;">
-                                    <div class="article-title">{{article.title}}</div>
-                                    <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
-                                </div>
-                            </a>
-                            <br>
-                            <hr width="60%" color="#A8385D" />
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-</div>
-    <mat-toolbar style="margin-top: 5vh;">
-        <p style="margin-left: 40vh; margin-top: 2vh; font-size: medium;">Source code:</p>
-        <a href="https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project" style="margin-left: 5vh;">
-          <!-- GitHub icon-->
-        <svg width="98" height="96" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z" fill="#fff"/></svg>
-    </a>
+    </div>
+    <mat-toolbar class="bottom-toolbar">
+        <p style="margin-top: 2vh; font-size: medium;">Source code:</p>
+        <a href="https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project"
+            style="margin-left: 5vh;">
+            <!-- GitHub icon-->
+            <svg width="98" height="96" xmlns="http://www.w3.org/2000/svg">
+                <path fill-rule="evenodd" clip-rule="evenodd"
+                    d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"
+                    fill="#fff" />
+            </svg>
+        </a>
     </mat-toolbar>
 </div>
