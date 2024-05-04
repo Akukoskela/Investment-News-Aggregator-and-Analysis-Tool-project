@@ -29,11 +29,16 @@ body{
 
 .table-container {
     display: flex;
+    justify-content: center;
     width: 40%;
     background-color: #1B1E27;
     border-radius: 1vh;
     padding: 4vh;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.table-spinner{
+    margin-top: 25%;
 }
 
 th{
@@ -72,7 +77,12 @@ th{
 
 svg:hover{
     transition: all .2s ease-in-out;
-    transform: scale(1.1);}
+    transform: scale(0.6);
+}
+
+svg{
+    transform: scale(0.7);
+}
 
 .info-container{
     display: flex;
@@ -104,11 +114,16 @@ margin-bottom: 10vh;
 
 .chart-header{
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content:center;
     margin-top: 2%;
     color: white;
     font-size: large;
+}
+
+.chart-spinner{
+    display: flex;
+    justify-content: center;
+   margin-top: 22%;
 }
 
 .chart-header p{
@@ -122,7 +137,7 @@ margin-bottom: 10vh;
 .chart-container {
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: start;
     margin-top: 5vh;
     width: 50%;
     height: 70vh;
@@ -140,8 +155,19 @@ margin-bottom: 10vh;
 
 .bottom-toolbar{
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
 }
+
+.linkedin-image:hover{
+    transition: all .2s ease-in-out;
+    transform: scale(0.9);
+}
+
+.sentiment-icon{
+    transform: scale(1.5);
+}
+
+
 
 @media (max-width:1170px){
     .chart-and-table{

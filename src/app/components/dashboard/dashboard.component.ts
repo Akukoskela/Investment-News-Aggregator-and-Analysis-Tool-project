@@ -7,10 +7,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import {MatTooltipModule} from '@angular/material/tooltip' 
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
+
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatIconModule, NgxChartsModule,MatTooltipModule],
+  imports: [CommonModule, RouterModule, MatToolbarModule, MatIconModule, NgxChartsModule,MatTooltipModule,MatProgressSpinnerModule],
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
@@ -95,7 +98,11 @@ export class DashboardComponent {
       });
     }
     this.lineChartData.push(objectX);
-    console.log('linechart',this.lineChartData)
+
+    const chartSpinner = document.getElementById('chart-spinner')
+    chartSpinner?.style.setProperty('display', 'none');
+    const chart = document.getElementById('chart')
+    chart?.style.setProperty('display','flex')
   }
 
   setLogoAndInfoText() {
@@ -148,4 +155,25 @@ export class DashboardComponent {
   showYAxisLabel = true;
   yAxisLabel = 'Polarity';
   timeline = true;
+
+  checkPolarity(polarity: number) {
+    let sentiment: string;
+    let color: string;
+  
+    if (polarity < -0.1) {
+      sentiment = "sentiment_dissatisfied";
+      color = "red";
+    } else if (polarity < 0.1) {
+      sentiment = "sentiment_neutral";
+      color = "yellow";
+    } else if (polarity > 0.1) {
+      sentiment = "sentiment_very_satisfied";
+      color = "green";
+    } else {
+      sentiment = "undefined";
+      color = "black"; // Set default color or handle it according to your requirement
+    }
+  
+    return { sentiment, color };
+  }
 }

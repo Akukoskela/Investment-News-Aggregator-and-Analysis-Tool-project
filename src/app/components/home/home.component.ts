@@ -6,7 +6,9 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatIconModule } from '@angular/material/icon';
-import {MatTooltipModule} from '@angular/material/tooltip' 
+import { MatTooltipModule } from '@angular/material/tooltip'
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 
 @Component({
@@ -14,7 +16,7 @@ import {MatTooltipModule} from '@angular/material/tooltip'
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule,MatTooltipModule]
+  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule]
 })
 export class HomeComponent {
   crowdstrikeData: any;
@@ -26,14 +28,14 @@ export class HomeComponent {
   bayer: any
   industries: any = []
   parsedData: any
-  lineChartData:any=[]
-    
+  lineChartData: any = []
+
   constructor(private supabaseService: SupabaseService, private router: Router) { }
 
   async ngOnInit() {
     await this.getData();
     await this.parseDataToTable(this.crowdstrikeData, this.berkshire_hathawayData, this.healthcare_industryData, this.microsoft, this.petroleum_industry, this.technology_industry, this.bayer);
-     this.setChart();
+    this.setChart();
   }
 
   async getData() {
@@ -45,7 +47,7 @@ export class HomeComponent {
     this.technology_industry = await this.supabaseService.getData('technology_industry')
     this.bayer = await this.supabaseService.getData('bayer')
 
-    this.industries.push([this.crowdstrikeData, 'Crowdstrike'], [this.berkshire_hathawayData, 'Berkshire Hathaway'], [this.healthcare_industryData, 'Healthcare Industry'],[this.microsoft, 'Microsoft'], [this.petroleum_industry, 'Petroleum Industry'], [this.technology_industry, 'Technology Industry'], [this.bayer, 'Bayer AG'])
+    this.industries.push([this.crowdstrikeData, 'Crowdstrike'], [this.berkshire_hathawayData, 'Berkshire Hathaway'], [this.healthcare_industryData, 'Healthcare Industry'], [this.microsoft, 'Microsoft'], [this.petroleum_industry, 'Petroleum Industry'], [this.technology_industry, 'Technology Industry'], [this.bayer, 'Bayer AG'])
   }
 
   async parseDataToTable(crowdstrike: any, berkshireHarhaway: any, healtcareIndustry: any, microsoft: any, petroleunIndustry: any, technologyIndustry: any, bayer: any) {
@@ -102,6 +104,12 @@ export class HomeComponent {
       { industry: 'Bayer AG', tableName: 'bayer', polarity: meanPolarityOfBayer, numberOfArticles: bayer.length },
     ]
 
+   
+
+    const tableSpinner = document.getElementById('table-spinner')
+    tableSpinner?.style.setProperty('display', 'none');
+    const table = document.getElementById('table')
+    table?.style.setProperty('display', '')
   }
 
   columnsToDisplay = ['industry', 'polarity', 'numberOfArticles'];
@@ -111,7 +119,7 @@ export class HomeComponent {
   }
 
   setChart() {
-    let list=[]
+    let list = []
     for (const i of this.industries) {
       const objectX: { name: string, series: Array<{ name: Date, value: number }> } = { name: i[1], series: [] };
 
@@ -150,19 +158,46 @@ export class HomeComponent {
       console.log(objectX)
       list.push(objectX);
     }
-    this.lineChartData=list
-    console.log('linechart dat',this.lineChartData)
+    this.lineChartData = list
+
+    const chartSpinner = document.getElementById('chart-spinner')
+    chartSpinner?.style.setProperty('display', 'none');
+    const chart = document.getElementById('chart')
+    chart?.style.setProperty('display', 'flex')
   }
+
 
   // Chart options
   showXAxis = true;
   showYAxis = true;
   gradient = false;
   showLegend = true;
-  legendPosition='below'
+  legendPosition = 'below'
   showXAxisLabel = true;
   xAxisLabel = 'Date';
   showYAxisLabel = true;
   yAxisLabel = 'Polarity';
   timeline = true;
+
+  checkPolarity(polarity: number) {
+    let sentiment: string;
+    let color: string;
+  
+    if (polarity < -0.1) {
+      sentiment = "sentiment_dissatisfied";
+      color = "red";
+    } else if (polarity < 0.1) {
+      sentiment = "sentiment_neutral";
+      color = "yellow";
+    } else if (polarity > 0.1) {
+      sentiment = "sentiment_very_satisfied";
+      color = "green";
+    } else {
+      sentiment = "undefined";
+      color = "black"; // Set default color or handle it according to your requirement
+    }
+  
+    return { sentiment, color };
+  }
+  
 }

@@ -1,3 +1,5 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <mat-toolbar>
     <a class="arrow" href="https://financenewscollector.com">
         <span class="material-icons" style="font-size: 5vh;">
@@ -23,10 +25,12 @@
                 <div class="chart-header">
                     <p>Cumulative line chart</p>
                     <span class="material-symbols-outlined">
-                        <mat-icon matTooltip=" Cumulative line chart or cumulative frequency chart, is a graphical representation that shows the cumulative sum or total of a series of values over time or another dimension.">info</mat-icon>
+                        <mat-icon
+                            matTooltip=" Cumulative line chart or cumulative frequency chart, is a graphical representation that shows the cumulative sum or total of a series of values over time or another dimension.">info</mat-icon>
                     </span>
                 </div>
-                <div class="chart">
+                <div class="chart-spinner" id="chart-spinner"> <mat-spinner></mat-spinner></div>
+                <div class="chart" id="chart" style="display: none;">
                     <ngx-charts-line-chart [scheme]="'cool'" [results]="lineChartData" [gradient]="gradient"
                         [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
                         [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
@@ -48,7 +52,10 @@
 
                 <div class="polarity-and-articles">
                     <div class="polarity-container">
-                        Polarity: {{this.polarity}}
+                        Polarity:  <mat-icon id="sentiment-icon" class="sentiment-icon" matTooltip="{{this.polarity}}"
+                                [style.color]="checkPolarity(this.polarity).color">
+                        {{checkPolarity(this.polarity).sentiment}}
+                      </mat-icon>
                     </div>
                     <div class="total-articles-container">
                         Articles analysed: {{this.numberOfArticles}}
@@ -101,15 +108,23 @@
 
     </div>
     <mat-toolbar class="bottom-toolbar">
-        <p style="margin-top: 2vh; font-size: medium;">Source code:</p>
-        <a href="https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project"
-            style="margin-left: 5vh;">
-            <!-- GitHub icon-->
-            <svg width="98" height="96" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"
-                    fill="#fff" />
-            </svg>
-        </a>
+        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+            <p>Source code:</p>
+            <a href="https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project"
+                style="margin-left: 5vh;">
+                <!-- GitHub icon-->
+                <svg width="98" height="96" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"
+                        fill="#fff" />
+                </svg>
+            </a>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; width: 20vh">
+            <p style="margin-right: 10%;">Developer:</p>
+            <a href="https://www.linkedin.com/in/aku-koskela-93179a234/">
+                <img class="linkedin-image" src="/assets/linkedin.png" alt="linkedin logo">
+            </a>
+        </div>
     </mat-toolbar>
 </div>
