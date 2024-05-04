@@ -1,0 +1,25 @@
+.container{
+background-color: #1B1E27;
+border: solid;
+border-width: 1px;
+border-color: #A8385D; 
+}
+
+.content{
+    font-size: large;
+    color: white;
+}
+
+.content a{
+    color: #A8385D;
+}
+
+.title{
+    font-size: xx-large;
+    color: white;
+}
+
+.button{
+    background-color: #A8385D;
+    color: white;
+}

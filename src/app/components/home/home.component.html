@@ -10,15 +10,8 @@
 </mat-toolbar>
 <div class="whole-page">
 
-
-
-    <div class="info-container">
-        <p>The idea of this project is to aggregate and analyze investment news with machine learning. I want to test
-            how machine learning can be used with investment sector and if it (or this software) can be used when doing
-            investment decisions.
-            The project is developed with Angular(frontend), Supabase(database) and Python(backend)</p>
-        <br><br>
-        <!--p style="color: red;">DO NOT USE THIS SOFTWARE TO HELP YOU MAKE AN INVESTMENT DECISION! SOFTWARE IS NOT READY YET AND I CAN'T GUARANTEE IT WORKS.</p-->
+    <div class="button-container">
+        <button class="info" style="background-color: #1B1E27; color: white; font-size: large; padding: 3vh; border-radius: 1vh;" mat-raised-button (click)="openDialog()">How does it work?<mat-icon class="help-icon">help</mat-icon></button>
     </div>
     <div class="chart-and-table">
         <div class="chart-container">

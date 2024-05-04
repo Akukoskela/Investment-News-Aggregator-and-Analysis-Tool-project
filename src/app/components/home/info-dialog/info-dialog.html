@@ -1,0 +1,33 @@
+<div class="container">
+    <div mat-dialog-title>
+        <h2 class="title">Info</h2>
+        <br>
+    </div>
+
+    <div mat-dialog-content>
+        <div class="content">
+            <p>The idea of this project is to aggregate and analyze investment news with machine learning. I
+                want to test
+                how machine learning can be used with investment sector and if it (or this software) can be used when
+                doing
+                investment decisions.
+                The project is developed with Angular.ts, Supabase and Python</p>
+            <br>
+            <h2 style="font-size: x-large;">How does it work?</h2>
+            <br>
+            <p>First, we run the backend code which fetch, analyse and send the articles to database. Then the frontend
+                fetches the articles from the database and shows it to user </p>
+                <br>
+
+            <h2 style="font-size: x-large;">How does it analyse the articles?</h2>
+            <br>
+            <p>This project analyses articles with Pythons <a href="https://textblob.readthedocs.io/en/dev/">TextBlob</a> library wich uses NLP (Natural language processing) to give us the sentiment analysis for each article. From sentiment analysis we get the polarity value between -1 and 1. The polarity value tells us if the text from article were more positive or negative. </p>
+        </div>
+        <br><br>
+        <p style="color: red;">DO NOT USE THIS SOFTWARE TO HELP YOU MAKE AN INVESTMENT DECISION! SOFTWARE IS NOT READY
+            YET AND I CAN'T GUARANTEE IT WORKS.</p>
+        <div mat-dialog-actions>
+            <button class="button" mat-button [mat-dialog-close]="true">Back</button>
+        </div>
+
+    </div>

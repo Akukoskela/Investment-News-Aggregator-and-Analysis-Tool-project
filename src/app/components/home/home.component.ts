@@ -8,6 +8,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { InfoDialog } from './info-dialog/info-dialog';
 
 
 
@@ -16,7 +18,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule]
+  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule,MatDialogModule]
 })
 export class HomeComponent {
   crowdstrikeData: any;
@@ -30,7 +32,7 @@ export class HomeComponent {
   parsedData: any
   lineChartData: any = []
 
-  constructor(private supabaseService: SupabaseService, private router: Router) { }
+  constructor(private supabaseService: SupabaseService, private router: Router,public dialog: MatDialog) { }
 
   async ngOnInit() {
     await this.getData();
@@ -200,4 +202,8 @@ export class HomeComponent {
     return { sentiment, color };
   }
   
+
+  openDialog() {
+    this.dialog.open(InfoDialog);
+  }
 }

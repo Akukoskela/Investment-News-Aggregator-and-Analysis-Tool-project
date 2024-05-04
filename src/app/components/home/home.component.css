@@ -10,6 +10,24 @@ mat-toolbar{
     justify-content: space-between;
 }
 
+
+
+.button-container{
+    display: flex;
+    width: 80%;
+    justify-content: start;
+    margin-top: 5vh;
+}
+
+.button-container button:hover{
+    background-color: #A8385D !important;
+}
+
+.help-icon{
+    padding-right: 1vh;
+    transform: scale(1.8);
+}
+
 body{
     background-color: #2F3646;
 
@@ -107,8 +125,8 @@ p {
 display: flex;
 flex-direction: row;
 justify-content: space-around;
-width: 90%;
-margin-top: 5vh;
+width: 95%;
+margin-top: 2vh;
 margin-bottom: 10vh;
 }
 
@@ -138,7 +156,6 @@ margin-bottom: 10vh;
     display: flex;
     flex-direction: column;
     justify-content: start;
-    margin-top: 5vh;
     width: 50%;
     height: 70vh;
     background-color: #1B1E27;
