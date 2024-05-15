@@ -14,9 +14,15 @@
     <div class="page-content">
 
         <div class="left-side-container">
-            <div class="industry-name">{{this.industryName}}
-                <hr width="60%" color="#A8385D" />
+            <div class="industry-name-and-logo-container">
+                <div class="industry-name">{{this.industryName}}
+                    <hr width="60%" color="#A8385D" />
+                </div>
+                <div class="industry-logo-container">
+                    <img src="{{this.industryLogo}}" alt="Industry logo">
+                </div>
             </div>
+        
             <div class="first-left-container">
                 <p>{{this.infoText}}</p>
             </div>
@@ -42,20 +48,14 @@
 
         <div class="right-side-container">
 
-            <div class="logo-container-container">
-                <div class="industry-logo-container">
-                    <img src="{{this.industryLogo}}" alt="Industry logo">
-                </div>
-            </div>
-
             <div style="display: flex; flex-direction: column;">
 
                 <div class="polarity-and-articles">
                     <div class="polarity-container">
-                        Polarity:  <mat-icon id="sentiment-icon" class="sentiment-icon" matTooltip="{{this.polarity}}"
-                                [style.color]="checkPolarity(this.polarity).color">
-                        {{checkPolarity(this.polarity).sentiment}}
-                      </mat-icon>
+                        Polarity: <mat-icon id="sentiment-icon" class="sentiment-icon" matTooltip="{{this.polarity}}"
+                            [style.color]="checkPolarity(this.polarity).color">
+                            {{checkPolarity(this.polarity).sentiment}}
+                        </mat-icon>
                     </div>
                     <div class="total-articles-container">
                         Articles analysed: {{this.numberOfArticles}}
