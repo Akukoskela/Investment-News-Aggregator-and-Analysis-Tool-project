@@ -3,10 +3,11 @@ import requests #API requests
 from textblob import TextBlob #Text analysis
 from supabase import create_client, Client #
 import asyncio
+from supabaseKeys import * #Importing the Supabase url and key
 
 # Here we connect the code with Supabase:
-url="https://zlmaryslxtjmktervpuh.supabase.co"
-key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsbWFyeXNseHRqbWt0ZXJ2cHVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDcyNDIwODcsImV4cCI6MjAyMjgxODA4N30.F8sA2x4pahe8XJfeMgSnesqMkQ1KhyCQvXlUEJ0Ou-c"
+url=supabase_url
+key=supabase_key
 supabase: Client = create_client(url, key)
 articlesSentToSupabase=0
 
@@ -27,7 +28,7 @@ async def fetch_and_send_data(database_table, search_word):
     numberOfArticlesAnalysed = 0
     articlesWithError = []
     # API endpoint URL
-    api_url = 'https://newsapi.org/v2/everything?q='+search_word+'&from=2024-04-30&language=en&sortBy=relevancy&apiKey=1246daf94c8a4d459ab5eb2d88a31833'
+    api_url = 'https://newsapi.org/v2/everything?q='+search_word+'&from=2024-04-20&language=en&sortBy=relevancy&apiKey='+newsAPI_key
 
     # Make a GET request to the API
     response = requests.get(api_url)

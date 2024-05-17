@@ -172,7 +172,12 @@ margin-bottom: 10vh;
 
 .bottom-toolbar{
     display: flex;
+    flex-direction: row;
     justify-content: space-around;
+}
+
+.linkedin-image{
+    width: 20%;
 }
 
 .linkedin-image:hover{
@@ -266,6 +271,16 @@ margin-bottom: 10vh;
 
     th{
         font-size: medium;
+    }
+
+    .bottom-toolbar p{
+        font-size: small;
+    }
+    .linkedin-image{
+        width: 20%;
+    }
+    svg{
+        transform: scale(0.5);
     }
 }
 

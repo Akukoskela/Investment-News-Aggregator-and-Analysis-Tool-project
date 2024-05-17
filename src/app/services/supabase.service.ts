@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
+import { supabaseKeys } from './supabaseKeys';
 
+const supabase_keys= new supabaseKeys();
 @Injectable({
   providedIn: 'root'
 })
@@ -9,8 +11,8 @@ export class SupabaseService {
 
   constructor() {
     this.supabase_client = createClient(
-      'https://zlmaryslxtjmktervpuh.supabase.co',
-      'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpsbWFyeXNseHRqbWt0ZXJ2cHVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDcyNDIwODcsImV4cCI6MjAyMjgxODA4N30.F8sA2x4pahe8XJfeMgSnesqMkQ1KhyCQvXlUEJ0Ou-c'
+      supabase_keys.supabaseURL,
+      supabase_keys.supabaseKey
     );
   }
 
