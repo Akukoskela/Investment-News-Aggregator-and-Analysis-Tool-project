@@ -6,14 +6,15 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
-import {MatTooltipModule} from '@angular/material/tooltip' 
+import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+
 
 
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatIconModule, NgxChartsModule,MatTooltipModule,MatProgressSpinnerModule],
+  imports: [CommonModule, RouterModule, MatToolbarModule, MatIconModule, NgxChartsModule, MatTooltipModule, MatProgressSpinnerModule],
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
@@ -29,6 +30,9 @@ export class DashboardComponent {
   lineChartData: any;
   industryLogo: any
   infoText: any;
+  ticker: any;
+  stockName: any;
+  stockData: any;
 
   constructor(private supabaseService: SupabaseService, private route: ActivatedRoute) { }
 
@@ -39,6 +43,7 @@ export class DashboardComponent {
     });
     this.setLogoAndInfoText();
     await this.getNews();
+    await this.getStockData();
     this.setChart();
   }
 
@@ -60,10 +65,44 @@ export class DashboardComponent {
     this.top5BadArticles = await this.supabaseService.getTop5BadNews(this.tableName);
   }
 
+  async getStockData() {
+    switch (this.industryName) {
+      case "Crowdstrike":
+        this.ticker = "CRWD"
+        this.stockName = "CrowdStrike A"
+        break;
+      case "Microsoft":
+        this.ticker = "MSFT"
+        this.stockName = "Microsoft"
+        break;
+      case "Berkshire Hathaway":
+        this.ticker = "BRK.B"
+        this.stockName = "Berkshire Hathaway B"
+        break;
+      case 'Healthcare Industry':
+        this.ticker = 'VGHCX'
+        this.stockName = 'Vanguard Health Care Fund Investor Shares'
+        break;
+      case 'Petroleum Industry':
+        this.ticker = 'XOP'
+        this.stockName = 'SPDR S&P Oil & Gas Exploration & Production ETF'
+        break;
+      case "Technology Industry":
+        this.ticker = 'QQQ'
+        this.stockName = 'Invesco QQQ Trust Series 1'
+        break;
+      case "Bayer AG":
+        this.ticker = 'BAYRY'
+        this.stockName = 'Bayer AG'
+        break;
+    }
+    this.stockData = await this.supabaseService.getDataWithFilter('stock_data', 'industry', this.ticker)
+  }
 
-  setChart() {
+
+  async setChart() {
     this.lineChartData = [];
-    const objectX: { name: string, series: Array<{ name: Date, value: number }> } = { name: this.industryName, series: [] };
+    const polarityObject: { name: string, series: Array<{ name: Date, value: number }> } = { name: 'Polarity', series: [] };
 
     // Create a map to store the total polarities and count of articles per day
     const dailyData: Map<string, { totalPolarity: number, articleCount: number }> = new Map();
@@ -92,17 +131,29 @@ export class DashboardComponent {
       cumulativeCount += dailyInfo!.articleCount;
 
       const averagePolarity = cumulativePolarity / cumulativeCount;
-      objectX.series.push({
+      polarityObject.series.push({
         name: new Date(date), // Convert string back to Date for the chart
-        value: averagePolarity
+        value: averagePolarity* this.stockData[0].value *6 //Here we normalize the polarity data so it looks better in chart next to the share value. It takes the first share value from the database and multiplies polarity value by it. Then it multiplies it by 6 so it looks good in the chart.
       });
     }
-    this.lineChartData.push(objectX);
+    this.lineChartData.push(polarityObject);
+
+    // Here we add the stock data
+    const stockObject: { name: string, series: Array<{ name: Date, value: number }> } = { name: this.stockName, series: [] };
+     for (const i of this.stockData) {
+       stockObject.series.push({
+         name: new Date(i.date), // Convert string back to Date for the chart
+         value: i.value
+       });
+     }
+ 
+    this.lineChartData.push(stockObject);
+    console.log(this.lineChartData);
 
     const chartSpinner = document.getElementById('chart-spinner')
     chartSpinner?.style.setProperty('display', 'none');
     const chart = document.getElementById('chart')
-    chart?.style.setProperty('display','flex')
+    chart?.style.setProperty('display', 'flex')
   }
 
   setLogoAndInfoText() {
@@ -155,11 +206,13 @@ export class DashboardComponent {
   showYAxisLabel = true;
   yAxisLabel = 'Polarity';
   timeline = true;
+  showRightYAxisLabel: boolean = true;
+  yAxisLabelRight: string = "Utilization";
 
   checkPolarity(polarity: number) {
     let sentiment: string;
     let color: string;
-  
+
     if (polarity < -0.1) {
       sentiment = "sentiment_dissatisfied";
       color = "red";
@@ -173,7 +226,7 @@ export class DashboardComponent {
       sentiment = "undefined";
       color = "black"; // Set default color or handle it according to your requirement
     }
-  
+
     return { sentiment, color };
   }
 }

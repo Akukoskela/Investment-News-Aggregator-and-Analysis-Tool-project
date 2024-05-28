@@ -2,13 +2,12 @@ import { Injectable } from '@angular/core';
 import { SupabaseClient, createClient } from '@supabase/supabase-js';
 import { supabaseKeys } from './supabaseKeys';
 
-const supabase_keys= new supabaseKeys();
+const supabase_keys = new supabaseKeys();
 @Injectable({
   providedIn: 'root'
 })
 export class SupabaseService {
   private supabase_client: SupabaseClient;
-
   constructor() {
     this.supabase_client = createClient(
       supabase_keys.supabaseURL,
@@ -20,22 +19,46 @@ export class SupabaseService {
     const { data, error } = await this.supabase_client
       .from(table)
       .select()
-
     if (data) {
-      console.log(data)
       return data
     }
     else {
-      console.log(error)
       return error
     }
+  }
+
+  async getDataWithFilter(table: any, column: any, filter: any) {
+    const { data, error } = await this.supabase_client
+      .from(table)
+      .select("*")
+      // Filters
+      .eq(column, filter)
+    if (data) {
+      return data
+    }
+    else {
+      return error
+    }
+  }
+
+  async sendData(table: any, industry: any, date: any, value: any, volume: any) {
+    const { data, error } = await this.supabase_client
+      .from(table)
+      .insert([
+        {
+          industry: industry,
+          date: date,
+          value: value,
+          volume: volume
+        },
+      ])
+      .select()
   }
 
   async getTop5GoodNews(table: any) {
     const { data, error } = await this.supabase_client
       .from(table)
       .select()
-
     if (data) {
       const sortedByPolarity = data.sort((a, b) => b.polarity - a.polarity);
       // Get the top 5 objects with the highest polarity
@@ -52,7 +75,6 @@ export class SupabaseService {
     const { data, error } = await this.supabase_client
       .from(table)
       .select()
-
     if (data) {
       const sortedByPolarity = data.sort((a, b) => a.polarity - b.polarity);
       // Get the top 5 objects with the highest polarity
@@ -64,7 +86,27 @@ export class SupabaseService {
       return error
     }
   }
+
+  async checkIfDataExists(table: any, column1: any, filter1: any, column2: any, filter2: any) {
+    try {
+      const { data, error } = await this.supabase_client
+        .from(table)
+        .select("*")
+        .eq(column1, filter1) //Equals
+        .eq(column2, filter2) //Equals
+      if (data?.length! > 0) {
+        return true
+      }
+      if (error) {
+        console.log(error)
+        return false
+      }
+      else {
+        return false
+      }
+    }
+    catch (e) {
+      return false
+    }
+  }
 }
-
-
-

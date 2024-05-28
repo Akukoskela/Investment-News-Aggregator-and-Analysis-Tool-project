@@ -8,8 +8,9 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { InfoDialog } from './info-dialog/info-dialog';
+import { StockDataService } from 'src/app/services/stock-data.service';
 
 
 
@@ -18,7 +19,7 @@ import { InfoDialog } from './info-dialog/info-dialog';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule,MatDialogModule]
+  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule]
 })
 export class HomeComponent {
   crowdstrikeData: any;
@@ -30,17 +31,21 @@ export class HomeComponent {
   bayer: any
   industries: any = []
   parsedData: any
-  lineChartData: any = []
+  polarityChartData: any = []
+  stockChartData: any = []
+  tickerSymbols: any = [['CRWD', 'Crowdstrike'], ['BRK.B', 'Berkshire Hathaway B'], ['MSFT', 'Microsoft'],['BAYRY','Bayer AG'],['QQQ','Invesco QQQ Trust Series 1(Technology)'],['VGHCX','Vanguard Health Care Fund Investor Shares'],['XOP','SPDR S&P Oil & Gas Exploration & Production ETF ']];
 
-  constructor(private supabaseService: SupabaseService, private router: Router,public dialog: MatDialog) { }
+  constructor(private supabaseService: SupabaseService, private router: Router, public dialog: MatDialog, private stockDataService: StockDataService) { }
 
   async ngOnInit() {
-    await this.getData();
+    await this.getArticleData();
     await this.parseDataToTable(this.crowdstrikeData, this.berkshire_hathawayData, this.healthcare_industryData, this.microsoft, this.petroleum_industry, this.technology_industry, this.bayer);
-    this.setChart();
+    this.setPolarityChart();
+    await this.updateStockData();
+    this.setStockChart();
   }
 
-  async getData() {
+  async getArticleData() {
     this.crowdstrikeData = await this.supabaseService.getData('crowdstrike')
     this.berkshire_hathawayData = await this.supabaseService.getData('berkshire_hathaway')
     this.healthcare_industryData = await this.supabaseService.getData('healthcare_industry')
@@ -48,7 +53,6 @@ export class HomeComponent {
     this.petroleum_industry = await this.supabaseService.getData('petroleum_industry')
     this.technology_industry = await this.supabaseService.getData('technology_industry')
     this.bayer = await this.supabaseService.getData('bayer')
-
     this.industries.push([this.crowdstrikeData, 'Crowdstrike'], [this.berkshire_hathawayData, 'Berkshire Hathaway'], [this.healthcare_industryData, 'Healthcare Industry'], [this.microsoft, 'Microsoft'], [this.petroleum_industry, 'Petroleum Industry'], [this.technology_industry, 'Technology Industry'], [this.bayer, 'Bayer AG'])
   }
 
@@ -106,7 +110,7 @@ export class HomeComponent {
       { industry: 'Bayer AG', tableName: 'bayer', polarity: meanPolarityOfBayer, numberOfArticles: bayer.length },
     ]
 
-   
+
 
     const tableSpinner = document.getElementById('table-spinner')
     tableSpinner?.style.setProperty('display', 'none');
@@ -120,7 +124,7 @@ export class HomeComponent {
     this.router.navigate(['dashboard', industryName, tableName]);
   }
 
-  setChart() {
+  setPolarityChart() {
     let list = []
     for (const i of this.industries) {
       const objectX: { name: string, series: Array<{ name: Date, value: number }> } = { name: i[1], series: [] };
@@ -157,17 +161,36 @@ export class HomeComponent {
           value: averagePolarity
         });
       }
-      console.log(objectX)
       list.push(objectX);
     }
-    this.lineChartData = list
+    this.polarityChartData = list
 
-    const chartSpinner = document.getElementById('chart-spinner')
+    const chartSpinner = document.getElementById('polarity-chart-spinner')
     chartSpinner?.style.setProperty('display', 'none');
-    const chart = document.getElementById('chart')
+    const chart = document.getElementById('polarity-chart')
     chart?.style.setProperty('display', 'flex')
   }
 
+  async setStockChart() {
+    let list = []
+    for (const industry of this.tickerSymbols) {
+      const objectX: { name: string, series: Array<{ name: Date, value: number }> } = { name: industry[1], series: [] };
+      const data: any = await this.supabaseService.getDataWithFilter('stock_data', 'industry', industry[0])
+      for (const i of data) {
+        objectX.series.push({
+          name: new Date(i.date), // Convert string back to Date for the chart
+          value: i.value
+        });
+      }
+      list.push(objectX)
+    }
+    this.stockChartData = list
+    console.log(this.stockChartData)
+    const chartSpinner = document.getElementById('stock-chart-spinner')
+    chartSpinner?.style.setProperty('display', 'none');
+    const chart = document.getElementById('stock-chart')
+    chart?.style.setProperty('display', 'flex')
+  }
 
   // Chart options
   showXAxis = true;
@@ -184,7 +207,7 @@ export class HomeComponent {
   checkPolarity(polarity: number) {
     let sentiment: string;
     let color: string;
-  
+
     if (polarity < -0.1) {
       sentiment = "sentiment_dissatisfied";
       color = "red";
@@ -198,10 +221,16 @@ export class HomeComponent {
       sentiment = "undefined";
       color = "black"; // Set default color or handle it according to your requirement
     }
-  
+
     return { sentiment, color };
   }
-  
+
+   async updateStockData(){
+    for (const industry of this.tickerSymbols) {
+       await this.stockDataService.getStockData(industry[0])
+    }
+    console.log('Stock data updated')
+  }
 
   openDialog() {
     this.dialog.open(InfoDialog);

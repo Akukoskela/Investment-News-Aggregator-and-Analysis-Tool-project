@@ -28,7 +28,7 @@ async def fetch_and_send_data(database_table, search_word):
     numberOfArticlesAnalysed = 0
     articlesWithError = []
     # API endpoint URL
-    api_url = 'https://newsapi.org/v2/everything?q='+search_word+'&from=2024-04-20&language=en&sortBy=relevancy&apiKey='+newsAPI_key
+    api_url = 'https://newsapi.org/v2/everything?q='+search_word+'&from=2024-05-25&language=en&sortBy=relevancy&apiKey='+newsAPI_key
 
     # Make a GET request to the API
     response = requests.get(api_url)
@@ -58,15 +58,15 @@ async def fetch_and_send_data(database_table, search_word):
                 continue
             # Count the number of articles that got analysed
             numberOfArticlesAnalysed =numberOfArticlesAnalysed + 1
-            await send_data_to_supabase(database_table, i['source']['name'], i['title'], i['description'], i['url'], i['urlToImage'], i['publishedAt'], article.text, sentiment.polarity)
+            await send_data_to_supabase(database_table, i['source']['name'], i['title'], i['description'], i['url'], i['urlToImage'], i['publishedAt'], article.text, sentiment.polarity, sentiment.subjectivity)
 
         # Print the outcome of the analysis
         print('Analysed ', numberOfArticlesAnalysed, ' articles. Articles with error: ', len(articlesWithError))
     else:
-        print("Failed to fetch data", response.status_code,)
+        print("Failed to fetch data", response.status_code,', ',response.text)
 
 # Function that sends data to Supabase
-async def send_data_to_supabase(table, source, title, description, url, urlToImage, publishedAt, content, polarity):
+async def send_data_to_supabase(table, source, title, description, url, urlToImage, publishedAt, content, polarity, subjectivity):
     # Define a synchronous wrapper function for the Supabase operations
     def sync_db_operations():
         # Check for duplicates
@@ -88,7 +88,8 @@ async def send_data_to_supabase(table, source, title, description, url, urlToIma
                     "image_url": urlToImage,
                     "published_at": publishedAt,
                     "content": content,
-                    "polarity": polarity
+                    "polarity": polarity,
+                    "subjectivity": subjectivity
                 }).execute()
                 print(f'Article: -{title}- added to the database :)\n\n')  
                 return True              
