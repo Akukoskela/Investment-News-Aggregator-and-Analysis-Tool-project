@@ -10,8 +10,6 @@ import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 
 
-
-
 @Component({
   standalone: true,
   imports: [CommonModule, RouterModule, MatToolbarModule, MatIconModule, NgxChartsModule, MatTooltipModule, MatProgressSpinnerModule],
@@ -34,7 +32,7 @@ export class DashboardComponent {
   stockName: any;
   stockData: any;
 
-  constructor(private supabaseService: SupabaseService, private route: ActivatedRoute) { }
+  constructor(private supabaseService: SupabaseService, private route: ActivatedRoute,private router: Router) { }
 
   async ngOnInit() {
     this.route.params.subscribe(params => {
@@ -45,6 +43,10 @@ export class DashboardComponent {
     await this.getNews();
     await this.getStockData();
     this.setChart();
+  }
+
+  navigateToHome(){
+    this.router.navigate(['home']);
   }
 
   async getNews() {

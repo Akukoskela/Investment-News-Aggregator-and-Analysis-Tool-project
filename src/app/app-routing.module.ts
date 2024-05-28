@@ -3,13 +3,6 @@ import { RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
   {
-    path: 'https://financenewscollector.com/home',
-    loadComponent: () =>
-      import('./components/home/home.component').then(
-        (com) => com.HomeComponent
-      )
-  },
-  {
     path: 'home',
     loadComponent: () =>
       import('./components/home/home.component').then(

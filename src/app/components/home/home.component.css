@@ -127,6 +127,7 @@ justify-content: space-between;
 }
 
 .chart-header{
+    width: 90%;
     display: flex;
     justify-content:space-around;
     align-items: center;
@@ -152,9 +153,9 @@ justify-content: space-between;
 .chart-container {
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
-    
-    width: 100%;
+    align-items: center;
+    margin-top: 5vh;
+    width: 95%;
     height: 70vh;
     background-color: #1B1E27;
     border-radius: 1vh;
