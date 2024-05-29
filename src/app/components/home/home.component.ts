@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -35,7 +35,9 @@ export class HomeComponent {
   stockChartData: any = []
   tickerSymbols: any = [['CRWD', 'Crowdstrike'], ['BRK.B', 'Berkshire Hathaway B'], ['MSFT', 'Microsoft'],['BAYRY','Bayer AG'],['QQQ','Invesco QQQ Trust Series 1(Technology)'],['VGHCX','Vanguard Health Care Fund Investor Shares'],['XOP','SPDR S&P Oil & Gas Exploration & Production ETF ']];
 
-  constructor(private supabaseService: SupabaseService, private router: Router, public dialog: MatDialog, private stockDataService: StockDataService) { }
+
+  constructor(private supabaseService: SupabaseService, private router: Router, public dialog: MatDialog, private stockDataService: StockDataService) { 
+  }
 
   async ngOnInit() {
     await this.getArticleData();

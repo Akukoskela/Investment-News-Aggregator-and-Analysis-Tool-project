@@ -2,12 +2,12 @@
 
 <mat-toolbar>
     <span style="margin-top:1vh">
-        <h1 style="font-weight:450 ;">Home</h1>
+        <h1 class="home-text">Home</h1>
     </span>
-    <div style="width: 100%; display: flex; justify-content: center;">
+    <div style="width: 100%; height: 100%; display: flex; justify-content: center;align-items: center;">
         <h1 class="project-name">Finance news collector and analyzer with machine learning</h1>
     </div>
-    <div style="display: flex; color: red;">In development</div>
+    <div class="development-text">In development</div>
 
 </mat-toolbar>
 <div class="whole-page">
@@ -36,20 +36,19 @@
                 <div id="polarity-chart-spinner" class="chart-spinner"><mat-spinner></mat-spinner></div>
                 <div class="chart" id="polarity-chart" style="display: none;">
 
-                    <ngx-charts-line-chart [scheme]="'cool'" [results]="polarityChartData" [gradient]="gradient"
+                    <ngx-charts-line-chart  [scheme]="'cool'" [results]="polarityChartData" [gradient]="gradient"
                         [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
                         [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
-                        [timeline]="timeline" style="fill: white; ">
+                        [timeline]="timeline" style="fill: white;">
                     </ngx-charts-line-chart>
                 </div>
             </div>
             <br><br>
             <div class="chart-container">
                 <div class="chart-header">
-                    <h3 style="font-size: xx-large; font-weight: 500; padding-top:2vh ;">Stock chart </h3>
-                    <p style="font-size: medium; width: 30%; height: 100%; display: flex; align-items: end;">Cumulative line chart  <span style="margin-left: 5%;" class="material-symbols-outlined">
-                        <mat-icon
-                            matTooltip=" Cumulative line chart or cumulative frequency chart, is a graphical representation that shows the cumulative sum or total of a series of values over time or another dimension.">info</mat-icon>
+                    <h3 style="font-size: xx-large; font-weight: 500; padding-top:2vh; width: 50%;">Stock chart </h3>
+                    <p style="font-size: medium; width: 30%; height: 100%; display: flex; align-items: end;">Daily close values  <span style="margin-left: 5%;" class="material-symbols-outlined">
+                        <mat-icon>info</mat-icon>
                     </span></p>
 
                 </div>
