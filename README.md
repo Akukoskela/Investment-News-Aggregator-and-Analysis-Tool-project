@@ -1,4 +1,5 @@
-# Investment News Aggregator and Analysis Tool Project
+
+# [Link to the project](https://financenewscollector.com)
 
 ## Info
 The idea of this project is to aggregate and analyze investment news with machine learning. I want to test how machine learning can be used with investment sector and if it (or this software) can be used when doing investment decisions.
