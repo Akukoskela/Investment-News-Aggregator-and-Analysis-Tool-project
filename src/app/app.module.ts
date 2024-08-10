@@ -1,23 +1,24 @@
+// app.module.ts
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { MatDialogModule } from '@angular/material/dialog';
-
-import { AppRoutingModule } from './app-routing.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { AppRoutingModule } from './app-routing.module'; // Import the routing module
 import { AppComponent } from './app.component';
 import { HomeComponent } from './components/home/home.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NewsdashboardComponent } from './components/newsdashboard/newsdashboard.component';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-  ],
+  declarations: [],
   imports: [
+    HomeComponent,
+    DashboardComponent,
+    NewsdashboardComponent,
     BrowserModule,
-    AppRoutingModule,
     BrowserAnimationsModule,
-    MatDialogModule
+    MatDialogModule,
+    AppRoutingModule // Import the routing configuration
   ],
   providers: [],
   bootstrap: [AppComponent]

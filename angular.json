@@ -61,10 +61,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "Investment-News-Aggregator-and-Analysis-Tool-project:build:production"
+              "buildTarget": "Investment-News-Aggregator-and-Analysis-Tool-project:build:production"
             },
             "development": {
-              "browserTarget": "Investment-News-Aggregator-and-Analysis-Tool-project:build:development"
+              "buildTarget": "Investment-News-Aggregator-and-Analysis-Tool-project:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -72,7 +72,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "Investment-News-Aggregator-and-Analysis-Tool-project:build"
+            "buildTarget": "Investment-News-Aggregator-and-Analysis-Tool-project:build"
           }
         },
         "test": {
