@@ -64,6 +64,7 @@ export class DashboardComponent {
 
     // Setting up top 5 good and bad news
     this.top5GoodArticles = await this.supabaseService.getTop5GoodNews(this.tableName);
+    console.log(this.top5GoodArticles);
     this.top5BadArticles = await this.supabaseService.getTop5BadNews(this.tableName);
   }
 

@@ -28,7 +28,7 @@ async def fetch_and_send_data(database_table, search_word):
     numberOfArticlesAnalysed = 0
     articlesWithError = []
     # API endpoint URL
-    api_url = 'https://newsapi.org/v2/everything?q='+search_word+'&from=2024-07-06&language=en&sortBy=relevancy&apiKey='+newsAPI_key
+    api_url = 'https://newsapi.org/v2/everything?q='+search_word+'&from=2024-08-09&language=en&sortBy=relevancy&apiKey='+newsAPI_key
 
     # Make a GET request to the API
     response = requests.get(api_url)
@@ -75,7 +75,10 @@ async def send_data_to_supabase(table, source, title, description, url, urlToIma
         data = response.data
         # If supabase send us something it means that the article is already in the database
         if len(data) > 0:
-            print(f'Article: -{title}- is already in database\n\n')
+            print(f'Article: -{title}- is already in database.\n\n')
+            return False
+        if (title=='[Removed]'):
+            print(f'Article: -{title}- is not added to the database because it doesnt exist.\n\n')
             return False
         else:
             try:

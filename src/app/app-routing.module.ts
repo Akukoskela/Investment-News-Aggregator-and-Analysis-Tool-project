@@ -17,6 +17,13 @@ const routes: Routes = [
       )
   },
   {
+    path: 'newsdashboard',
+    loadComponent: () =>
+      import('./components/newsdashboard/newsdashboard.component').then(
+        (com) => com.NewsdashboardComponent
+      )
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full'

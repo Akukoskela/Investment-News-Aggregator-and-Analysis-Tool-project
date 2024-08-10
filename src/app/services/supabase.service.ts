@@ -89,6 +89,7 @@ export class SupabaseService {
 
   async checkIfDataExists(table: any, column1: any, filter1: any, column2: any, filter2: any) {
     try {
+      //console.log('Checking if table: ',table,' has data where column:', column1, ' equals ', filter1, ' and column 2: ', column2, ' equals ', filter2)
       const { data, error } = await this.supabase_client
         .from(table)
         .select("*")

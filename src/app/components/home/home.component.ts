@@ -11,6 +11,8 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { InfoDialog } from './info-dialog/info-dialog';
 import { StockDataService } from 'src/app/services/stock-data.service';
+import {MatMenuModule} from '@angular/material/menu';
+import { NewsdashboardComponent } from '../newsdashboard/newsdashboard.component';
 
 
 
@@ -19,7 +21,7 @@ import { StockDataService } from 'src/app/services/stock-data.service';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule]
+  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule,MatMenuModule]
 })
 export class HomeComponent {
   crowdstrikeData: any;
@@ -41,7 +43,7 @@ export class HomeComponent {
 
   async ngOnInit() {
     await this.getArticleData();
-    await this.parseDataToTable(this.crowdstrikeData, this.berkshire_hathawayData, this.healthcare_industryData, this.microsoft, this.petroleum_industry, this.technology_industry, this.bayer);
+     this.parseDataToTable(this.crowdstrikeData, this.berkshire_hathawayData, this.healthcare_industryData, this.microsoft, this.petroleum_industry, this.technology_industry, this.bayer);
     this.setPolarityChart();
     await this.updateStockData();
     this.setStockChart();
@@ -125,6 +127,9 @@ export class HomeComponent {
   navigateToDashboard(industryName: any, tableName: any) {
     this.router.navigate(['dashboard', industryName, tableName]);
   }
+  navigateToNewsDashboard(){
+    this.router.navigate(['newsdashboard']);
+  }
 
   setPolarityChart() {
     let list = []
@@ -187,7 +192,6 @@ export class HomeComponent {
       list.push(objectX)
     }
     this.stockChartData = list
-    console.log(this.stockChartData)
     const chartSpinner = document.getElementById('stock-chart-spinner')
     chartSpinner?.style.setProperty('display', 'none');
     const chart = document.getElementById('stock-chart')
@@ -231,7 +235,6 @@ export class HomeComponent {
     for (const industry of this.tickerSymbols) {
        await this.stockDataService.getStockData(industry[0])
     }
-    console.log('Stock data updated')
   }
 
   openDialog() {

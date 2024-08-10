@@ -1,7 +1,6 @@
 <div class="container">
     <div mat-dialog-title>
         <h2 class="title">Info</h2>
-        <br>
     </div>
 
     <div mat-dialog-content>
@@ -9,19 +8,24 @@
             <p>The idea of this project is to aggregate and analyze investment news with machine learning. I
                 want to test
                 how machine learning can be used with investment sector and if it (or this software) can be used when
-                doing
-                investment decisions.
-                The project is developed with Angular.ts, Supabase and Python</p>
+                doinginvestment decisions.The project is developed with Angular.ts, Supabase and Python.</p>
             <br>
             <h2 style="font-size: x-large;">How does it work?</h2>
-            <br>
             <p>First, we run the backend code which fetch, analyse and send the articles to database. Then the frontend
                 fetches the articles from the database and shows it to user </p>
-                <br>
+            <br>
 
             <h2 style="font-size: x-large;">How does it analyse the articles?</h2>
+            <p>This project analyses articles with Pythons <a
+                    href="https://textblob.readthedocs.io/en/dev/">TextBlob</a> library wich uses NLP (Natural language
+                processing) to give us the sentiment analysis for each article. From sentiment analysis we get the
+                polarity value between -1 and 1. The polarity value tells us if the text from article were more positive
+                or negative. </p>
             <br>
-            <p>This project analyses articles with Pythons <a href="https://textblob.readthedocs.io/en/dev/">TextBlob</a> library wich uses NLP (Natural language processing) to give us the sentiment analysis for each article. From sentiment analysis we get the polarity value between -1 and 1. The polarity value tells us if the text from article were more positive or negative. </p>
+            <h2 style="font-size: x-large;">Can't find the news article on the web?</h2>
+            <p> News articles are removed constantly from the web by publishers to make space for new articles. However,
+                the original text of the article can be read in this software by clicking the article's header. It will
+                open a pop-up window where is more info about the article. (Coming soon..) </p>
         </div>
         <br><br>
         <p style="color: red;">DO NOT USE THIS SOFTWARE TO HELP YOU MAKE AN INVESTMENT DECISION! SOFTWARE IS NOT READY

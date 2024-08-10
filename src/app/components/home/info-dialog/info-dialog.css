@@ -1,7 +1,7 @@
 .container{
 background-color: #1B1E27;
 border: solid;
-border-width: 1px;
+border-width: 3px;
 border-color: #A8385D; 
 }
 
@@ -12,6 +12,14 @@ border-color: #A8385D;
 
 .content a{
     color: #A8385D;
+}
+
+.content h2{
+    display: flex;
+    width: fit-content;
+    border-bottom: solid;
+    border-color: #A8385D;
+
 }
 
 .title{

@@ -4,10 +4,20 @@
     <span style="margin-top:1vh">
         <h1 class="home-text">Home</h1>
     </span>
-    <div style="width: 100%; height: 100%; display: flex; justify-content: center;align-items: center;">
-        <h1 class="project-name">Finance news collector and analyzer with machine learning</h1>
+    <div style="width: 40%; height: 100%; display: flex; justify-content: center;align-items: center;">
+        <h1 class="project-name">Finance news collector</h1>
     </div>
     <div class="development-text">In development</div>
+
+    <div class="menu">
+        <button mat-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="navigateToNewsDashboard()">News dashboard</button>
+            <button mat-menu-item>Item 2</button>
+        </mat-menu>
+
+    </div>
+
 
 </mat-toolbar>
 <div class="whole-page">
@@ -22,10 +32,11 @@
             <div class="chart-container">
                 <div class="chart-header">
                     <h3 style="font-size: xx-large; font-weight: 500; padding-top:2vh; width:50%;">Polarity chart </h3>
-                    <p style="font-size: medium; width: 30%; height: 100%; display: flex; align-items: end;">Cumulative line chart  <span style="margin-left: 5%;" class="material-symbols-outlined">
-                        <mat-icon
-                            matTooltip=" Cumulative line chart or cumulative frequency chart, is a graphical representation that shows the cumulative sum or total of a series of values over time or another dimension.">info</mat-icon>
-                    </span></p>
+                    <p style="font-size: medium; width: 30%; height: 100%; display: flex; align-items: end;">Cumulative
+                        line chart <span style="margin-left: 5%;" class="material-symbols-outlined">
+                            <mat-icon
+                                matTooltip=" Cumulative line chart or cumulative frequency chart, is a graphical representation that shows the cumulative sum or total of a series of values over time or another dimension.">info</mat-icon>
+                        </span></p>
 
                 </div>
 
@@ -36,7 +47,7 @@
                 <div id="polarity-chart-spinner" class="chart-spinner"><mat-spinner></mat-spinner></div>
                 <div class="chart" id="polarity-chart" style="display: none;">
 
-                    <ngx-charts-line-chart  [scheme]="'cool'" [results]="polarityChartData" [gradient]="gradient"
+                    <ngx-charts-line-chart [scheme]="'cool'" [results]="polarityChartData" [gradient]="gradient"
                         [xAxis]="showXAxis" [yAxis]="showYAxis" [legend]="showLegend" [showXAxisLabel]="showXAxisLabel"
                         [showYAxisLabel]="showYAxisLabel" [xAxisLabel]="xAxisLabel" [yAxisLabel]="yAxisLabel"
                         [timeline]="timeline" style="fill: white;">
@@ -47,9 +58,10 @@
             <div class="chart-container">
                 <div class="chart-header">
                     <h3 style="font-size: xx-large; font-weight: 500; padding-top:2vh; width: 50%;">Stock chart </h3>
-                    <p style="font-size: medium; width: 30%; height: 100%; display: flex; align-items: end;">Daily close values  <span style="margin-left: 5%;" class="material-symbols-outlined">
-                        <mat-icon>info</mat-icon>
-                    </span></p>
+                    <p style="font-size: medium; width: 30%; height: 100%; display: flex; align-items: end;">Daily close
+                        values <span style="margin-left: 5%;" class="material-symbols-outlined">
+                            <mat-icon>info</mat-icon>
+                        </span></p>
 
                 </div>
 
@@ -110,7 +122,8 @@
     <mat-toolbar class="bottom-toolbar">
         <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
             <p>Source code:</p>
-            <a target=”_blank” href="https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project">
+            <a target=”_blank”
+                href="https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project">
                 <!-- GitHub icon-->
                 <svg width="98" height="96" xmlns="http://www.w3.org/2000/svg">
                     <path fill-rule="evenodd" clip-rule="evenodd"
