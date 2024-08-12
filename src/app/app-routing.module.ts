@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
+// Define your routes
 const routes: Routes = [
   {
     path: 'home',
@@ -26,16 +27,17 @@ const routes: Routes = [
   {
     path: '',
     redirectTo: 'home',
-    pathMatch: 'full'
+    pathMatch: 'full' // Match the full path for redirecting
   },
   {
     path: '**',
-    redirectTo: 'home'
+    redirectTo: 'home' // Wildcard route for handling unknown paths
   }
 ];
 
+// Configure NgModule with RouterModule
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  imports: [RouterModule.forRoot(routes)], // Import RouterModule with routes
+  exports: [RouterModule] // Export RouterModule for use in other modules
 })
 export class AppRoutingModule { }
