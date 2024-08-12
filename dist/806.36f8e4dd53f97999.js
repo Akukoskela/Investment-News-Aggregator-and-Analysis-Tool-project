@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkInvestment_News_Aggregator_and_Analysis_Tool_project=self.webpackChunkInvestment_News_Aggregator_and_Analysis_Tool_project||[]).push([[806],{3806:e=>{e.exports=function(){throw new Error("ws does not work in the browser. Browser clients must use the native WebSocket object")}}}]);

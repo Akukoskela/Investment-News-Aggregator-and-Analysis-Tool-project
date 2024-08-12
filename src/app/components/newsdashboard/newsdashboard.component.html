@@ -9,8 +9,8 @@
     </div>
     <div class="development-text">In development</div>
 
-    <div class="menu">
-        <button mat-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
+    <div class="menu" >
+        <button  mat-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
         <mat-menu #menu="matMenu">
             <button mat-menu-item >News dashboard</button>
             <button mat-menu-item (click)="navigateToHome()">Home</button>
@@ -40,7 +40,7 @@
 
     <div class="news-container">
         <div class="articles-container">
-            <div *ngFor="let article of showArticles" class="article-container">
+            <div *ngFor="let article of testData" class="article-container">
 
                 <div class="article-container-content">
 
