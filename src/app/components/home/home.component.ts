@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { LegendPosition, NgxChartsModule } from '@swimlane/ngx-charts';
+import {  NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
@@ -12,8 +12,6 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { InfoDialog } from './info-dialog/info-dialog';
 import { StockDataService } from 'src/app/services/stock-data.service';
 import {MatMenuModule} from '@angular/material/menu';
-import { NewsdashboardComponent } from '../newsdashboard/newsdashboard.component';
-
 
 
 @Component({

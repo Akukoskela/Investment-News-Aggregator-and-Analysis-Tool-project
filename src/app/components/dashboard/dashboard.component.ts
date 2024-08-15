@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { SupabaseService } from 'src/app/services/supabase.service';
-import { NgFor } from '@angular/common';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
