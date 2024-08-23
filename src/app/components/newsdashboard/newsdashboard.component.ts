@@ -39,7 +39,7 @@ export class NewsdashboardComponent {
   constructor(private supabaseService: SupabaseService,private route: ActivatedRoute,private router: Router) { }
 
   async ngOnInit() {
-    /*
+    
     this.crowdstrikeArticles = await this.supabaseService.getData('crowdstrike') //First we fetch the articles from the database and set Crowdstrike articles as the default value to be displayed. We use slice function to display only the first 20 articles so it downloads the content faster.
     this.showArticles = this.crowdstrikeArticles.slice(0, 20)
     this.choosedIndustry = 'Crowdstrike'
@@ -50,7 +50,7 @@ export class NewsdashboardComponent {
     this.microsoftArticles = await this.supabaseService.getData('microsoft')
     this.petroleum_industryArticles = await this.supabaseService.getData('petroleum_industry')
 
-    */ 
+    /* 
 
      this.testData = [
        {
@@ -118,7 +118,7 @@ export class NewsdashboardComponent {
          "subjectivity": 0.5,
          "info": null
        }
-     ]
+     ] */
   }
 
   navigateToHome(){
