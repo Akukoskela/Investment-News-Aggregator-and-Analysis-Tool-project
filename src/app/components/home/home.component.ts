@@ -180,7 +180,7 @@ export class HomeComponent {
     let list = []
     for (const industry of this.tickerSymbols) {
       const objectX: { name: string, series: Array<{ name: Date, value: number }> } = { name: industry[1], series: [] };
-      const data: any = await this.supabaseService.getDataWithFilter('stock_data', 'industry', industry[0])
+      const data: any = await this.supabaseService.getDataWithFilter('stock_data', 'industry', industry[0], true)
       for (const i of data) {
         objectX.series.push({
           name: new Date(i.date), // Convert string back to Date for the chart

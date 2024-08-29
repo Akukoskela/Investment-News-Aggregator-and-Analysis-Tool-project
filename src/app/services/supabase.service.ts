@@ -27,12 +27,13 @@ export class SupabaseService {
     }
   }
 
-  async getDataWithFilter(table: any, column: any, filter: any) {
+  async getDataWithFilter(table: any, column: any, filter: any,ascending:boolean) {
     const { data, error } = await this.supabase_client
       .from(table)
       .select("*")
       // Filters
       .eq(column, filter)
+      .order('date', { ascending: ascending })
     if (data) {
       return data
     }

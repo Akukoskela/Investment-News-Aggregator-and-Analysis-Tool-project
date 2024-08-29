@@ -28,6 +28,14 @@ export class StockDataService {
       const dataExists = await this.supabaseService.checkIfDataExists('stock_data', 'industry', industry, 'date', date);
       console.log('Stock data for ', industry, ' for date: ', date, '. Dataexits: ', dataExists)
       // If data doesn't exists we make a API reguest to Alpha Vantage and send the data to the database.
+
+//Get the latest date from the database where we have stock data for the industry
+const data:any= await this.supabaseService.getDataWithFilter('stock_data', 'industry', industry, false)
+const latestDateWithData=data[0].date
+
+
+
+
       if (dataExists == false) {
         const response = await fetch('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&outputsize=compact&symbol=' + industry + '&apikey=CZMPMMVGN67FVB2W');
         const data = await response.json();
@@ -39,7 +47,12 @@ export class StockDataService {
           const dailyPrices = data["Time Series (Daily)"];
           // Loop through each date (key) and its corresponding daily price object (value)
           for (const date in dailyPrices) {
+            if (new Date(date) < new Date(latestDateWithData)) {
+              continue;
+            }
+
             const dailyPrice = dailyPrices[date];
+            
             // Check again if data already exits in the database and send it if it doesn't.
             const dataExists = await this.supabaseService.checkIfDataExists('stock_data', 'industry', industry, 'date', date);
             //console.log('Second log: Data exists for ',industry,' for ',date,':', dataExists)

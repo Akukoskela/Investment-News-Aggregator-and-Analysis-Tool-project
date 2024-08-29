@@ -98,7 +98,7 @@ export class DashboardComponent {
         this.stockName = 'Bayer AG'
         break;
     }
-    this.stockData = await this.supabaseService.getDataWithFilter('stock_data', 'industry', this.ticker)
+    this.stockData = await this.supabaseService.getDataWithFilter('stock_data', 'industry', this.ticker,false)
   }
 
 
