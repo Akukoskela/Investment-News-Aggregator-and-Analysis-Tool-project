@@ -27,6 +27,18 @@ export class SupabaseService {
     }
   }
 
+  async getDataWith2Filters(table: any,columns:string) {
+    const { data, error } = await this.supabase_client
+      .from(table)
+      .select(columns)
+    if (data) {
+      return data
+    }
+    else {
+      return error
+    }
+  }
+
   async getDataWithFilter(table: any, column: any, filter: any,ascending:boolean) {
     const { data, error } = await this.supabase_client
       .from(table)

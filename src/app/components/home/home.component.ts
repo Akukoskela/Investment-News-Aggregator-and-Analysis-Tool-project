@@ -4,14 +4,14 @@ import { Router } from '@angular/router';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {  NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { InfoDialog } from './info-dialog/info-dialog';
 import { StockDataService } from 'src/app/services/stock-data.service';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 
 
 @Component({
@@ -19,7 +19,7 @@ import {MatMenuModule} from '@angular/material/menu';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule,MatMenuModule]
+  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule]
 })
 export class HomeComponent {
   crowdstrikeData: any;
@@ -33,33 +33,48 @@ export class HomeComponent {
   parsedData: any
   polarityChartData: any = []
   stockChartData: any = []
-  tickerSymbols: any = [['CRWD', 'Crowdstrike'], ['BRK.B', 'Berkshire Hathaway B'], ['MSFT', 'Microsoft'],['BAYRY','Bayer AG'],['QQQ','Invesco QQQ Trust Series 1(Technology)'],['VGHCX','Vanguard Health Care Fund Investor Shares'],['XOP','SPDR S&P Oil & Gas Exploration & Production ETF ']];
+  tickerSymbols: any = [['CRWD', 'Crowdstrike'], ['BRK.B', 'Berkshire Hathaway B'], ['MSFT', 'Microsoft'], ['BAYRY', 'Bayer AG'], ['QQQ', 'Invesco QQQ Trust Series 1(Technology)'], ['VGHCX', 'Vanguard Health Care Fund Investor Shares'], ['XOP', 'SPDR S&P Oil & Gas Exploration & Production ETF ']];
 
 
-  constructor(private supabaseService: SupabaseService, private router: Router, public dialog: MatDialog, private stockDataService: StockDataService) { 
-  }
+  constructor(private supabaseService: SupabaseService, private router: Router, public dialog: MatDialog, private stockDataService: StockDataService) {}
 
   async ngOnInit() {
     await this.getArticleData();
-     this.parseDataToTable(this.crowdstrikeData, this.berkshire_hathawayData, this.healthcare_industryData, this.microsoft, this.petroleum_industry, this.technology_industry, this.bayer);
+    this.parseDataToTable(this.crowdstrikeData, this.berkshire_hathawayData, this.healthcare_industryData, this.microsoft, this.petroleum_industry, this.technology_industry, this.bayer);
     this.setPolarityChart();
     await this.updateStockData();
     this.setStockChart();
   }
 
   async getArticleData() {
-    this.crowdstrikeData = await this.supabaseService.getData('crowdstrike')
-    this.berkshire_hathawayData = await this.supabaseService.getData('berkshire_hathaway')
-    this.healthcare_industryData = await this.supabaseService.getData('healthcare_industry')
-    this.microsoft = await this.supabaseService.getData('microsoft')
-    this.petroleum_industry = await this.supabaseService.getData('petroleum_industry')
-    this.technology_industry = await this.supabaseService.getData('technology_industry')
-    this.bayer = await this.supabaseService.getData('bayer')
+    /*const articleData=await this.supabaseService.getData('article_data')
+    console.log('article data haettu tietokannasta')
+    //console.log(articleData)
+    
+    if(articleData instanceof Array){
+    this.crowdstrikeData = articleData!.filter(row => row.industry == 'crowdstrike');
+    this.berkshire_hathawayData = articleData!.filter(row => row.industry == 'berkshire_hathaway');
+    this.healthcare_industryData = articleData!.filter(row => row.industry == 'healthcare_industry');
+    this.microsoft = articleData!.filter(row => row.industry == 'microsoft');
+    this.petroleum_industry = articleData!.filter(row => row.industry =='petroleum_industry');
+    this.technology_industry = articleData!.filter(row => row.industry =='technology_industry');
+    this.bayer = articleData!.filter(row => row.industry == 'bayer');
+    }
+    */
+    this.crowdstrikeData = await this.supabaseService.getDataWith2Filters('crowdstrike','polarity, published_at')
+    this.berkshire_hathawayData = await this.supabaseService.getDataWith2Filters('berkshire_hathaway','polarity,published_at')
+    this.healthcare_industryData = await this.supabaseService.getDataWith2Filters('healthcare_industry','polarity,published_at')
+    this.microsoft = await this.supabaseService.getDataWith2Filters('microsoft','polarity,published_at')
+    this.petroleum_industry = await this.supabaseService.getDataWith2Filters('petroleum_industry','polarity,published_at')
+    this.technology_industry = await this.supabaseService.getDataWith2Filters('technology_industry','polarity,published_at')
+    this.bayer = await this.supabaseService.getDataWith2Filters('bayer','polarity,published_at')
+
     this.industries.push([this.crowdstrikeData, 'Crowdstrike'], [this.berkshire_hathawayData, 'Berkshire Hathaway'], [this.healthcare_industryData, 'Healthcare Industry'], [this.microsoft, 'Microsoft'], [this.petroleum_industry, 'Petroleum Industry'], [this.technology_industry, 'Technology Industry'], [this.bayer, 'Bayer AG'])
   }
 
   async parseDataToTable(crowdstrike: any, berkshireHarhaway: any, healtcareIndustry: any, microsoft: any, petroleunIndustry: any, technologyIndustry: any, bayer: any) {
 
+    // Here we calculate the mean polarity of each industry and store it in the parsedData array which will be used to display the data in the table.
     let sum1: any = 0
     for (let i = 0; i < crowdstrike.length; i++) {
       sum1 = sum1 + crowdstrike[i].polarity
@@ -111,25 +126,21 @@ export class HomeComponent {
       { industry: 'Technology Industry', tableName: 'technology_industry', polarity: meanPolarityOfTechnologyIndustry, numberOfArticles: technologyIndustry.length },
       { industry: 'Bayer AG', tableName: 'bayer', polarity: meanPolarityOfBayer, numberOfArticles: bayer.length },
     ]
-
-
-
     const tableSpinner = document.getElementById('table-spinner')
     tableSpinner?.style.setProperty('display', 'none');
     const table = document.getElementById('table')
     table?.style.setProperty('display', '')
   }
 
-  columnsToDisplay = ['industry', 'polarity', 'numberOfArticles'];
-
   navigateToDashboard(industryName: any, tableName: any) {
     this.router.navigate(['dashboard', industryName, tableName]);
   }
-  navigateToNewsDashboard(){
+  navigateToNewsDashboard() {
     this.router.navigate(['newsdashboard']);
   }
 
   setPolarityChart() {
+    // Here we calculate the average polarity of each industry per day and store it in the polarityChartData array which will be used to display the data in the chart.
     let list = []
     for (const i of this.industries) {
       const objectX: { name: string, series: Array<{ name: Date, value: number }> } = { name: i[1], series: [] };
@@ -196,18 +207,6 @@ export class HomeComponent {
     chart?.style.setProperty('display', 'flex')
   }
 
-  // Chart options
-  showXAxis = true;
-  showYAxis = true;
-  gradient = false;
-  showLegend = true;
-  legendPosition = 'below'
-  showXAxisLabel = true;
-  xAxisLabel = 'Date';
-  showYAxisLabel = true;
-  yAxisLabel = 'Polarity';
-  timeline = true;
-
   checkPolarity(polarity: number) {
     let sentiment: string;
     let color: string;
@@ -225,17 +224,31 @@ export class HomeComponent {
       sentiment = "undefined";
       color = "black"; // Set default color or handle it according to your requirement
     }
-
     return { sentiment, color };
   }
 
-   async updateStockData(){
+  async updateStockData() {
     for (const industry of this.tickerSymbols) {
-       await this.stockDataService.getStockData(industry[0])
+      await this.stockDataService.getStockData(industry[0])
     }
   }
 
   openDialog() {
     this.dialog.open(InfoDialog);
   }
+
+  // Here we define the columns that will be displayed in the industry table.
+  columnsToDisplay = ['industry', 'polarity', 'numberOfArticles'];
+
+  // Here we define the variables that will be used to display the polarity chart.
+  showXAxis = true;
+  showYAxis = true;
+  gradient = false;
+  showLegend = true;
+  legendPosition = 'below'
+  showXAxisLabel = true;
+  xAxisLabel = 'Date';
+  showYAxisLabel = true;
+  yAxisLabel = 'Polarity';
+  timeline = true;
 }

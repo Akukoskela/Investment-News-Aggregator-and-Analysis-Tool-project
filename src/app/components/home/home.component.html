@@ -44,7 +44,7 @@
                 <br>
 
 
-                <div id="polarity-chart-spinner" class="chart-spinner"><mat-spinner></mat-spinner></div>
+                <div id="polarity-chart-spinner" class="chart-spinner"><mat-spinner></mat-spinner> <br> <p> Loading polarity chart ...</p></div>
                 <div class="chart" id="polarity-chart" style="display: none;">
 
                     <ngx-charts-line-chart [scheme]="'cool'" [results]="polarityChartData" [gradient]="gradient"
@@ -68,7 +68,7 @@
                 <hr width="90%" color="#A8385D" />
                 <br>
 
-                <div id="stock-chart-spinner" class="chart-spinner"><mat-spinner></mat-spinner></div>
+                <div id="stock-chart-spinner" class="chart-spinner"><mat-spinner></mat-spinner><br> <p> Loading stock chart ...</p></div>
                 <div class="chart" id="stock-chart" style="display: none;">
 
                     <ngx-charts-line-chart [scheme]="'cool'" [results]="stockChartData" [gradient]="gradient"
@@ -81,7 +81,6 @@
 
         </div>
         <div class="table-container" style="display: flex; flex-direction: column;">
-
             <table id="table" mat-table [dataSource]="parsedData" style="background-color: #1B1E27; width: 100%;">
 
                 <ng-container matColumnDef="industry">
@@ -114,7 +113,7 @@
                 <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
 
             </table>
-            <div id="table-spinner" class="table-spinner"><mat-spinner></mat-spinner></div>
+            <div id="table-spinner" class="table-spinner"><mat-spinner></mat-spinner><br> <p> Loading industry table ...</p></div>
 
         </div>
     </div>

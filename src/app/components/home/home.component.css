@@ -82,7 +82,9 @@ line-height: 2vh;
 
 .table-spinner {
     display: flex;
+    flex-direction: column;
     align-items: center;
+    color: grey;
     justify-content: center;
     margin-top: 25%;
 }
@@ -154,7 +156,9 @@ p {
 
 .chart-spinner {
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     margin-top: 22%;
 }
 
