@@ -10,9 +10,14 @@ mat-toolbar {
     justify-content: space-between;
 }
 
-
+.menu{
+    transform: scale(2);
+}
 .menu button{
     color: white;
+}
+.menu button:hover{
+    color: #A8385D;
 }
 
 .development-text {

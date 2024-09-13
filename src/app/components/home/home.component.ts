@@ -61,13 +61,13 @@ export class HomeComponent {
     this.bayer = articleData!.filter(row => row.industry == 'bayer');
     }
     */
-    this.crowdstrikeData = await this.supabaseService.getDataWith2Filters('crowdstrike','polarity, published_at')
-    this.berkshire_hathawayData = await this.supabaseService.getDataWith2Filters('berkshire_hathaway','polarity,published_at')
-    this.healthcare_industryData = await this.supabaseService.getDataWith2Filters('healthcare_industry','polarity,published_at')
-    this.microsoft = await this.supabaseService.getDataWith2Filters('microsoft','polarity,published_at')
-    this.petroleum_industry = await this.supabaseService.getDataWith2Filters('petroleum_industry','polarity,published_at')
-    this.technology_industry = await this.supabaseService.getDataWith2Filters('technology_industry','polarity,published_at')
-    this.bayer = await this.supabaseService.getDataWith2Filters('bayer','polarity,published_at')
+    this.crowdstrikeData = await this.supabaseService.getDataWithFilters('crowdstrike','polarity, published_at')
+    this.berkshire_hathawayData = await this.supabaseService.getDataWithFilters('berkshire_hathaway','polarity,published_at')
+    this.healthcare_industryData = await this.supabaseService.getDataWithFilters('healthcare_industry','polarity,published_at')
+    this.microsoft = await this.supabaseService.getDataWithFilters('microsoft','polarity,published_at')
+    this.petroleum_industry = await this.supabaseService.getDataWithFilters('petroleum_industry','polarity,published_at')
+    this.technology_industry = await this.supabaseService.getDataWithFilters('technology_industry','polarity,published_at')
+    this.bayer = await this.supabaseService.getDataWithFilters('bayer','polarity,published_at')
 
     this.industries.push([this.crowdstrikeData, 'Crowdstrike'], [this.berkshire_hathawayData, 'Berkshire Hathaway'], [this.healthcare_industryData, 'Healthcare Industry'], [this.microsoft, 'Microsoft'], [this.petroleum_industry, 'Petroleum Industry'], [this.technology_industry, 'Technology Industry'], [this.bayer, 'Bayer AG'])
   }

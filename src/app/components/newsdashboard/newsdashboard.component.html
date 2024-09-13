@@ -1,18 +1,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <mat-toolbar>
-    <span style="margin-top:1vh">
-        <h1 class="home-text">Home</h1>
-    </span>
+    <a class="arrow" (click)="navigateToHome()">
+        <span class="material-icons" style="font-size: 5vh;">
+            arrow_back
+        </span>
+    </a>
     <div style="width: 40%; height: 100%; display: flex; justify-content: center;align-items: center;">
-        <h1 class="project-name">Finance news collector</h1>
+        <h1 class="project-name">News Dashboard</h1>
     </div>
     <div class="development-text">In development</div>
 
-    <div class="menu" >
-        <button  mat-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
+    <div class="menu">
+        <button mat-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item >News dashboard</button>
+            <button mat-menu-item>News dashboard</button>
             <button mat-menu-item (click)="navigateToHome()">Home</button>
         </mat-menu>
 
@@ -22,6 +24,8 @@
 </mat-toolbar>
 
 <div class="whole-page">
+
+    <div class="instruction-text">Select industry and filters</div>
 
     <div class="industry-selector">
         <mat-button-toggle-group id="industry-selector" name="Industry-selector" value="Crowdstrike"
@@ -36,72 +40,403 @@
         </mat-button-toggle-group>
     </div>
 
+    <div class="filter-selector" >
+        <mat-button-toggle-group name="filter-selector" aria-label="filter-selector" multiple="true"
+            hideMultipleSelectionIndicator="true">
+            <mat-button-toggle value="latest">Latest</mat-button-toggle>
+            <mat-button-toggle value="positive">Positive</mat-button-toggle>
+            <mat-button-toggle value="negative">Negative</mat-button-toggle>
+        </mat-button-toggle-group>
+
+
+        &nbsp;
+        <div class="input-and-search-button">
+        <input matInput style="height: 2vh; border-radius: 1vh; font-size: large; padding: 1vh;">
+        &nbsp;
+        &nbsp;
+
+        <button mat-button class="search-button">
+        <span class="material-icons" style="color:white;">
+            search
+        </span>
+    </button>
+</div>
+
+    </div>
+
     <hr color="#A8385D" width="70%">
 
     <div class="news-container">
-        <div class="articles-container">
-            <div *ngFor="let article of showArticles" class="article-container">
+        <div *ngIf="choosedIndustry=='Crowdstrike' ">
 
-                <div class="article-container-content">
+            <div *ngIf="crowdstrikeLoading" class="spinner" id="spinner"> <mat-spinner></mat-spinner>
+                <p>Loading articles...</p>
+            </div>
 
-                    <div class="article-image">
-                        <img src={{article.image_url}} alt="Article image" (error)='showAlternativeImage($event)'
-                            style="border-radius: 0.5vh; display: flex; width: 100%;">
-                    </div>
-                    <br>
-                    <hr width="70%" color="#A8385D">
-                    <div class="article-title">
-                        <h2>{{shorteningFunc(article.title,60)}}</h2>
-                    </div>
-                    <div class="article-description">
-                        <p>{{shorteningFunc(article.description,100)}}</p>
-                    </div>
-                    <div class="article-container-bottom">
-                        <div class="article-polarity"> <mat-icon id="sentiment-icon" class="sentiment-icon"
-                                matTooltip="{{article.polarity.toFixed(3)}}"
-                                [style.color]="checkPolarity(article.polarity).color">
-                                {{checkPolarity(article.polarity).sentiment}}
-                            </mat-icon></div>
+            <div *ngIf="!crowdstrikeLoading" class="articles-container">
+                <div *ngFor="let article of showArticles" class="article-container">
 
-                        <a href={{article.url}}>
-                            <button mat-button class="see-more-button">See more</button>
-                        </a>
+                    <div class="article-container-content">
 
-                        <div class="article-source">
-                            <a href="article.source_name" style="color: #A8385D;">
-                                {{article.source_name}}
+                        <div class="article-image">
+                            <img src={{article.image_url}} alt="Article image" (error)='showAlternativeImage($event)'
+                                style="border-radius: 0.5vh; display: flex; width: 100%;">
+                        </div>
+                        <br>
+                        <hr width="70%" color="#A8385D">
+                        <div class="article-title">
+                            <h2>{{shorteningFunc(article.title,60)}}</h2>
+                        </div>
+                        <div class="article-description">
+                            <p>{{shorteningFunc(article.description,100)}}</p>
+                        </div>
+                        <div class="article-container-bottom">
+                            <div class="article-polarity"> <mat-icon id="sentiment-icon" class="sentiment-icon"
+                                    matTooltip="{{article.polarity.toFixed(3)}}"
+                                    [style.color]="checkPolarity(article.polarity).color">
+                                    {{checkPolarity(article.polarity).sentiment}}
+                                </mat-icon></div>
+
+                            <a href={{article.url}}>
+                                <button mat-button class="see-more-button">See more</button>
                             </a>
+
+                            <div class="article-source">
+                                <a href="article.source_name" style="color: #A8385D;">
+                                    {{article.source_name}}
+                                </a>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1vh; display: flex; justify-content: end; align-items: end; width: 100%;">
+                        {{article.published_at}}
+                    </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+
+        <!-- Bayer Industry -->
+        <div *ngIf="choosedIndustry=='Bayer' ">
+            <div *ngIf="bayerLoading" class="spinner" id="spinner">
+                <mat-spinner></mat-spinner>
+                <p>Loading articles...</p>
+            </div>
+
+            <div *ngIf="!bayerLoading" class="articles-container">
+                <div *ngFor="let article of bayerArticles" class="article-container">
+                    <!-- Same structure for articles as before -->
+                    <div class="article-container-content">
+
+                        <div class="article-image">
+                            <img src={{article.image_url}} alt="Article image" (error)='showAlternativeImage($event)'
+                                style="border-radius: 0.5vh; display: flex; width: 100%;">
+                        </div>
+                        <br>
+                        <hr width="70%" color="#A8385D">
+                        <div class="article-title">
+                            <h2>{{shorteningFunc(article.title,60)}}</h2>
+                        </div>
+                        <div class="article-description">
+                            <p>{{shorteningFunc(article.description,100)}}</p>
+                        </div>
+                        <div class="article-container-bottom">
+                            <div class="article-polarity"> <mat-icon id="sentiment-icon" class="sentiment-icon"
+                                    matTooltip="{{article.polarity.toFixed(3)}}"
+                                    [style.color]="checkPolarity(article.polarity).color">
+                                    {{checkPolarity(article.polarity).sentiment}}
+                                </mat-icon></div>
+
+                            <a href={{article.url}}>
+                                <button mat-button class="see-more-button">See more</button>
+                            </a>
+
+                            <div class="article-source">
+                                <a href="article.source_name" style="color: #A8385D;">
+                                    {{article.source_name}}
+                                </a>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1vh; display: flex; justify-content: end; align-items: end; width: 100%;">
+                            {{article.published_at}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Microsoft Industry -->
+        <div *ngIf="choosedIndustry=='Microsoft' ">
+            <div *ngIf="microsoftLoading" class="spinner" id="spinner">
+                <mat-spinner></mat-spinner>
+                <p>Loading articles...</p>
+            </div>
+
+            <div *ngIf="!microsoftLoading" class="articles-container">
+                <div *ngFor="let article of microsoftArticles" class="article-container">
+                    <!-- Same structure for articles as before -->
+                    <div class="article-container-content">
+
+                        <div class="article-image">
+                            <img src={{article.image_url}} alt="Article image" (error)='showAlternativeImage($event)'
+                                style="border-radius: 0.5vh; display: flex; width: 100%;">
+                        </div>
+                        <br>
+                        <hr width="70%" color="#A8385D">
+                        <div class="article-title">
+                            <h2>{{shorteningFunc(article.title,60)}}</h2>
+                        </div>
+                        <div class="article-description">
+                            <p>{{shorteningFunc(article.description,100)}}</p>
+                        </div>
+                        <div class="article-container-bottom">
+                            <div class="article-polarity"> <mat-icon id="sentiment-icon" class="sentiment-icon"
+                                    matTooltip="{{article.polarity.toFixed(3)}}"
+                                    [style.color]="checkPolarity(article.polarity).color">
+                                    {{checkPolarity(article.polarity).sentiment}}
+                                </mat-icon></div>
+
+                            <a href={{article.url}}>
+                                <button mat-button class="see-more-button">See more</button>
+                            </a>
+
+                            <div class="article-source">
+                                <a href="article.source_name" style="color: #A8385D;">
+                                    {{article.source_name}}
+                                </a>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1vh; display: flex; justify-content: end; align-items: end; width: 100%;">
+                            {{article.published_at}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Berkshire Hathaway Industry -->
+        <div *ngIf="choosedIndustry=='Berkshire Hathaway' ">
+            <div *ngIf="berkshireLoading" class="spinner" id="spinner">
+                <mat-spinner></mat-spinner>
+                <p>Loading articles...</p>
+            </div>
+
+            <div *ngIf="!berkshireLoading" class="articles-container">
+                <div *ngFor="let article of showArticles" class="article-container">
+                    <!-- Same structure for articles as before -->
+                    <div class="article-container-content">
+
+                        <div class="article-image">
+                            <img src={{article.image_url}} alt="Article image" (error)='showAlternativeImage($event)'
+                                style="border-radius: 0.5vh; display: flex; width: 100%;">
+                        </div>
+                        <br>
+                        <hr width="70%" color="#A8385D">
+                        <div class="article-title">
+                            <h2>{{shorteningFunc(article.title,60)}}</h2>
+                        </div>
+                        <div class="article-description">
+                            <p>{{shorteningFunc(article.description,100)}}</p>
+                        </div>
+                        <div class="article-container-bottom">
+                            <div class="article-polarity"> <mat-icon id="sentiment-icon" class="sentiment-icon"
+                                    matTooltip="{{article.polarity.toFixed(3)}}"
+                                    [style.color]="checkPolarity(article.polarity).color">
+                                    {{checkPolarity(article.polarity).sentiment}}
+                                </mat-icon></div>
+
+                            <a href={{article.url}}>
+                                <button mat-button class="see-more-button">See more</button>
+                            </a>
+
+                            <div class="article-source">
+                                <a href="article.source_name" style="color: #A8385D;">
+                                    {{article.source_name}}
+                                </a>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1vh; display: flex; justify-content: end; align-items: end; width: 100%;">
+                            {{article.published_at}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Healthcare Industry -->
+        <div *ngIf="choosedIndustry=='Healthcare industry' ">
+            <div *ngIf="healthcareLoading" class="spinner" id="spinner">
+                <mat-spinner></mat-spinner>
+                <p>Loading articles...</p>
+            </div>
+
+            <div *ngIf="!healthcareLoading" class="articles-container">
+                <div *ngFor="let article of showArticles" class="article-container">
+                    <!-- Same structure for articles as before -->
+                    <div class="article-container-content">
+
+                        <div class="article-image">
+                            <img src={{article.image_url}} alt="Article image" (error)='showAlternativeImage($event)'
+                                style="border-radius: 0.5vh; display: flex; width: 100%;">
+                        </div>
+                        <br>
+                        <hr width="70%" color="#A8385D">
+                        <div class="article-title">
+                            <h2>{{shorteningFunc(article.title,60)}}</h2>
+                        </div>
+                        <div class="article-description">
+                            <p>{{shorteningFunc(article.description,100)}}</p>
+                        </div>
+                        <div class="article-container-bottom">
+                            <div class="article-polarity"> <mat-icon id="sentiment-icon" class="sentiment-icon"
+                                    matTooltip="{{article.polarity.toFixed(3)}}"
+                                    [style.color]="checkPolarity(article.polarity).color">
+                                    {{checkPolarity(article.polarity).sentiment}}
+                                </mat-icon></div>
+
+                            <a href={{article.url}}>
+                                <button mat-button class="see-more-button">See more</button>
+                            </a>
+
+                            <div class="article-source">
+                                <a href="article.source_name" style="color: #A8385D;">
+                                    {{article.source_name}}
+                                </a>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1vh; display: flex; justify-content: end; align-items: end; width: 100%;">
+                            {{article.published_at}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Industry -->
+        <div *ngIf="choosedIndustry=='Technology industry' ">
+            <div *ngIf="technologyLoading" class="spinner" id="spinner">
+                <mat-spinner></mat-spinner>
+                <p>Loading articles...</p>
+            </div>
+
+            <div *ngIf="!technologyLoading" class="articles-container">
+                <div *ngFor="let article of showArticles" class="article-container">
+                    <!-- Same structure for articles as before -->
+                    <div class="article-container-content">
+
+                        <div class="article-image">
+                            <img src={{article.image_url}} alt="Article image" (error)='showAlternativeImage($event)'
+                                style="border-radius: 0.5vh; display: flex; width: 100%;">
+                        </div>
+                        <br>
+                        <hr width="70%" color="#A8385D">
+                        <div class="article-title">
+                            <h2>{{shorteningFunc(article.title,60)}}</h2>
+                        </div>
+                        <div class="article-description">
+                            <p>{{shorteningFunc(article.description,100)}}</p>
+                        </div>
+                        <div class="article-container-bottom">
+                            <div class="article-polarity"> <mat-icon id="sentiment-icon" class="sentiment-icon"
+                                    matTooltip="{{article.polarity.toFixed(3)}}"
+                                    [style.color]="checkPolarity(article.polarity).color">
+                                    {{checkPolarity(article.polarity).sentiment}}
+                                </mat-icon></div>
+
+                            <a href={{article.url}}>
+                                <button mat-button class="see-more-button">See more</button>
+                            </a>
+
+                            <div class="article-source">
+                                <a href="article.source_name" style="color: #A8385D;">
+                                    {{article.source_name}}
+                                </a>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1vh; display: flex; justify-content: end; align-items: end; width: 100%;">
+                            {{article.published_at}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Petroleum Industry -->
+        <div *ngIf="choosedIndustry=='Petroleum industry' ">
+            <div *ngIf="petroleumLoading" class="spinner" id="spinner">
+                <mat-spinner></mat-spinner>
+                <p>Loading articles...</p>
+            </div>
+
+            <div *ngIf="!petroleumLoading" class="articles-container">
+                <div *ngFor="let article of showArticles" class="article-container">
+                    <!-- Same structure for articles as before -->
+                    <div class="article-container-content">
+
+                        <div class="article-image">
+                            <img src={{article.image_url}} alt="Article image" (error)='showAlternativeImage($event)'
+                                style="border-radius: 0.5vh; display: flex; width: 100%;">
+                        </div>
+                        <br>
+                        <hr width="70%" color="#A8385D">
+                        <div class="article-title">
+                            <h2>{{shorteningFunc(article.title,60)}}</h2>
+                        </div>
+                        <div class="article-description">
+                            <p>{{shorteningFunc(article.description,100)}}</p>
+                        </div>
+                        <div class="article-container-bottom">
+                            <div class="article-polarity"> <mat-icon id="sentiment-icon" class="sentiment-icon"
+                                    matTooltip="{{article.polarity.toFixed(3)}}"
+                                    [style.color]="checkPolarity(article.polarity).color">
+                                    {{checkPolarity(article.polarity).sentiment}}
+                                </mat-icon></div>
+
+                            <a href={{article.url}}>
+                                <button mat-button class="see-more-button">See more</button>
+                            </a>
+
+                            <div class="article-source">
+                                <a href="article.source_name" style="color: #A8385D;">
+                                    {{article.source_name}}
+                                </a>
+                            </div>
+                        </div>
+                        <div style="margin-top: 1vh; display: flex; justify-content: end; align-items: end; width: 100%;">
+                            {{article.published_at}}
                         </div>
                     </div>
                 </div>
             </div>
 
+
+        </div>
+        <div class="load-more-articles-button" (click)="loadMoreArticles()"><button mat-button>Load more
+                articles</button>
         </div>
 
-    </div>
-    <div class="load-more-articles-button" (click)="loadMoreArticles()"><button mat-button>Load more articles</button>
+
     </div>
 
 
-</div>
-
-
-<mat-toolbar class="bottom-toolbar">
-    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-        <p>Source code:</p>
-        <a target=”_blank” href="https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project">
-            <!-- GitHub icon-->
-            <svg width="98" height="96" xmlns="http://www.w3.org/2000/svg">
-                <path fill-rule="evenodd" clip-rule="evenodd"
-                    d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"
-                    fill="#fff" />
-            </svg>
-        </a>
-    </div>
-    <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
-        <p>Developer:</p>
-        <a style="margin-left: 1vh;" target=”_blank” href="https://www.linkedin.com/in/aku-koskela-93179a234/">
-            <img class="linkedin-image" src="/assets/linkedin.png" alt="linkedin logo">
-        </a>
-    </div>
-</mat-toolbar>
+    <mat-toolbar class="bottom-toolbar">
+        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+            <p>Source code:</p>
+            <a target=”_blank”
+                href="https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project">
+                <!-- GitHub icon-->
+                <svg width="98" height="96" xmlns="http://www.w3.org/2000/svg">
+                    <path fill-rule="evenodd" clip-rule="evenodd"
+                        d="M48.854 0C21.839 0 0 22 0 49.217c0 21.756 13.993 40.172 33.405 46.69 2.427.49 3.316-1.059 3.316-2.362 0-1.141-.08-5.052-.08-9.127-13.59 2.934-16.42-5.867-16.42-5.867-2.184-5.704-5.42-7.17-5.42-7.17-4.448-3.015.324-3.015.324-3.015 4.934.326 7.523 5.052 7.523 5.052 4.367 7.496 11.404 5.378 14.235 4.074.404-3.178 1.699-5.378 3.074-6.6-10.839-1.141-22.243-5.378-22.243-24.283 0-5.378 1.94-9.778 5.014-13.2-.485-1.222-2.184-6.275.486-13.038 0 0 4.125-1.304 13.426 5.052a46.97 46.97 0 0 1 12.214-1.63c4.125 0 8.33.571 12.213 1.63 9.302-6.356 13.427-5.052 13.427-5.052 2.67 6.763.97 11.816.485 13.038 3.155 3.422 5.015 7.822 5.015 13.2 0 18.905-11.404 23.06-22.324 24.283 1.78 1.548 3.316 4.481 3.316 9.126 0 6.6-.08 11.897-.08 13.526 0 1.304.89 2.853 3.316 2.364 19.412-6.52 33.405-24.935 33.405-46.691C97.707 22 75.788 0 48.854 0z"
+                        fill="#fff" />
+                </svg>
+            </a>
+        </div>
+        <div style="display: flex; flex-direction: row; justify-content: center; align-items: center;">
+            <p>Developer:</p>
+            <a style="margin-left: 1vh;" target=”_blank” href="https://www.linkedin.com/in/aku-koskela-93179a234/">
+                <img class="linkedin-image" src="/assets/linkedin.png" alt="linkedin logo">
+            </a>
+        </div>
+    </mat-toolbar>

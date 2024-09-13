@@ -27,7 +27,7 @@ export class SupabaseService {
     }
   }
 
-  async getDataWith2Filters(table: any,columns:string) {
+  async getDataWithFilters(table: any,columns:string) {
     const { data, error } = await this.supabase_client
       .from(table)
       .select(columns)

@@ -3,15 +3,18 @@ import { MatTableModule } from '@angular/material/table';
 import { SupabaseService } from 'src/app/services/supabase.service';
 import { MatButtonModule } from '@angular/material/button';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import {  NgxChartsModule } from '@swimlane/ngx-charts';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import {  MatDialogModule } from '@angular/material/dialog';
+import { MatDialogModule } from '@angular/material/dialog';
 import { NgFor } from '@angular/common';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
-import {MatMenuModule} from '@angular/material/menu';
+import { MatMenuModule } from '@angular/material/menu';
 import { ActivatedRoute, Router, RouterModule } from '@angular/router';
+import { CommonModule } from '@angular/common';
+import { NgModule } from '@angular/core';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 
@@ -20,7 +23,7 @@ import { ActivatedRoute, Router, RouterModule } from '@angular/router';
   selector: 'app-newsdashboard',
   templateUrl: './newsdashboard.component.html',
   styleUrls: ['./newsdashboard.component.css'],
-  imports: [MatToolbarModule, NgFor, MatTableModule, MatButtonModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatButtonToggleModule,MatMenuModule]
+  imports: [MatFormFieldModule,CommonModule, MatToolbarModule, NgFor, MatTableModule, MatButtonModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatButtonToggleModule, MatMenuModule,]
 })
 export class NewsdashboardComponent {
   articles: any = []
@@ -36,19 +39,20 @@ export class NewsdashboardComponent {
   testData: any;
   imageNotAvailableImage = 'assets/no-image-available-image.jpg';
   choosedIndustry: any;
-  constructor(private supabaseService: SupabaseService,private route: ActivatedRoute,private router: Router) { }
+  crowdstrikeLoading: boolean = true;
+  microsoftLoading: boolean = true;
+  bayerLoading: boolean = true;
+  berkshireLoading: boolean = true;
+  healthcareLoading: boolean = true;
+  technologyLoading: boolean = true;
+  petroleumLoading: boolean = true;
+  loading: boolean = true;
+  constructor(private supabaseService: SupabaseService, private route: ActivatedRoute, private router: Router) { }
 
   async ngOnInit() {
-    
-    this.crowdstrikeArticles = await this.supabaseService.getData('crowdstrike') //First we fetch the articles from the database and set Crowdstrike articles as the default value to be displayed. We use slice function to display only the first 20 articles so it downloads the content faster.
-    this.showArticles = this.crowdstrikeArticles.slice(0, 20)
-    this.choosedIndustry = 'Crowdstrike'
-    this.bayerArticles = await this.supabaseService.getData('bayer')
-    this.berkshire_hathawayArticles = await this.supabaseService.getData('berkshire_hathaway')
-    this.healthcare_industryArticles = await this.supabaseService.getData('healthcare_industry')
-    this.technology_industryArticles = await this.supabaseService.getData('technology_industry')
-    this.microsoftArticles = await this.supabaseService.getData('microsoft')
-    this.petroleum_industryArticles = await this.supabaseService.getData('petroleum_industry')
+    await this.loadingArticles();
+
+
 
     /* 
 
@@ -121,7 +125,28 @@ export class NewsdashboardComponent {
      ] */
   }
 
-  navigateToHome(){
+  async loadingArticles() { // Getting data with filters because it may be faster than getting all the unnecessary data all at once.
+    this.choosedIndustry = 'Crowdstrike';
+    this.crowdstrikeArticles = await this.supabaseService.getDataWithFilters('crowdstrike', 'published_at,polarity,url,image_url,source_name,description,content,title');
+    this.crowdstrikeLoading = false;
+    this.showArticles = this.crowdstrikeArticles.slice(0, 20);
+    this.microsoftArticles = await this.supabaseService.getDataWithFilters('microsoft', 'published_at,polarity,url,image_url,source_name,description,content,title');
+    this.microsoftLoading = false;
+    this.bayerArticles = await this.supabaseService.getDataWithFilters('bayer', 'published_at,polarity,url,image_url,source_name,description,content,title');
+    this.bayerLoading = false;
+    this.berkshire_hathawayArticles = await this.supabaseService.getDataWithFilters('berkshire_hathaway', 'published_at,polarity,url,image_url,source_name,description,content,title');
+    this.berkshireLoading = false;
+    this.healthcare_industryArticles = await this.supabaseService.getDataWithFilters('healthcare_industry', 'published_at,polarity,url,image_url,source_name,description,content,title');
+    this.healthcareLoading = false;
+    this.technology_industryArticles = await this.supabaseService.getDataWithFilters('technology_industry', 'published_at,polarity,url,image_url,source_name,description,content,title');
+    this.technologyLoading = false;
+    this.petroleum_industryArticles = await this.supabaseService.getDataWithFilters('petroleum_industry', 'published_at,polarity,url,image_url,source_name,description,content,title');
+    this.petroleumLoading = false;
+    console.log('all ready')
+    //this.loading=false;
+  }
+
+  navigateToHome() {
     this.router.navigate(['home']);
   }
 
@@ -165,30 +190,65 @@ export class NewsdashboardComponent {
 
   selectIndustry(event: any) {
     this.choosedIndustry = event.value;
-
     switch (this.choosedIndustry) {
       case 'Crowdstrike':
-        this.showArticles = this.crowdstrikeArticles.slice(0, 20)
+        this.loading = this.crowdstrikeLoading
+        if (this.loading == true) { //If articles is still loading we don't want to use slice method because it gives error message to console.
+        }
+        else {
+          this.showArticles = this.crowdstrikeArticles.slice(0, 20)
+        }
         break;
       case 'Bayer':
-        this.showArticles = this.bayerArticles.slice(0, 20)
+        this.loading = this.bayerLoading
+        if (this.loading == true) {
+        }
+        else {
+          this.showArticles = this.bayerArticles.slice(0, 20)
+        }
         break;
       case 'Berkshire Hathaway':
-        this.showArticles = this.berkshire_hathawayArticles.slice(0, 20)
+        this.loading = this.berkshireLoading
+        if (this.loading == true) {
+        }
+        else {
+          this.showArticles = this.berkshire_hathawayArticles.slice(0, 20)
+        }
         break;
       case 'Healthcare industry':
-        this.showArticles = this.healthcare_industryArticles.slice(0, 20)
+        this.loading = this.healthcareLoading
+        if (this.loading == true) {
+        }
+        else {
+          this.showArticles = this.healthcare_industryArticles.slice(0, 20)
+        }
         break;
       case 'Technology industry':
-        this.showArticles = this.technology_industryArticles.slice(0, 20)
+        this.loading = this.technologyLoading
+        if (this.loading == true) {
+        }
+        else {
+          this.showArticles = this.technology_industryArticles.slice(0, 20)
+        }
         break;
       case 'Microsoft':
-        this.showArticles = this.microsoftArticles.slice(0, 20)
+        this.loading = this.microsoftLoading
+        if (this.loading == true) {
+        }
+        else {
+          this.showArticles = this.microsoftArticles.slice(0, 20)
+        }
         break;
       case 'Petroleum industry':
-        this.showArticles = this.petroleum_industryArticles.slice(0, 20)
+        this.loading = this.petroleumLoading
+        if (this.loading == true) {
+        }
+        else {
+          this.showArticles = this.petroleum_industryArticles.slice(0, 20)
+        }
         break;
     }
+    console.log(this.choosedIndustry, ' is loading: ', this.loading)
   }
 
   loadMoreArticles() {

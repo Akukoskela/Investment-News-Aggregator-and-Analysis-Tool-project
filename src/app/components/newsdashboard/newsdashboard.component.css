@@ -18,9 +18,9 @@ mat-toolbar {
     font-size: 1.4vw;
 }
 
-.home-text {
-    font-weight: 450;
-    font-size: 1.7vw;
+.arrow:hover {
+    color: #A8385D;
+    cursor: pointer;
 }
 
 .menu button{
@@ -39,6 +39,22 @@ mat-toolbar {
     height: auto;
 }
 
+.instruction-text{
+    color: white;
+    display: flex;
+    margin-top: 5vh;
+    font-size: large;
+}
+
+.spinner{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    height: 100vh;
+    margin-top: 10vh;
+    color: gray;
+}
 .industry-selector{
     display: flex;
     justify-content: center;
@@ -62,9 +78,30 @@ mat-button-toggle.mat-button-toggle-checked {
     color: #A8385D;
 }
 
+.filter-selector{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-and-search-button{
+    display: 'flex';
+    flex-direction: row;
+}
+
+.search-button{
+    background-color: #1B1E27; 
+    height: 5vh;
+    border-radius: 1vh;
+}
+.search-button:hover{
+    background-color: #A8385D;
+}
+
 .news-container {
     display: flex;
     justify-content: center;
+    align-items: center;
     flex-direction: column;
     width: 80%;
     height: 50%;
@@ -91,7 +128,7 @@ mat-button-toggle.mat-button-toggle-checked {
     border-radius: 1vh;
     color: white;
     padding: 1.5vh;
-    padding-bottom: 0vh;
+    padding-bottom: 1vh;
     margin: 2vh;
     width: 20%;
     height: 42vh;
@@ -114,12 +151,6 @@ mat-button-toggle.mat-button-toggle-checked {
     height: 30%;
     margin-top: 1vh;
 }
-
-.article-title h2{
-}
-
-
-
 .article-description{
     display: flex;
     width: 90%;
@@ -161,6 +192,9 @@ mat-button-toggle.mat-button-toggle-checked {
 
 .load-more-articles-button{
     display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 20%;
     background-color: white;
     border-radius: 0.5vh;
     margin-top: 5vh;
@@ -169,6 +203,7 @@ mat-button-toggle.mat-button-toggle-checked {
 
 .load-more-articles-button:hover{
     background-color: #A8385D;
+    cursor: pointer;
 }
 
 /* Bottom toolbar */
