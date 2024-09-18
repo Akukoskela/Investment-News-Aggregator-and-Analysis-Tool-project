@@ -84,12 +84,19 @@ mat-button-toggle.mat-button-toggle-checked {
     align-items: center;
 }
 
+mat-form-field{
+    margin-top: 2vh;
+}
+
 .input-and-search-button{
-    display: 'flex';
+    display: flex;
     flex-direction: row;
 }
 
 .search-button{
+    display: flex;
+    justify-content: center;
+    align-items: center;
     background-color: #1B1E27; 
     height: 5vh;
     border-radius: 1vh;

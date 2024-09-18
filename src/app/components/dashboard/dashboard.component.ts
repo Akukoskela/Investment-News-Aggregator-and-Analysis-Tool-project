@@ -7,6 +7,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { checkPolarity } from 'src/app/app.component';
 
 
 @Component({
@@ -212,23 +213,6 @@ export class DashboardComponent {
   yAxisLabelRight: string = "Utilization";
 
   checkPolarity(polarity: number) {
-    let sentiment: string;
-    let color: string;
-
-    if (polarity < -0.1) {
-      sentiment = "sentiment_dissatisfied";
-      color = "red";
-    } else if (polarity < 0.1) {
-      sentiment = "sentiment_neutral";
-      color = "yellow";
-    } else if (polarity > 0.1) {
-      sentiment = "sentiment_very_satisfied";
-      color = "green";
-    } else {
-      sentiment = "undefined";
-      color = "black"; // Set default color or handle it according to your requirement
-    }
-
-    return { sentiment, color };
+   return checkPolarity(polarity);
   }
 }

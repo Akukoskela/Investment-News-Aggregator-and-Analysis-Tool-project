@@ -1,0 +1,57 @@
+.whole-content{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 4vh;
+    background-color: #1B1E27;
+    color: white;
+}
+
+.whole-content h1{
+    font-size: xx-large;
+}
+
+.whole-content h2{
+    font-size: x-large;
+}
+
+.whole-content h2, p{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 95%;
+}
+
+.image{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 40%;
+    margin-bottom: 4vh;
+    margin-top: 3vh;
+}
+
+.article-polarity{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: x-large;
+};
+
+.link-to-site{
+    display: flex;
+}
+
+.link-to-site button{
+    color: black;
+    background-color: white;
+}
+
+.bottom-row{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: row;
+    width: 100%;
+}
