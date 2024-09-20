@@ -39,11 +39,11 @@ export class HomeComponent {
   constructor(private supabaseService: SupabaseService, private router: Router, public dialog: MatDialog, private stockDataService: StockDataService) {}
 
   async ngOnInit() {
-    await this.getArticleData();
+    /*await this.getArticleData();
     this.parseDataToTable(this.crowdstrikeData, this.berkshire_hathawayData, this.healthcare_industryData, this.microsoft, this.petroleum_industry, this.technology_industry, this.bayer);
     this.setPolarityChart();
     await this.updateStockData();
-    this.setStockChart();
+    this.setStockChart();*/
   }
 
   async getArticleData() {

@@ -8,11 +8,13 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { checkPolarity } from 'src/app/app.component';
-
+import { ArticlePopupWindowComponent } from '../newsdashboard/article-popup-window/article-popup-window.component';
+import { MatDialogModule,MatDialog } from '@angular/material/dialog';
+import { Dialog } from '@angular/cdk/dialog';
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterModule, MatToolbarModule, MatIconModule, NgxChartsModule, MatTooltipModule, MatProgressSpinnerModule],
+  imports: [MatDialogModule,CommonModule, RouterModule, MatToolbarModule, MatIconModule, NgxChartsModule, MatTooltipModule, MatProgressSpinnerModule],
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
@@ -32,7 +34,7 @@ export class DashboardComponent {
   stockName: any;
   stockData: any;
 
-  constructor(private supabaseService: SupabaseService, private route: ActivatedRoute,private router: Router) { }
+  constructor(public dialog:MatDialog,private supabaseService: SupabaseService, private route: ActivatedRoute,private router: Router) { }
 
   async ngOnInit() {
     this.route.params.subscribe(params => {
@@ -214,5 +216,14 @@ export class DashboardComponent {
 
   checkPolarity(polarity: number) {
    return checkPolarity(polarity);
+  }
+
+  openArticlePopupwindow(article: any){
+    console.log(article)
+
+    const dialogRef = this.dialog.open(ArticlePopupWindowComponent, {
+      data: {title: article.title, description: article.description, content: article.content, sourceName: article.source_name, publishedAt: article.published_at, imageUrl: article.image_url, url: article.url, polarity:article.polarity}, width:'70%'
+    });
+
   }
 }

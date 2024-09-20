@@ -43,7 +43,9 @@
                 <br>
 
 
-                <div id="polarity-chart-spinner" class="chart-spinner"><mat-spinner></mat-spinner> <br> <p> Loading polarity chart ...</p></div>
+                <div id="polarity-chart-spinner" class="chart-spinner"><mat-spinner></mat-spinner> <br>
+                    <p> Loading polarity chart ...</p>
+                </div>
                 <div class="chart" id="polarity-chart" style="display: none;">
 
                     <ngx-charts-line-chart [scheme]="'cool'" [results]="polarityChartData" [gradient]="gradient"
@@ -67,7 +69,9 @@
                 <hr width="90%" color="#A8385D" />
                 <br>
 
-                <div id="stock-chart-spinner" class="chart-spinner"><mat-spinner></mat-spinner><br> <p> Loading stock chart ...</p></div>
+                <div id="stock-chart-spinner" class="chart-spinner"><mat-spinner></mat-spinner><br>
+                    <p> Loading stock chart ...</p>
+                </div>
                 <div class="chart" id="stock-chart" style="display: none;">
 
                     <ngx-charts-line-chart [scheme]="'cool'" [results]="stockChartData" [gradient]="gradient"
@@ -79,40 +83,63 @@
             </div>
 
         </div>
-        <div class="table-container" style="display: flex; flex-direction: column;">
-            <table id="table" mat-table [dataSource]="parsedData" style="background-color: #1B1E27; width: 100%;">
 
-                <ng-container matColumnDef="industry">
-                    <th mat-header-cell *matHeaderCellDef> Industry </th>
-                    <td mat-cell *matCellDef="let data" class="cell"> <button mat-button class="button"
-                            (click)="navigateToDashboard(data.industry,data.tableName)"> {{data.industry}} </button>
-                    </td>
+        <div class="table-and-library-container">
+            <div class="table-container" style="display: flex; flex-direction: column;">
+                <table id="table" mat-table [dataSource]="parsedData" style="background-color: #1B1E27; width: 100%;">
 
-                </ng-container>
+                    <ng-container matColumnDef="industry">
+                        <th mat-header-cell *matHeaderCellDef> Industry </th>
+                        <td mat-cell *matCellDef="let data" class="cell"> <button mat-button class="button"
+                                (click)="navigateToDashboard(data.industry,data.tableName)"> {{data.industry}} </button>
+                        </td>
 
-                <ng-container matColumnDef="polarity">
-                    <th mat-header-cell *matHeaderCellDef> Mean Polarity </th>
-                    <td mat-cell *matCellDef="let data" class="cell">
-                        <mat-icon id="sentiment-icon" class="sentiment-icon" matTooltip="{{data.polarity.toFixed(3)}}"
-                            [style.color]="checkPolarity(data.polarity).color">
-                            {{checkPolarity(data.polarity).sentiment}}
-                        </mat-icon>
-                    </td>
-                </ng-container>
+                    </ng-container>
 
-                <ng-container matColumnDef="numberOfArticles">
-                    <th mat-header-cell *matHeaderCellDef> Articles Analysed </th>
-                    <td mat-cell *matCellDef="let data" class="cell"> {{data.numberOfArticles}} </td>
-                </ng-container>
+                    <ng-container matColumnDef="polarity">
+                        <th mat-header-cell *matHeaderCellDef> Mean Polarity </th>
+                        <td mat-cell *matCellDef="let data" class="cell">
+                            <mat-icon id="sentiment-icon" class="sentiment-icon"
+                                matTooltip="{{data.polarity.toFixed(3)}}"
+                                [style.color]="checkPolarity(data.polarity).color">
+                                {{checkPolarity(data.polarity).sentiment}}
+                            </mat-icon>
+                        </td>
+                    </ng-container>
 
-                <hr width="90%" color="#A8385D" />
+                    <ng-container matColumnDef="numberOfArticles">
+                        <th mat-header-cell *matHeaderCellDef> Articles Analysed </th>
+                        <td mat-cell *matCellDef="let data" class="cell"> {{data.numberOfArticles}} </td>
+                    </ng-container>
+
+                    <hr width="90%" color="#A8385D" />
 
 
-                <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
-                <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
+                    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+                    <tr mat-row *matRowDef="let myRowData; columns: columnsToDisplay"></tr>
 
-            </table>
-            <div id="table-spinner" class="table-spinner"><mat-spinner></mat-spinner><br> <p> Loading industry table ...</p></div>
+                </table>
+                <div id="table-spinner" class="table-spinner"><mat-spinner></mat-spinner><br>
+                    <p> Loading industry table ...</p>
+                </div>
+
+            </div>
+
+            <div class="library">
+                <div class="library-header">
+                    <h3>Library</h3>
+                    <mat-icon class="library-icon">
+                        menu_book
+                    </mat-icon>   
+                    <p>Search and read the articles!</p>
+        
+                </div>
+                <hr width="100%" color="#A8385D" />
+
+                <div class="library-content">
+                    <button mat-button (click)="navigateToNewsDashboard()">Click here to go to the library! </button>
+                </div>
+            </div>
 
         </div>
     </div>

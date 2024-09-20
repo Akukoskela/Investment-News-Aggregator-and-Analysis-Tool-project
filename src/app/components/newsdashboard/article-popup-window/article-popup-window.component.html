@@ -2,18 +2,26 @@
     <h1>{{title}}</h1>
     <hr color="#A8385D" width="70%">
 
-    <div class="image">
-        <img width="100%" src={{imageURL}} (error)='showAlternativeImage($event)' alt="Article picture">
+    <div class="centre">
+        <div class="image">
+            <img src={{imageURL}} (error)='showAlternativeImage($event)' alt="Article picture">
+        </div>
+        <h2>{{description}}</h2>
     </div>
-    <h2>{{description}}</h2>
+
+
     <p>{{content}}</p>
 
+
     <div class="bottom-row">
+
+        <div class="source">Source: {{sourceName}}</div>
+        <div class="published-at">Published: {{publishedAt}}</div>
         <a class="link-to-site" href={{url}}>
-            <button mat-button >Link to article</button>
+            <button mat-button>Link to article</button>
         </a>
 
-        <div class="article-polarity">{{polarity}} &nbsp; &nbsp;
+        <div class="article-polarity">Polarity: &nbsp; &nbsp;
             <mat-icon id="sentiment-icon" class="sentiment-icon" style="transform: scale(2);"
                 matTooltip="{{polarity.toFixed(3)}}" [style.color]="checkPolarity(polarity).color">
                 {{checkPolarity(polarity).sentiment}}

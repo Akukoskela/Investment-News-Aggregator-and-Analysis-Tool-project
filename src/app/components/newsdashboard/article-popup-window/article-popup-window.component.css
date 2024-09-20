@@ -12,9 +12,7 @@
     font-size: xx-large;
 }
 
-.whole-content h2{
-    font-size: x-large;
-}
+
 
 .whole-content h2, p{
     display: flex;
@@ -23,13 +21,32 @@
     width: 95%;
 }
 
+.centre{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+.centre h2{
+    font-size: large;
+    padding: 3vh;
+    width: 50%;
+}
 .image{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 40%;
+    width: 30%;
+    height: 25vh;
     margin-bottom: 4vh;
     margin-top: 3vh;
+}
+
+.image img{
+    width: 100%;
+    height: 100%;
+    border-radius: 1vh;
 }
 
 .article-polarity{
@@ -50,8 +67,22 @@
 
 .bottom-row{
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     flex-direction: row;
     width: 100%;
+    border-top: solid;
+    border-color: #A8385D;
+    margin-top: 3vh;
+    padding-top: 2vh;
 }
+
+.published-at{
+    display: flex;
+    font-size: large;
+}
+.source{
+    display: flex;
+     font-size: large
+};
+

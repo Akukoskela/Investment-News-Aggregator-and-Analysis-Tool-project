@@ -79,7 +79,7 @@
                         </div>
                         <div class="articles-container">
                             <div *ngFor="let article of top5GoodArticles" class="article-container">
-                                <a href="{{article.url}}">
+                                <a (click)="openArticlePopupwindow(article)">
                                     <div style="display: flex; flex-direction: row;">
                                         <div class="article-title">{{article.title}}</div>
                                         <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
@@ -99,7 +99,7 @@
                         </div>
                         <div class="articles-container">
                             <div *ngFor="let article of top5BadArticles" class="article-container">
-                                <a href="{{article.url}}">
+                                <a (click)="openArticlePopupwindow(article)">
                                     <div style="display: flex; flex-direction: row;">
                                         <div class="article-title">{{article.title}}</div>
                                         <div class="article-polarity">{{article.polarity.toFixed(3)}}</div>
