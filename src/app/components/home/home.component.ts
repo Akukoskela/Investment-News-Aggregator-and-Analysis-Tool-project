@@ -12,6 +12,10 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { InfoDialog } from './info-dialog/info-dialog';
 import { StockDataService } from 'src/app/services/stock-data.service';
 import { MatMenuModule } from '@angular/material/menu';
+import { ChangeDetectionStrategy } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
+
 
 
 @Component({
@@ -19,7 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule]
+  imports: [MatProgressBarModule, MatCardModule, MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule]
 })
 export class HomeComponent {
   crowdstrikeData: any;
@@ -34,9 +38,20 @@ export class HomeComponent {
   polarityChartData: any = []
   stockChartData: any = []
   tickerSymbols: any = [['CRWD', 'Crowdstrike'], ['BRK.B', 'Berkshire Hathaway B'], ['MSFT', 'Microsoft'], ['BAYRY', 'Bayer AG'], ['QQQ', 'Invesco QQQ Trust Series 1(Technology)'], ['VGHCX', 'Vanguard Health Care Fund Investor Shares'], ['XOP', 'SPDR S&P Oil & Gas Exploration & Production ETF ']];
+  libraryContentCrowdstrikeData: any;
+  libraryContentberkshire_hathawayData: any;
+  libraryContenthealthcare_industryData: any;
+  libraryContentmicrosoft: any;
+  libraryContentpetroleum_industry: any;
+  libraryContenttechnology_industry: any;
+  libraryContentbayer: any;
+  libraryContent: any;
+  libraryCurrentIndustry: any;
+  newsInterval: number = 10000;
+  progressValue: any=0;
 
 
-  constructor(private supabaseService: SupabaseService, private router: Router, public dialog: MatDialog, private stockDataService: StockDataService) {}
+  constructor(private supabaseService: SupabaseService, private router: Router, public dialog: MatDialog, private stockDataService: StockDataService) { }
 
   async ngOnInit() {
     /*await this.getArticleData();
@@ -44,6 +59,8 @@ export class HomeComponent {
     this.setPolarityChart();
     await this.updateStockData();
     this.setStockChart();*/
+    this.getlibraryContent()
+
   }
 
   async getArticleData() {
@@ -61,13 +78,13 @@ export class HomeComponent {
     this.bayer = articleData!.filter(row => row.industry == 'bayer');
     }
     */
-    this.crowdstrikeData = await this.supabaseService.getDataWithFilters('crowdstrike','polarity, published_at')
-    this.berkshire_hathawayData = await this.supabaseService.getDataWithFilters('berkshire_hathaway','polarity,published_at')
-    this.healthcare_industryData = await this.supabaseService.getDataWithFilters('healthcare_industry','polarity,published_at')
-    this.microsoft = await this.supabaseService.getDataWithFilters('microsoft','polarity,published_at')
-    this.petroleum_industry = await this.supabaseService.getDataWithFilters('petroleum_industry','polarity,published_at')
-    this.technology_industry = await this.supabaseService.getDataWithFilters('technology_industry','polarity,published_at')
-    this.bayer = await this.supabaseService.getDataWithFilters('bayer','polarity,published_at')
+    this.crowdstrikeData = await this.supabaseService.getDataWithFilters('crowdstrike', 'polarity, published_at')
+    this.berkshire_hathawayData = await this.supabaseService.getDataWithFilters('berkshire_hathaway', 'polarity,published_at')
+    this.healthcare_industryData = await this.supabaseService.getDataWithFilters('healthcare_industry', 'polarity,published_at')
+    this.microsoft = await this.supabaseService.getDataWithFilters('microsoft', 'polarity,published_at')
+    this.petroleum_industry = await this.supabaseService.getDataWithFilters('petroleum_industry', 'polarity,published_at')
+    this.technology_industry = await this.supabaseService.getDataWithFilters('technology_industry', 'polarity,published_at')
+    this.bayer = await this.supabaseService.getDataWithFilters('bayer', 'polarity,published_at')
 
     this.industries.push([this.crowdstrikeData, 'Crowdstrike'], [this.berkshire_hathawayData, 'Berkshire Hathaway'], [this.healthcare_industryData, 'Healthcare Industry'], [this.microsoft, 'Microsoft'], [this.petroleum_industry, 'Petroleum Industry'], [this.technology_industry, 'Technology Industry'], [this.bayer, 'Bayer AG'])
   }
@@ -236,6 +253,70 @@ export class HomeComponent {
   openDialog() {
     this.dialog.open(InfoDialog);
   }
+
+  async getlibraryContent() {
+    this.libraryContentCrowdstrikeData = await this.supabaseService.getLatest3News('crowdstrike')
+    this.libraryContentberkshire_hathawayData = await this.supabaseService.getLatest3News('berkshire_hathaway')
+    this.libraryContenthealthcare_industryData = await this.supabaseService.getLatest3News('healthcare_industry')
+    this.libraryContentmicrosoft = await this.supabaseService.getLatest3News('microsoft')
+    this.libraryContentpetroleum_industry = await this.supabaseService.getLatest3News('petroleum_industry')
+    this.libraryContenttechnology_industry = await this.supabaseService.getLatest3News('technology_industry')
+    this.libraryContentbayer = await this.supabaseService.getLatest3News('bayer')
+
+    this.libraryCurrentIndustry = 'Crowdstrike'
+    this.libraryContent = this.libraryContentCrowdstrikeData;
+
+    setInterval(() => {
+      this.progressValue = (this.progressValue + (105 / (this.newsInterval / 105))) % 105;
+    }, 100);
+
+    setInterval(() => {
+      this.changeLibraryContent();
+    }, this.newsInterval);
+
+
+    /*
+        for (let i = 0; i < 100; i++) {
+          await this.delay(5000)
+          this.changeLibraryContent()
+        }
+          */
+  }
+
+  changeLibraryContent() {
+
+    if (this.libraryCurrentIndustry == 'Crowdstrike') {
+      this.libraryCurrentIndustry = 'Berkshire Hathaway'
+      this.libraryContent = this.libraryContentberkshire_hathawayData;
+    }
+    else if (this.libraryCurrentIndustry == 'Berkshire Hathaway') {
+      this.libraryCurrentIndustry = 'Healthcare Industry'
+      this.libraryContent = this.libraryContenthealthcare_industryData;
+    }
+    else if (this.libraryCurrentIndustry == 'Healthcare Industry') {
+      this.libraryCurrentIndustry = 'Microsoft'
+      this.libraryContent = this.libraryContentmicrosoft;
+    }
+    else if (this.libraryCurrentIndustry == 'Microsoft') {
+      this.libraryCurrentIndustry = 'Petroleum Industry'
+      this.libraryContent = this.libraryContentpetroleum_industry;
+    }
+    else if (this.libraryCurrentIndustry == 'Petroleum Industry') {
+      this.libraryCurrentIndustry = 'Technology Industry'
+      this.libraryContent = this.libraryContenttechnology_industry;
+    }
+    else if (this.libraryCurrentIndustry == 'Technology Industry') {
+      this.libraryCurrentIndustry = 'Bayer AG'
+      this.libraryContent = this.libraryContentbayer;
+    }
+    else if (this.libraryCurrentIndustry == 'Bayer AG') {
+      this.libraryCurrentIndustry = 'Crowdstrike'
+      this.libraryContent = this.libraryContentCrowdstrikeData;
+    }
+
+    this.progressValue = 0;
+  }
+
 
   // Here we define the columns that will be displayed in the industry table.
   columnsToDisplay = ['industry', 'polarity', 'numberOfArticles'];

@@ -27,7 +27,7 @@ export class SupabaseService {
     }
   }
 
-  async getDataWithFilters(table: any,columns:string) {
+  async getDataWithFilters(table: any, columns: string) {
     const { data, error } = await this.supabase_client
       .from(table)
       .select(columns)
@@ -39,7 +39,7 @@ export class SupabaseService {
     }
   }
 
-  async getDataWithFilter(table: any, column: any, filter: any,ascending:boolean) {
+  async getDataWithFilter(table: any, column: any, filter: any, ascending: boolean) {
     const { data, error } = await this.supabase_client
       .from(table)
       .select("*")
@@ -98,6 +98,20 @@ export class SupabaseService {
       console.log(error)
       return error
     }
+  }
+
+  async getLatest3News(table: any) {
+    const { data, error } = await this.supabase_client
+      .from(table)
+      .select('*')
+      .order('published_at', { ascending: false })  // Order by the 'published_at' column in descending order
+      .limit(3)                // Limit the result to 3 latest rows
+
+    if (error) {
+      console.error('Error fetching latest news from supabaseservice:', error)
+    }
+    console.log('latest 3 news: ', data)
+    return data
   }
 
   async checkIfDataExists(table: any, column1: any, filter1: any, column2: any, filter2: any) {

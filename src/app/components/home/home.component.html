@@ -127,16 +127,38 @@
 
             <div class="library">
                 <div class="library-header">
-                    <h3>Library</h3>
-                    <mat-icon class="library-icon">
-                        menu_book
-                    </mat-icon>   
-                    <p>Search and read the articles!</p>
-        
+                    <div style="display: flex;">
+                        <h3>Library</h3>
+                        <mat-icon class="library-icon">
+                            menu_book
+                        </mat-icon>
+                    </div>
+                    <p>Latest news</p>
+
                 </div>
                 <hr width="100%" color="#A8385D" />
 
                 <div class="library-content">
+                    <mat-progress-bar mode="determinate" [value]="progressValue"
+                    class="progress-bar"></mat-progress-bar>
+                    <div style="display: flex; color: white; font-size: x-large; margin-top: 2vh;">
+                        
+                        {{libraryCurrentIndustry}}:</div>
+                        
+                    <div *ngFor="let article of libraryContent" class="news-cards-container">
+
+                        <mat-card class="news-card" appearance="outlined">
+                            <img mat-card-image width="10%" src={{article.image_url}} alt="Photo of a Shiba Inu">
+                            <mat-card-content>
+                                <h2>
+                                    {{article.title}}
+                                </h2>
+
+                                <p>{{article.published_at}}</p>
+                            </mat-card-content>
+                        </mat-card>
+                    </div>
+
                     <button mat-button (click)="navigateToNewsDashboard()">Click here to go to the library! </button>
                 </div>
             </div>
