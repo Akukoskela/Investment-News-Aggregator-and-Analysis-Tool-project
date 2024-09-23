@@ -25,7 +25,7 @@
 
 <div class="whole-page">
 
-    <div class="instruction-text">Select industry and filters</div>
+    <div class="instruction-text" style="color: red;">This component is under development and does not work properly</div>
 
     <div class="industry-selector">
         <mat-button-toggle-group id="industry-selector" name="Industry-selector" value="Crowdstrike"
@@ -81,12 +81,12 @@
     <div class="news-container">
         <div *ngIf="choosedIndustry=='Crowdstrike' ">
 
-            <!--div *ngIf="crowdstrikeLoading" class="spinner" id="spinner"> <mat-spinner></mat-spinner>
+            <div *ngIf="crowdstrikeLoading" class="spinner" id="spinner"> <mat-spinner></mat-spinner>
                 <p>Loading articles...</p>
-            </div-->
+        </div>
 
             <div *ngIf="!crowdstrikeLoading" class="articles-container">
-                <div *ngFor="let article of testData" class="article-container">
+                <div *ngFor="let article of showArticles" class="article-container">
 
                     <div class="article-container-content">
 

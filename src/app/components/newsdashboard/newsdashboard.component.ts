@@ -56,13 +56,13 @@ export class NewsdashboardComponent {
   constructor(public dialog: MatDialog,private supabaseService: SupabaseService, private route: ActivatedRoute, private router: Router) { }
 
   async ngOnInit() {
-    //await this.loadingArticles();
+    await this.loadingArticles();
 
 
     this.choosedIndustry = 'Crowdstrike';
     this.crowdstrikeLoading = false;
 
-    this.testData = [
+    /*this.testData = [
       {
         "id": "335426c9-881d-4ed1-ab50-ca5766c2a50c",
         "published_at": "2024-07-21",
@@ -128,7 +128,7 @@ export class NewsdashboardComponent {
         "subjectivity": 0.5,
         "info": null
       }
-    ]
+    ]*/
   }
 
   sources = new FormControl('');
@@ -295,7 +295,7 @@ export class NewsdashboardComponent {
 
   search() {
   const filterSelectorValue = this.filterSelector.value;
-  const articles=this.testData
+  const articles=this.showArticles
 
   // KESKEN SAFVUPIOSASHSEUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU KESKEN
   if(filterSelectorValue.includes('latest')&& filterSelectorValue.includes('positive')){
