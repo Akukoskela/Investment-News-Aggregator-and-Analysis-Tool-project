@@ -138,17 +138,21 @@
                 </div>
                 <hr width="100%" color="#A8385D" />
 
-                <div class="library-content">
+                <div id="library-spinner" class="library-spinner"><mat-spinner></mat-spinner><br>
+                    <p> Loading latest news ...</p>
+                </div>
+
+                <div class="library-content" id="library-content" style="display: none;">
                     <mat-progress-bar mode="determinate" [value]="progressValue"
                     class="progress-bar"></mat-progress-bar>
-                    <div style="display: flex; color: white; font-size: x-large; margin-top: 2vh;">
+                    <div style="display: flex; color: white; font-size: x-large; margin-top: 4vh; margin-bottom: 3vh;">
                         
                         {{libraryCurrentIndustry}}:</div>
                         
                     <div *ngFor="let article of libraryContent" class="news-cards-container">
 
-                        <mat-card class="news-card" appearance="outlined">
-                            <img mat-card-image width="10%" src={{article.image_url}} alt="Photo of a Shiba Inu">
+                        <mat-card class="news-card" appearance="outlined" (click)="openArticlePopupwindow(article)">
+                            <img mat-card-image width="10%" src={{article.image_url}} (error)="showAlternativeImage($event)" alt="Photo of a Shiba Inu">
                             <mat-card-content>
                                 <h2>
                                     {{article.title}}

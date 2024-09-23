@@ -241,16 +241,28 @@ td {
     
 }
 
+.library-spinner{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 15vh;
+    color:grey;
+}
 .library-icon{
     color: white;
     margin-left: 2vh;
     transform: scale(1.5);
 }
 .progress-bar{
+    display: flex;
     margin-top: 2vh;
+    width: 80%;
 }
 .library-content{
     display: flex;
+    justify-content: center;
+    align-items: center;
     flex-direction: column;
 }
 

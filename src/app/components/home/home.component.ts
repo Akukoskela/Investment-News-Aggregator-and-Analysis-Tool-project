@@ -15,6 +15,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
+import { ArticlePopupWindowComponent } from '../newsdashboard/article-popup-window/article-popup-window.component';
 
 
 
@@ -26,6 +27,7 @@ import { MatProgressBarModule } from '@angular/material/progress-bar';
   imports: [MatProgressBarModule, MatCardModule, MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule]
 })
 export class HomeComponent {
+  imageNotAvailableImage = 'assets/no-image-available-image.jpg';
   crowdstrikeData: any;
   berkshire_hathawayData: any
   healthcare_industryData: any
@@ -274,13 +276,10 @@ export class HomeComponent {
       this.changeLibraryContent();
     }, this.newsInterval);
 
-
-    /*
-        for (let i = 0; i < 100; i++) {
-          await this.delay(5000)
-          this.changeLibraryContent()
-        }
-          */
+    const librarySpinner = document.getElementById('library-spinner')
+    librarySpinner?.style.setProperty('display', 'none');
+    const library = document.getElementById('library-content')
+    library?.style.setProperty('display', 'flex')
   }
 
   changeLibraryContent() {
@@ -317,6 +316,19 @@ export class HomeComponent {
     this.progressValue = 0;
   }
 
+  showAlternativeImage(event: Event) {
+    (event.target as HTMLImageElement).src = this.imageNotAvailableImage;
+
+  }
+
+  openArticlePopupwindow(article: any){
+    console.log(article)
+
+    const dialogRef = this.dialog.open(ArticlePopupWindowComponent, {
+      data: {title: article.title, description: article.description, content: article.content, sourceName: article.source_name, publishedAt: article.published_at, imageUrl: article.image_url, url: article.url, polarity:article.polarity}, width:'70%'
+    });
+
+  }
 
   // Here we define the columns that will be displayed in the industry table.
   columnsToDisplay = ['industry', 'polarity', 'numberOfArticles'];

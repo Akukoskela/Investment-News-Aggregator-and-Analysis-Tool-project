@@ -5,13 +5,14 @@ import { checkPolarity } from 'src/app/app.component';
 import { MatTooltipModule } from '@angular/material/tooltip'
 import { MatButton } from '@angular/material/button';
 import { MatButtonModule } from '@angular/material/button';
+import { MatDialogContent } from '@angular/material/dialog';
 
 
 
 @Component({
   selector: 'app-article-popup-window',
   standalone: true,
-  imports: [MatButtonModule,MatTooltipModule,MatIconModule],
+  imports: [MatDialogContent,MatButtonModule,MatTooltipModule,MatIconModule],
   templateUrl: './article-popup-window.component.html',
   styleUrl: './article-popup-window.component.css'
 })
