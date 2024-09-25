@@ -138,7 +138,7 @@
             </div>
 
             <div *ngIf="!bayerLoading" class="articles-container">
-                <div *ngFor="let article of bayerArticles" class="article-container">
+                <div *ngFor="let article of showArticles" class="article-container">
                     <!-- Same structure for articles as before -->
                     <div class="article-container-content">
 
@@ -188,7 +188,7 @@
             </div>
 
             <div *ngIf="!microsoftLoading" class="articles-container">
-                <div *ngFor="let article of microsoftArticles" class="article-container">
+                <div *ngFor="let article of showArticles" class="article-container">
                     <!-- Same structure for articles as before -->
                     <div class="article-container-content">
 

@@ -39,6 +39,8 @@ export class NewsdashboardComponent {
   microsoftArticles: any;
   petroleum_industryArticles: any;
   showArticles: any;
+  currentArticles: any;
+  filteredArticles: any;
   testData: any;
   imageNotAvailableImage = 'assets/no-image-available-image.jpg';
   choosedIndustry: any;
@@ -53,7 +55,7 @@ export class NewsdashboardComponent {
   filterSelector = new FormControl();
   positiveSelected: boolean = false;
   negativeSelected: boolean = false;
-  constructor(public dialog: MatDialog,private supabaseService: SupabaseService, private route: ActivatedRoute, private router: Router) { }
+  constructor(public dialog: MatDialog, private supabaseService: SupabaseService, private route: ActivatedRoute, private router: Router) { }
 
   async ngOnInit() {
     await this.loadingArticles();
@@ -140,7 +142,8 @@ export class NewsdashboardComponent {
     this.choosedIndustry = 'Crowdstrike';
     this.crowdstrikeArticles = await this.supabaseService.getDataWithFilters('crowdstrike', 'published_at,polarity,url,image_url,source_name,description,content,title');
     this.crowdstrikeLoading = false;
-    this.showArticles = this.crowdstrikeArticles.slice(0, 20);
+    this.currentArticles = this.crowdstrikeArticles;
+    this.showArticles = this.currentArticles.slice(0, 20);
     this.microsoftArticles = await this.supabaseService.getDataWithFilters('microsoft', 'published_at,polarity,url,image_url,source_name,description,content,title');
     this.microsoftLoading = false;
     this.bayerArticles = await this.supabaseService.getDataWithFilters('bayer', 'published_at,polarity,url,image_url,source_name,description,content,title');
@@ -178,11 +181,11 @@ export class NewsdashboardComponent {
 
   }
 
-  checkPolarity(polarity:number){
+  checkPolarity(polarity: number) {
     return checkPolarity(polarity)
   }
 
-  
+
 
   selectIndustry(event: any) {
     this.choosedIndustry = event.value;
@@ -192,7 +195,8 @@ export class NewsdashboardComponent {
         if (this.loading == true) { //If articles is still loading we don't want to use slice method because it gives error message to console.
         }
         else {
-          this.showArticles = this.crowdstrikeArticles.slice(0, 20)
+          this.currentArticles = this.crowdstrikeArticles;
+          this.showArticles = this.currentArticles.slice(0, 20)
         }
         break;
       case 'Bayer':
@@ -200,7 +204,8 @@ export class NewsdashboardComponent {
         if (this.loading == true) {
         }
         else {
-          this.showArticles = this.bayerArticles.slice(0, 20)
+          this.currentArticles = this.bayerArticles;
+          this.showArticles = this.currentArticles.slice(0, 20)
         }
         break;
       case 'Berkshire Hathaway':
@@ -208,7 +213,8 @@ export class NewsdashboardComponent {
         if (this.loading == true) {
         }
         else {
-          this.showArticles = this.berkshire_hathawayArticles.slice(0, 20)
+          this.currentArticles = this.berkshire_hathawayArticles;
+          this.showArticles = this.currentArticles.slice(0, 20)
         }
         break;
       case 'Healthcare industry':
@@ -216,7 +222,8 @@ export class NewsdashboardComponent {
         if (this.loading == true) {
         }
         else {
-          this.showArticles = this.healthcare_industryArticles.slice(0, 20)
+          this.currentArticles = this.healthcare_industryArticles;
+          this.showArticles = this.currentArticles.slice(0, 20)
         }
         break;
       case 'Technology industry':
@@ -224,7 +231,8 @@ export class NewsdashboardComponent {
         if (this.loading == true) {
         }
         else {
-          this.showArticles = this.technology_industryArticles.slice(0, 20)
+          this.currentArticles = this.technology_industryArticles;
+          this.showArticles = this.currentArticles.slice(0, 20)
         }
         break;
       case 'Microsoft':
@@ -232,7 +240,8 @@ export class NewsdashboardComponent {
         if (this.loading == true) {
         }
         else {
-          this.showArticles = this.microsoftArticles.slice(0, 20)
+          this.currentArticles = this.microsoftArticles;
+          this.showArticles = this.currentArticles.slice(0, 20)
         }
         break;
       case 'Petroleum industry':
@@ -240,7 +249,8 @@ export class NewsdashboardComponent {
         if (this.loading == true) {
         }
         else {
-          this.showArticles = this.petroleum_industryArticles.slice(0, 20)
+          this.currentArticles = this.petroleum_industryArticles;
+          this.showArticles = this.currentArticles.slice(0, 20)
         }
         break;
     }
@@ -249,6 +259,10 @@ export class NewsdashboardComponent {
 
   loadMoreArticles() {
     const numberOfArticles = this.showArticles.length;
+
+    this.showArticles = this.filteredArticles.slice(0, numberOfArticles + 20);
+
+    /*
 
     switch (this.choosedIndustry) {
       case 'Crowdstrike':
@@ -273,6 +287,7 @@ export class NewsdashboardComponent {
         this.showArticles = this.petroleum_industryArticles.slice(0, numberOfArticles + 20)
         break;
     }
+        */
   }
 
   positiveClicked() {
@@ -294,29 +309,48 @@ export class NewsdashboardComponent {
   }
 
   search() {
-  const filterSelectorValue = this.filterSelector.value;
-  const articles=this.showArticles
+    const filterSelectorValue = this.filterSelector.value;
+    const numberOfArticles = this.showArticles.length;
+    let articles: any;
 
-  // KESKEN SAFVUPIOSASHSEUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU KESKEN
-  if(filterSelectorValue.includes('latest')&& filterSelectorValue.includes('positive')){
-    articles.filter((a: any) => a.polarity < 0).sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
-  
-  }
-  if(filterSelectorValue.includes('latest')){
-   articles.sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime())
-  }
-  if (filterSelectorValue.includes('positive')){
-    articles.sort((a: any, b: any) => b.polarity - a.polarity) || [];
-  }
-
+    // KESKEN SAFVUPIOSASHSEUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU KESKEN
+    if (filterSelectorValue.includes('latest') && filterSelectorValue.includes('positive')) {
+      this.filteredArticles = this.currentArticles.filter((a: any) => a.polarity > 0.1).sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
+      this.showArticles = this.filteredArticles.slice(0, 20);
+      console.log(this.showArticles)
+      console.log('Showing latest positive articles')
+    }
+    else if (filterSelectorValue.includes('latest') && filterSelectorValue.includes('negative')) {
+      this.filteredArticles = this.currentArticles.filter((a: any) => a.polarity < -0.1).sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
+      this.showArticles = this.filteredArticles.slice(0, 20);
+      console.log(this.showArticles)
+      console.log('showing latest negative articles')
+    }
+    else if (filterSelectorValue.includes('latest')) {
+      this.filteredArticles = this.currentArticles.sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
+      this.showArticles = this.filteredArticles.slice(0, 20);
+      console.log(this.showArticles)
+    }
+    else if (filterSelectorValue.includes('positive')) {
+      this.filteredArticles = this.currentArticles.filter((a: any) => a.polarity > 0.1).sort((a: any, b: any) => b.polarity - a.polarity);
+      this.showArticles = this.filteredArticles.slice(0, 20);
+      console.log(this.showArticles)
+      console.log('showing positive articles')
+    }
+    else if (filterSelectorValue.includes('negative')) {
+      this.filteredArticles = this.currentArticles.filter((a: any) => a.polarity < -0.1).sort((a: any, b: any) => b.polarity - a.polarity);
+      this.showArticles = this.filteredArticles.slice(0, 20);
+      console.log(this.showArticles)
+      console.log('showing negative articles')
+    }
     console.log(this.filterSelector.value)
   }
 
-  openArticlePopupwindow(article: any){
+  openArticlePopupwindow(article: any) {
     console.log(article)
 
     const dialogRef = this.dialog.open(ArticlePopupWindowComponent, {
-      data: {title: article.title, description: article.description, content: article.content, sourceName: article.source_name, publishedAt: article.published_at, imageUrl: article.image_url, url: article.url, polarity:article.polarity}, width:'70%'
+      data: { title: article.title, description: article.description, content: article.content, sourceName: article.source_name, publishedAt: article.published_at, imageUrl: article.image_url, url: article.url, polarity: article.polarity }, width: '70%'
     });
 
   }
