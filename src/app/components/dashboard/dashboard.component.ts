@@ -41,6 +41,7 @@ export class DashboardComponent {
       this.industryName = params['industryName'];
       this.tableName = params['tableName']
     });
+    window.scrollTo({top:0,behavior:'smooth'}) // Make sure the user starts from top of the component
     this.setLogoAndInfoText();
     await this.getNews();
     await this.getStockData();

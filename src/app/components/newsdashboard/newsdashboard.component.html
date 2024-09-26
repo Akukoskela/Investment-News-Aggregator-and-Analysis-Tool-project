@@ -25,7 +25,8 @@
 
 <div class="whole-page">
 
-    <div class="instruction-text" style="color: red;">This component is under development and does not work properly</div>
+    <div class="instruction-text" style="color: red;">This component is under development and does not work properly
+    </div>
 
     <div class="industry-selector">
         <mat-button-toggle-group id="industry-selector" name="Industry-selector" value="Crowdstrike"
@@ -41,17 +42,19 @@
     </div>
 
     <div class="filter-selector">
-        <mat-button-toggle-group [formControl]="filterSelector" name="filter-selector" aria-label="filter-selector" multiple="true"
-            hideMultipleSelectionIndicator="true" >
+        <mat-button-toggle-group [formControl]="filterSelector" name="filter-selector" aria-label="filter-selector"
+            multiple="true" hideMultipleSelectionIndicator="true">
             <mat-button-toggle value="latest">Latest</mat-button-toggle>
-            <mat-button-toggle (click)="positiveClicked()" [disabled]="negativeSelected" value="positive">Positive</mat-button-toggle>
-            <mat-button-toggle (click)="negativeClicked()" [disabled]="positiveSelected" value="negative">Negative</mat-button-toggle>
+            <mat-button-toggle (click)="positiveClicked()" [disabled]="negativeSelected"
+                value="positive">Positive</mat-button-toggle>
+            <mat-button-toggle (click)="negativeClicked()" [disabled]="positiveSelected"
+                value="negative">Negative</mat-button-toggle>
 
         </mat-button-toggle-group>
 
         <mat-form-field>
             <mat-label>Sources</mat-label>
-            <mat-select [formControl]="sources" multiple>
+            <mat-select [formControl]="sourceSelector" multiple>
                 @for (source of sourceList; track source) {
                 <mat-option [value]="source">{{source}}</mat-option>
                 }
@@ -60,8 +63,8 @@
         &nbsp;
         &nbsp;
         &nbsp;
-        <div class="input-and-search-button">
-            <input matInput style="height: 2vh; border-radius: 1vh; font-size: large; padding: 1vh;"
+        <div class="input-and-search-button-and-clear-button">
+            <input matInput [formControl]="searchWord" style="height: 2vh; border-radius: 1vh; font-size: large; padding: 1vh;"
                 placeholder="Search word">
             &nbsp;
             &nbsp;
@@ -70,6 +73,14 @@
                 <div style="color: white;">Search</div>
                 <span class="material-icons" style="color:white;">
                     search
+                </span>
+            </button>
+            &nbsp;
+            &nbsp;
+
+            <button mat-button class="clear-filters-button" (click)="clearFilters()">
+                <div style="color: white;">Clear filters</div> <span class="material-icons" style="color:white;">
+                    close
                 </span>
             </button>
         </div>
@@ -83,7 +94,7 @@
 
             <div *ngIf="crowdstrikeLoading" class="spinner" id="spinner"> <mat-spinner></mat-spinner>
                 <p>Loading articles...</p>
-        </div>
+            </div>
 
             <div *ngIf="!crowdstrikeLoading" class="articles-container">
                 <div *ngFor="let article of showArticles" class="article-container">

@@ -18,6 +18,8 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
 import { ArticlePopupWindowComponent } from './article-popup-window/article-popup-window.component';
 import { checkPolarity } from 'src/app/app.component';
+import { filter } from 'rxjs';
+
 
 
 
@@ -53,11 +55,14 @@ export class NewsdashboardComponent {
   petroleumLoading: boolean = true;
   loading: boolean = true;
   filterSelector = new FormControl();
+  searchWord = new FormControl();
   positiveSelected: boolean = false;
   negativeSelected: boolean = false;
   constructor(public dialog: MatDialog, private supabaseService: SupabaseService, private route: ActivatedRoute, private router: Router) { }
 
   async ngOnInit() {
+    window.scrollTo({ top: 0, behavior: 'smooth' }) // Make sure the user starts from top of the component
+
     await this.loadingArticles();
 
 
@@ -133,7 +138,7 @@ export class NewsdashboardComponent {
     ]*/
   }
 
-  sources = new FormControl('');
+  sourceSelector = new FormControl('');
   sourceList: string[] = [
 
     '9to5google.com', '9to5Mac', 'ABC News', 'Abduzeedo.com', 'Acecomments.mu.nu', 'Activistpost.com', 'Adafruit.com', 'AdExchanger', 'Adweek', 'Aero-news.net', 'Ahouseinthehills.com', 'Al Jazeera English', 'AllAfrica - Top Africa News', 'Amarillo.com', 'Amazon.com', 'Ambcrypto.com', 'Americanthinker.com', 'AnandTech', 'Android Authority', 'Android Central', 'Android Headlines', 'AndroidGuys', 'Antaranews.com', 'AOL', 'AppleInsider', 'ArchDaily', 'Archinect', 'Ars Technica', 'Askubuntu.com', 'Associated Press', 'Atxjetsetter.com', 'Audioholics', 'Autocar', 'Autoblog', 'autosport.com', 'Bangkok Post', 'BBC News', 'Bengreenfieldlife.com', 'Benzinga', 'Berthub.eu', 'BetaNews', 'Bitcoinist', 'Bitpipe.com', 'Bitrebels.com', 'Bitsaboutmoney.com', 'Biztoc.com', 'Blog.google', 'Blogger.com', 'Bloguismo.com', 'Bloomberg', 'Boardingarea.com', 'Boredpanda.com', 'Boston Herald', 'Breitbart News', 'Briansolis.com', 'Business Insider', 'Business Standard', 'Business Today', 'BusinessLine', 'C-sharpcorner.com', 'Carriermanagement.com', 'CBS News', 'CBC News', 'Chriskresser.com', 'Cisco.com', 'Cisa.gov', 'Civil Eats', 'CleanTechnica', 'Clinical Trials Arena', 'cloud.feedly.com', 'Cloudflare.com', 'Cloudtweaks.com', 'CNA', 'CNBC', 'CNX Software', 'CNN', 'CoinDesk', 'ComputerWeekly.com', 'Computerworld', 'Commonsensewithmoney.com', 'Common Dreams', 'Cool Hunting', 'Core77.com', 'CounterPunch', 'Cracked.com', 'Creative Bloq', 'Crikey', 'Crooksandliars.com', 'Crowdstrike.com', 'CryptoGlobe', 'CryptoSlate', 'Cult of Mac', 'Cwa.me.uk', 'Daemonology.net', 'Daily Beast', 'Daily Post Nigeria', 'Daily Signal', 'Databricks.com', 'Dataversity.net', 'Dazed', 'Deadline', 'Dealcatcher.com', 'Des Moines Register', 'Design-milk.com', 'Designtaxi.com', 'DevOps.com', 'Dezeen', 'Dianeravitch.net', 'Digiday', 'Digital Journal', 'Digital Trends', 'DigitalCommerce360', 'Digitimes', 'DIYphotography', 'Dnyuz.com', 'Dpreview.com', 'DW (English)', 'Dzone.com', 'Eater', 'Economictimes.com', 'Eia.gov', 'Elearningindustry.com', 'Electrek', 'Electronics-lab.com', 'Elliott.org', 'Elon Musk (X)', 'Energycentral.com', 'Energyskeptic.com', 'Engadget', 'ESPN', 'ETF Daily News', 'EURACTIV', 'Eurogamer.net', 'ExchangeWire', 'Exxonknews.org', 'FactCheck.org', 'Fairbanks Daily News-Miner', 'Fark.com', 'FDA.gov', 'Finextra', 'Finovate.com', 'Foreign Policy', 'Forrester.com', 'Fortune', 'Fox News', 'Freerepublic.com', 'Fstoppers', 'Gadget Flow', 'Gadgets360.com', 'GameSpot', 'GamesIndustry.biz', 'GamesRadar+', 'gcaptain.com', 'Geeky Gadgets', 'Geeksaresexy.net', 'Gematsu', 'Ghacks Technology News', 'Gigaom.com', 'Github.blog', 'Github.com', 'Giveawayoftheday.com', 'Gizchina.com', 'Gizmodo.com', 'GlobeNewswire', 'Globalsecurity.org', 'Globalresearch.ca', 'Goodereader', 'Grist', 'GSMArena.com', 'HackRead', 'Hackaday', 'Hacker News', 'Harvard Business Review', 'Harvard School of Engineering and Applied Sciences', 'Hbs.edu', 'Healthcare IT News', 'Healthcaredive.com', 'Healthsystemcio.com', 'heise online', 'Help Net Security', 'Highsnobiety', 'Histalk2.com', 'Hollywood Reporter', 'Hospitality Net', 'Hospitalmanagement.net', 'HuffPost', 'Hubspot.com', 'Hurriyet Daily News', 'HYPEBEAST', 'Idownloadblog.com', 'IGN', 'iLounge', 'iMore', 'Independent.ie', 'IndieWire', 'InfoQ.com', 'Infosecurity Magazine', 'Inman', 'Inside the Magic', 'Insurance Journal', 'Intego.com', 'Internet', 'Investingcube.com', 'Investing.com', 'InvestorsObserver', 'Investopedia', 'iPhone in Canada', 'iTnews', 'Itsfoss.com', 'Izismile.com', 'Jalopnik', 'Japan Today', 'Javacodegeeks.com', 'Jeffbullas.com', 'Juancole.com', 'just-food.com', 'just-style.com', 'Kdnuggets.com', 'Kevinmd.com', 'Kffhealthnews.org', 'Khabarhub.com', 'KicksOnFire.com', 'Kotaku', 'Krebs on Security', 'Lawyersgunsmoneyblog.com', 'Leanblog.org', 'Learncodethehardway.com', 'Legalinsurrection.com', 'Lemis.com', 'Lewrockwell.com', 'Libsyn.com', 'Lifedev.net', 'Lifeinsuranceinternational.com', 'Liliputing', 'Live Science', 'Liveandletsfly.com', 'Livedoor.com', 'Livemint', 'Los Angeles Times', 'Luxuo.com', 'Lwn.net', 'Macdailynews.com', 'MacRumors', 'Macsparkyfederated.social', 'Mactrast.com', 'Macworld', 'Maketecheasier.com', 'Malwarebytes.com', 'MarketingProfs.com', 'MarketScreener.com', 'MarketWatch', 'Martech.zone', 'Mckinsey.com', 'Mediagazer.com', 'Mediaite', 'MediaNama.com', 'Medical Device Network', 'MedCity News', 'Medium', 'Mental Floss', 'Metafilter.com', 'Microsoft.com', 'Milwaukee Journal Sentinel', 'Mining Technology', 'Minneapolis Star Tribune', 'MIT Technology Review', 'Mit.edu', 'MobiHealthNews', 'Mobile Syrup', 'Mongodb.com', 'Moneycontrol', 'Motorfinanceonline.com', 'Motley Fool Australia', 'MSNBC', 'Mssqltips.com', 'MSPoweruser', 'My Nintendo News', 'Mymoneyblog.com', 'Nakedcapitalism.com', 'NASA', 'Nation.africa', 'National Observer', 'Naturalnews.com', 'NBC News', 'NDTV News', 'Neowin', 'NerdWallet', 'New Atlas', 'New Scientist', 'New York Magazine', 'New York Post', 'New Zealand Herald', 'newsBTC', 'Newser', 'Nextbigwhat.com', 'Nextgov', 'Nextpit.com', 'Nlppeople.com', 'Noemamag.com', 'Nofilmschool.com', 'Noupe.com', 'NPR', 'Nvidia.com', 'Observer', 'Offshore Technology', 'OilPrice.com', 'Om.co', 'Omgubuntu.co.uk', 'Order-order.com', 'Osnews.com', 'Ozbargain.com.au', 'Packetpushers.net', 'Packetstormsecurity.com', 'Paddle Your Own Kanoo', 'Palm Beach Post', 'Paloaltonetworks.com', 'Paul Tan\'s Automotive News', 'PBS', 'PC Gamer', 'PC Perspective', 'PCMag.com', 'PCWorld', 'PetaPixel', 'Pharmaceutical Technology', 'Phoronix', 'Phys.Org', 'PlayStation LifeStyle', 'Plos.org', 'Politicopro.com', 'Polygon', 'Popular Science', 'Portable Apps', 'Poynter', 'Power Technology', 'PR Daily', 'PR Newswire UK', 'Project Syndicate', 'ProPublica', 'Prtimes.jp', 'Psychology Today', 'pymnts.com', 'Pypi.org', 'Quartz India', 'Ragan.com', 'R-bloggers.com', 'Radaronline.com', 'ReadWrite', 'Reason', 'redmondpie.com', 'Resilience', 'Researchbuzz.me', 'Restofworld.org', 'Richmond.com', 'Rigzone', 'Risky.biz', 'Ritholtz.com', 'Rlsbb.cc', 'Roanoke Times', 'Robb Report', 'Rock Paper Shotgun', 'Rolling Stone', 'Royal Society of Chemistry', 'RT', 'Saastr.com', 'Samsung.com', 'SamMobile', 'SC Magazine', 'Schneier.com', 'Sciencebasedmedicine.org', 'Scientific American', 'Seclists.org', 'Securityaffairs.com', 'Securityintelligence.com', 'Semrush.com', 'Seths.blog', 'Shtfplan.com', 'Singularity Hub', 'Skift', 'Sky.com', 'Slashdot.org', 'Slickdeals.net', 'Small Business Trends', 'Smartdatacollective.com', 'Sneaker News', 'Snopes.com', 'Socialmediaexaminer.com', 'Softantenna.com', 'Soundonsound.com', 'Sourcing Journal', 'SoyaCincau.com', 'Space.com', 'Springwise.com', 'Sproutsocial.com', 'Sqlservercentral.com', 'Stanford.edu', 'Steveblank.com', 'Storagereview.com', 'Stratechery.com', 'Substack.com', 'Techemails.com', 'TechCrunch', 'Techdirt', 'TechNewsWorld', 'TechNode', 'Techpowerup.com', 'TechRadar', 'Techreport.com', 'TechSpot', 'Techviral.net', 'Techrights.org', 'Techtarget.com', 'The American Conservative', 'The Atlantic', 'The BMJ', 'The Boston Globe', 'The Conversation Africa', 'The Daily Caller', 'The Daily Dot', 'The Daily Hodl', 'The Denver Post', 'The Diplomat', 'The Drum', 'The Economist', 'The Fly', 'The Guardian', 'The Hacker News', 'The Hill', 'The Indian Express', 'The Intercept', 'The Irish Times', 'The Japan Times', 'The Jerusalem Post', 'The Mac Observer', 'The National Interest', 'The New Republic', 'The New Yorker', 'The Next Web', 'The Online Citizen', 'The Points Guy', 'The Punch', 'The Quietus', 'The Register', 'The Star Online', 'The Sun', 'The Times of India', 'The Verge', 'The Washington Post', 'The Week Magazine', 'The-sun.com', 'Thebulkheadseat.com', 'Thechronicle.com.gh', 'Theepochtimes.com', 'Thegatewaypundit.com', 'Thehillstimes.in', 'Theinventory.com', 'Thenation.com', 'TheWrap', 'Thewindowsclub.com', 'Thurrott.com', 'Time', 'Tistory.com', 'TomHardware UK', 'Toprankmarketing.com', 'Torrentfreak.com', 'Trendingger.com', 'Trendhunter.com', 'Truthout', 'TweakTown', 'Typeforyou.org', 'Uxdesign.cc', 'UPI.com', 'Upenn.edu', 'USA Today', 'ValueWalk', 'Variety', 'Verdict', 'VentureBeat', 'Viewfromthewing.com', 'Vmblog.com', 'VOA News', 'Vox', 'Wattsupwiththat.com', 'Wccftech', 'Windows Central', 'Windows.com', 'Wired', 'Wnd.com', 'World Construction Network', 'Wowebook.org', 'WWD', 'www.yahoo.com', 'Yanko Design', 'Yoast.com', 'ZDNet']
@@ -259,35 +264,7 @@ export class NewsdashboardComponent {
 
   loadMoreArticles() {
     const numberOfArticles = this.showArticles.length;
-
     this.showArticles = this.filteredArticles.slice(0, numberOfArticles + 20);
-
-    /*
-
-    switch (this.choosedIndustry) {
-      case 'Crowdstrike':
-        this.showArticles = this.crowdstrikeArticles.slice(0, numberOfArticles + 20)
-        break;
-      case 'Bayer':
-        this.showArticles = this.bayerArticles.slice(0, numberOfArticles + 20)
-        break;
-      case 'Berkshire Hathaway':
-        this.showArticles = this.berkshire_hathawayArticles.slice(0, numberOfArticles + 20)
-        break;
-      case 'Healthcare industry':
-        this.showArticles = this.healthcare_industryArticles.slice(0, numberOfArticles + 20)
-        break;
-      case 'Technology industry':
-        this.showArticles = this.technology_industryArticles.slice(0, numberOfArticles + 20)
-        break;
-      case 'Microsoft':
-        this.showArticles = this.microsoftArticles.slice(0, numberOfArticles + 20)
-        break;
-      case 'Petroleum industry':
-        this.showArticles = this.petroleum_industryArticles.slice(0, numberOfArticles + 20)
-        break;
-    }
-        */
   }
 
   positiveClicked() {
@@ -308,47 +285,63 @@ export class NewsdashboardComponent {
     }
   }
 
+  clearFilters() {
+    this.searchWord.setValue('');
+    this.filterSelector.setValue('');
+    this.sourceSelector.setValue('');
+    this.filteredArticles = this.currentArticles;
+    this.showArticles = this.filteredArticles.slice(0, 20);
+  }
+
   search() {
     const filterSelectorValue = this.filterSelector.value;
-    const numberOfArticles = this.showArticles.length;
-    let articles: any;
+    const sourcesSelected = this.sourceSelector.value;
 
     // KESKEN SAFVUPIOSASHSEUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUU KESKEN
-    if (filterSelectorValue.includes('latest') && filterSelectorValue.includes('positive')) {
+    if (filterSelectorValue ==null) {
+      this.filteredArticles = this.currentArticles;
+      this.showArticles = this.filteredArticles.slice(0, 20);
+    }
+    else if (filterSelectorValue.includes('latest') && filterSelectorValue.includes('positive')) {
       this.filteredArticles = this.currentArticles.filter((a: any) => a.polarity > 0.1).sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
       this.showArticles = this.filteredArticles.slice(0, 20);
-      console.log(this.showArticles)
       console.log('Showing latest positive articles')
     }
     else if (filterSelectorValue.includes('latest') && filterSelectorValue.includes('negative')) {
       this.filteredArticles = this.currentArticles.filter((a: any) => a.polarity < -0.1).sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
       this.showArticles = this.filteredArticles.slice(0, 20);
-      console.log(this.showArticles)
       console.log('showing latest negative articles')
     }
     else if (filterSelectorValue.includes('latest')) {
       this.filteredArticles = this.currentArticles.sort((a: any, b: any) => new Date(b.published_at).getTime() - new Date(a.published_at).getTime());
       this.showArticles = this.filteredArticles.slice(0, 20);
-      console.log(this.showArticles)
     }
     else if (filterSelectorValue.includes('positive')) {
       this.filteredArticles = this.currentArticles.filter((a: any) => a.polarity > 0.1).sort((a: any, b: any) => b.polarity - a.polarity);
       this.showArticles = this.filteredArticles.slice(0, 20);
-      console.log(this.showArticles)
       console.log('showing positive articles')
     }
     else if (filterSelectorValue.includes('negative')) {
       this.filteredArticles = this.currentArticles.filter((a: any) => a.polarity < -0.1).sort((a: any, b: any) => b.polarity - a.polarity);
       this.showArticles = this.filteredArticles.slice(0, 20);
-      console.log(this.showArticles)
       console.log('showing negative articles')
     }
-    console.log(this.filterSelector.value)
+
+    if (sourcesSelected != null && sourcesSelected.length > 0) {
+      this.filteredArticles = this.filteredArticles.filter((a: any) => sourcesSelected.includes(a.source_name));
+      this.showArticles = this.filteredArticles.slice(0, 20);
+    }
+
+    if(this.searchWord.value == null){
+    console.log('searchword is null')
+    }
+    else if(this.searchWord.value.length > 0){ // Check of user has written something to search bar
+      this.filteredArticles = this.currentArticles.filter((a: any) => a.title.toLowerCase().includes(this.searchWord.value.toLowerCase()));
+      this.showArticles = this.filteredArticles.slice(0, 20)
+    }
   }
 
   openArticlePopupwindow(article: any) {
-    console.log(article)
-
     const dialogRef = this.dialog.open(ArticlePopupWindowComponent, {
       data: { title: article.title, description: article.description, content: article.content, sourceName: article.source_name, publishedAt: article.published_at, imageUrl: article.image_url, url: article.url, polarity: article.polarity }, width: '70%'
     });
