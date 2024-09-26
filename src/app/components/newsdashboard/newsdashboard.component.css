@@ -298,6 +298,10 @@ svg {
         width: 35%;
         height: 45vh;
     }
+
+    .filter-selector{
+        flex-direction: column;
+    }
     
     }
     @media (max-width:665px) {
@@ -325,5 +329,9 @@ svg {
             margin: 2vh;
             width: 80%;
             height: 65vh;
+        }
+
+        .input-and-search-button-and-clear-button{
+flex-direction: column;
         }
         }
