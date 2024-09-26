@@ -60,7 +60,7 @@ mat-dialog-content p{
     justify-content: center;
     align-items: center;
     font-size: x-large;
-};
+}
 
 .link-to-site{
     display: flex;
@@ -90,5 +90,5 @@ mat-dialog-content p{
 .source{
     display: flex;
      font-size: large
-};
+}
 
