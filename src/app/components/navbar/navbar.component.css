@@ -1,0 +1,50 @@
+/* TOOLBAR */
+mat-toolbar {
+    height: 11vh;
+    display: flex;
+    flex-direction: row;
+    background-color: #1B1E27;
+    color: white;
+    border-bottom: solid;
+    border-color: #A8385D;
+    border-bottom-width: 0.3vh;
+    justify-content: space-between;
+}
+
+.menu {
+    transform: scale(2);
+    margin-right: 1vh;
+}
+
+.menu button {
+    background-color: #1B1E27;
+    color: white;
+    border: none;
+}
+
+.menu button:hover {
+    color: #A8385D;
+}
+
+.component-header-2 {
+    display: flex;
+    color: red;
+    font-size: 1.4vw;
+}
+
+.component-text {
+    font-weight: 450;
+    font-size: 1.7vw;
+}
+
+.component-header {
+    display: flex;
+    margin-top: 1vh;
+    font-weight: 450;
+    font-size: 2vw;
+    width: 70%;
+    white-space: wrap;
+    line-height: 2vh;
+}
+
+/* TOOLBAR */

@@ -1,0 +1,21 @@
+<mat-toolbar>
+    <span style="margin-top:1vh">
+        <h1 class="component-text">{{componentText}}</h1>
+    </span>
+    <div style="width: 40%; height: 100%; display: flex; justify-content: center;align-items: center;">
+        <h1 class="component-header">{{componentHeader}}</h1>
+    </div>
+    <div class="component-header-2">{{componentHeader2}}</div>
+
+    <div class="menu">
+        <button mat-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item >Home</button>
+            <button mat-menu-item >Chat Bot</button>
+            <button mat-menu-item >News Dashboard</button>
+        </mat-menu>
+
+    </div>
+
+
+</mat-toolbar>

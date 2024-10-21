@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { NavbarComponent } from './components/navbar/navbar.component';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +17,7 @@ export class AppComponent {
       sentiment = "sentiment_dissatisfied";
       color = "red";
     } else if (polarity < 0.1) {
-      sentiment = "sentiment_neutral";
+      sentiment = "sentiment_neutzzral";
       color = "yellow";
     } else if (polarity > 0.1) {
       sentiment = "sentiment_very_satisfied";

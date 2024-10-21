@@ -12,7 +12,6 @@ import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { InfoDialog } from './info-dialog/info-dialog';
 import { StockDataService } from 'src/app/services/stock-data.service';
 import { MatMenuModule } from '@angular/material/menu';
-import { ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ArticlePopupWindowComponent } from '../newsdashboard/article-popup-window/article-popup-window.component';

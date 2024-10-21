@@ -1,0 +1,34 @@
+.bottom-toolbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    height: 11vh;
+    background-color: #1B1E27;
+    color: white;
+    border-bottom: solid;
+    border-color: #A8385D;
+    border-bottom-width: 0.3vh;
+}
+
+.linkedin-image {
+    width: 10%;
+}
+
+.linked-in-image-container{
+display: flex;
+margin-left: 1vh;
+}
+
+.linkedin-image:hover {
+    transition: all .2s ease-in-out;
+    transform: scale(0.9);
+}
+
+svg:hover {
+    transition: all .2s ease-in-out;
+    transform: scale(0.6);
+}
+
+svg {
+    transform: scale(0.7);
+}
