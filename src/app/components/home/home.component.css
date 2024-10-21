@@ -101,9 +101,8 @@ p {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
 
-.table-container th{
-    border-bottom: solid;
-    border-color: #A8385D;
+table{
+    width: 100%;
 }
 
 .table-spinner {
@@ -348,15 +347,7 @@ td {
 }
 
 @media (max-width:750px) {
-    .project-name {
-        display: flex;
-        margin-top: 1vh;
-        font-weight: 450;
-        font-size: 3vw;
-        width: 70%;
-        white-space: wrap;
-    line-height: 2vh;
-    }
+
     
 
     .chart {
@@ -365,17 +356,27 @@ td {
         height: 75%;
     }
 
-    .development-text {
-        display: flex;
-        color: red;
-        font-size: 3vw;
-    }
+   .table-container{
+    justify-content: start;
+    align-items: start;
+    padding: 2vh;
+    width: 95%;
+   }
 
     .cell {
         font-size: 0.8rem;
-        padding: 3.5vh;
+        padding: 3vh;
         font-weight: 450;
         color: white;
+    }
+
+    table th {
+        color: white;
+        font-size: 0.9rem;
+    }
+    
+    td {
+        border-bottom: solid;
     }
 
     .button:hover {
@@ -389,10 +390,6 @@ td {
         border-radius: 1vh;
         padding: 1.5vh;
         width: fit-content;
-    }
-
-    th {
-        font-size: medium;
     }
 
     .bottom-toolbar p {

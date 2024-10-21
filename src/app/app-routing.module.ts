@@ -25,6 +25,12 @@ const routes: Routes = [
       )
   },
   {
+    path: 'chatbot',
+    loadComponent: () =>
+      import('./components/chat-bot/chat-bot.component').then(
+        (com) => com.ChatBotComponent)
+  },
+  {
     path: '',
     redirectTo: 'home',
     pathMatch: 'full' // Match the full path for redirecting

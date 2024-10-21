@@ -30,22 +30,33 @@ export class NavbarComponent {
     updateComponentTextBasedOnRoute(url: string) {
       // Check the current route URL and update component state
       if (url.includes('home')) {
-        this.componentText = 'Welcome to Home';
-        this.componentHeader = 'Home Page';
-        this.componentHeader2 = 'This is the homepage.';
-      } else if (url.includes('chat-bot')) {
+        this.componentText = 'Home';
+        this.componentHeader = 'Finance news collector';
+        this.componentHeader2 = '';
+      } else if (url.includes('chatbot')) {
         this.componentText = 'Chat Bot';
-        this.componentHeader = 'Chat Bot Assistant';
-        this.componentHeader2 = 'Start chatting with our AI assistant.';
+        this.componentHeader = 'Start chatting with our AI.';
+        this.componentHeader2 = '';
       } else if (url.includes('news-dashboard')) {
         this.componentText = 'News Dashboard';
         this.componentHeader = 'Latest News';
         this.componentHeader2 = 'Check the latest headlines.';
       } else {
-        this.componentText = 'Welcome';
-        this.componentHeader = 'Main Page';
-        this.componentHeader2 = 'Explore our application.';
+        this.componentText = 'News Dashboard';
+        this.componentHeader = 'Explore news!';
+        this.componentHeader2 = '';
       }
+    }
+
+    navigateToNewsDashboard() {
+      this.router.navigate(['newsdashboard']);
+    }
+
+    navigateToChatbot() {
+      this.router.navigate(['chatbot']);
+    }
+    navigateToHome() {
+      this.router.navigate(['home']);
     }
  
 
