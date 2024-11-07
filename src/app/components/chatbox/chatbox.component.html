@@ -1,0 +1,17 @@
+<div class="chatbox">
+  <div class="messages">
+    <p *ngFor="let message of messages">
+      <strong>{{ message.user }}:</strong> {{ message.text }}
+    </p>
+  </div>
+
+  <div class="input-area">
+    <input 
+      type="text" 
+      [(ngModel)]="userInput" 
+      placeholder="How may I help you?" 
+      (keyup.enter)="sendMessage()"
+    />
+    <button (click)="sendMessage()">Send</button>
+  </div>
+</div>
