@@ -1,15 +1,118 @@
-/* home.component.css */
-.home-container {
-    text-align: center;
-    padding: 20px;
-  }
-  
-  h1 {
-    color: #333;
-    font-size: 2em;
-  }
-  
-  .chatbox {
-    margin-top: 20px;
-  }
-  
+.chatbox-popup {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 400px;          /* Leveämpi chatbox */
+  max-height: 500px;     /* Korkeampi chatbox */
+  background-color: #fff;
+  border-radius: 16px;   /* Pyöristetymmät kulmat */
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  transform: translateY(100%);
+  z-index: 9999; /* Chatbox näkyy muiden komponenttien päällä */
+}
+
+.chatbox-popup.open {
+  transform: translateY(0);
+}
+
+.chatbox-header {
+  background-color: #0078D4;
+  color: white;
+  padding: 15px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.chatbox-content {
+  padding: 15px;
+  flex: 1;
+  overflow-y: auto;
+  color: #333;
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px; /* Lisää tilaa viestien väliin */
+  max-height: calc(100% - 80px); /* Varmistaa, että viestit eivät mene ylös chatin yläosaan */
+}
+
+/* Syötekenttä ja painike */
+.chatbox-input-area {
+  display: flex;
+  border-top: 1px solid #ddd;
+  padding: 10px;
+}
+
+.chatbox-input-area input {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  outline: none;
+  font-size: 16px;
+}
+
+.chatbox-input-area button {
+  padding: 12px 25px;
+  background-color: #0078D4;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 4px;
+  font-size: 16px;
+}
+
+/* Käyttäjän viestit vasemmalle */
+.user-message {
+  align-self: flex-start; /* Vasemmalle */
+  background-color: #e8e8e8;  /* Vähemmän räikeä väri */
+  color: #333;
+  padding: 12px;
+  border-radius: 16px;    /* Pyöristetymmät kulmat */
+  margin: 8px 0;
+  max-width: 75%;         /* Käyttäjän viesti on hieman kapeampi */
+  word-wrap: break-word;
+  font-size: 16px;
+  white-space: pre-wrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lisää kevyen varjon viestille */
+}
+
+/* Tekoälyn viestit oikealle */
+.ai-message {
+  align-self: flex-end;   /* Oikealle */
+  background-color: #cce7ff; /* Haalea sininen tausta */
+  color: #333;
+  padding: 12px;
+  border-radius: 16px;    /* Pyöristetymmät kulmat */
+  margin: 8px 0;
+  max-width: 75%;         /* Tekoälyn viesti on myös kapeampi */
+  word-wrap: break-word;
+  font-size: 16px;
+  white-space: pre-wrap;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lisää kevyen varjon viestille */
+}
+
+/* Rajoitetaan viestin pituutta */
+.chatbox-content {
+  max-height: calc(100% - 100px);  /* Rajoittaa viestien näkyvyyttä */
+  overflow-y: auto; /* Mahdollistaa vierityksen, jos viestejä on enemmän */
+}
+
+/* Scrollauksen ulkonäkö */
+.chatbox-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.chatbox-content::-webkit-scrollbar-thumb {
+  background-color: #cccccc;
+  border-radius: 3px;
+}
+
+.chatbox-content::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
