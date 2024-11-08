@@ -154,6 +154,10 @@ export class HomeComponent {
     this.router.navigate(['dashboard', industryName, tableName]);
   }
 
+  navigateToNewsDashboard() {
+    this.router.navigate(['newsdashboard']);
+  }
+
   setPolarityChart() {
     // Here we calculate the average polarity of each industry per day and store it in the polarityChartData array which will be used to display the data in the chart.
     let list = []
