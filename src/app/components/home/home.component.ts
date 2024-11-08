@@ -16,7 +16,7 @@ import { ChangeDetectionStrategy } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ArticlePopupWindowComponent } from '../newsdashboard/article-popup-window/article-popup-window.component';
-import { ChatboxComponent } from '../chatbox/chatbox.component'; // Varmista, että importoit ChatboxComponentin
+import { ChatboxComponent } from '../chatbox/chatbox.component'; // Make sure that you import ChatBotComponent
 
 
 
@@ -25,7 +25,7 @@ import { ChatboxComponent } from '../chatbox/chatbox.component'; // Varmista, et
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.css'],
-  imports: [MatProgressBarModule, MatCardModule, MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, ChatboxComponent] //lisätty ChatboxComponent
+  imports: [MatProgressBarModule, MatCardModule, MatTableModule, MatButtonModule, MatToolbarModule, NgxChartsModule, MatIconModule, MatTooltipModule, MatProgressSpinnerModule, MatDialogModule, MatMenuModule, ChatboxComponent] //Added ChatboxComponent
 })
 export class HomeComponent {
   imageNotAvailableImage = 'assets/no-image-available-image.jpg';
