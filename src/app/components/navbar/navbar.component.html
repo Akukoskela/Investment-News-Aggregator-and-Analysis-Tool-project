@@ -10,12 +10,9 @@
     <div class="menu">
         <button mat-button [matMenuTriggerFor]="menu"><mat-icon>menu</mat-icon></button>
         <mat-menu #menu="matMenu">
-            <button mat-menu-item (click)="navigateToHome()" >Home</button>
+            <button mat-menu-item (click)="navigateToHome()">Home</button>
             <button mat-menu-item (click)="navigateToChatbot()">Chat Bot</button>
-            <button mat-menu-item (click)="navigateToNewsDashboard()" >News Dashboard</button>
+            <button mat-menu-item (click)="navigateToNewsDashboard()">News Dashboard</button>
         </mat-menu>
-
     </div>
-
-
 </mat-toolbar>

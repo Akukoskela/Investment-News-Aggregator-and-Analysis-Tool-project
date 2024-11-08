@@ -16,8 +16,6 @@ import { MatCardModule } from '@angular/material/card';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { ArticlePopupWindowComponent } from '../newsdashboard/article-popup-window/article-popup-window.component';
 
-
-
 @Component({
   standalone: true,
   selector: 'app-home',
@@ -154,9 +152,6 @@ export class HomeComponent {
 
   navigateToDashboard(industryName: any, tableName: any) {
     this.router.navigate(['dashboard', industryName, tableName]);
-  }
-  navigateToNewsDashboard() {
-    this.router.navigate(['newsdashboard']);
   }
 
   setPolarityChart() {
