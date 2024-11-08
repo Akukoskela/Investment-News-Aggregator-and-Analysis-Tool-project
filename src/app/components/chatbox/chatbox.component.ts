@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { CommonModule } from '@angular/common';  // Sisältää *ngFor- ja *ngIf-direktiivit
 import { FormsModule } from '@angular/forms';    // Mahdollistaa [(ngModel)]-sitoumuksen
+import { lastValueFrom } from 'rxjs';  // Importoi lastValueFrom, koska toPromise on vanhentunut
 
 @Component({
   selector: 'app-chatbox',
@@ -17,10 +18,12 @@ export class ChatboxComponent {
 
   constructor(private http: HttpClient) {}  // HttpClient-injektio API-pyyntöjä varten
 
+  // Vaihtaa chat-ikkunan tilan auki/kiinni
   toggleChatbox() {
-    this.isOpen = !this.isOpen; // Vaihtaa chat-ikkunan tilan auki/kiinni
+    this.isOpen = !this.isOpen;
   }
 
+  // Lähettää viestin ja käsittelee tekoälyn vastauksen
   sendMessage() {
     if (this.userInput.trim() === '') return;  // Tarkistaa, ettei syöte ole tyhjä
 
@@ -37,7 +40,6 @@ export class ChatboxComponent {
 
     // Tyhjennä käyttäjän syöte
     this.userInput = '';
-
     // Vierittää aina viimeisimmän viestin näkyville
     this.scrollToBottom();
   }
@@ -52,25 +54,48 @@ export class ChatboxComponent {
     }, 100);  // Asetetaan pieni viive, jotta vieritys toimii oikein
   }
 
+  // API-pyyntö OpenAI:n tekoälymallille
   async getAIResponse(userMessage: string): Promise<string> {
-    const apiUrl = 'https://api.openai.com/v1/completions';  // OpenAI API -osoite
+    const apiUrl = 'https://api.openai.com/v1/chat/completions';
     const headers = {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer YOUR_API_KEY`  // Lisää oma API-avaimesi tähän
+        // Vaihda tämä oikealla OpenAI API-avaimella
     };
 
     const body = {
-      model: 'text-davinci-003',  // OpenAI:n mallin nimi
-      prompt: userMessage,
+      model: 'gpt-3.5-turbo',
+      messages: [{ role: 'user', content: userMessage }],
       max_tokens: 100
     };
 
     try {
-      const response: any = await this.http.post(apiUrl, body, { headers }).toPromise();
-      return response.choices[0].text.trim();  // Palauttaa tekoälyn vastauksen
-    } catch (error) {
+      const response: any = await lastValueFrom(this.http.post(apiUrl, body, { headers }));
+      
+      // API-vastaus onnistui
+      if (response && response.choices && response.choices.length > 0) {
+        return response.choices[0].message.content.trim();
+      } else {
+        console.error('Virhe: Tekoäly ei palannut odotettua vastausta', response);
+        return 'Pahoittelen, mutta en voi vastata tällä hetkellä.';
+      }
+    } catch (error: any) {  // Määritellään virheen tyyppi 'any'
+      // Virhetilanteet
+      if (error.status === 429) {
+        console.error('Liian monta pyyntöä. Odotetaan ennen uusinta pyyntöä...');
+        
+        // Odotetaan ennen uudelleenlähetystä (esimerkiksi 10 sekuntia)
+        await this.delay(10000); // 10 sekuntia (10000 ms)
+        
+        // Lähetetään pyyntö uudestaan
+        return this.getAIResponse(userMessage);
+      }
+
       console.error('Virhe API-pyynnössä:', error);
-      return 'Miro on kikkeliministeri.';  // Oletusviesti, jos API-pyyntö epäonnistuu
+      return 'Pahoittelen, mutta en voi vastata tällä hetkellä.';
     }
+  }
+
+  // Aputoiminto viiveen lisäämiseksi
+  private delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
   }
 }
