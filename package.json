@@ -21,8 +21,12 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
+    "@google/generative-ai": "^0.21.0",
     "@supabase/supabase-js": "^2.39.7",
     "@swimlane/ngx-charts": "^20.5.0",
+    "body-parser": "^1.20.3",
+    "express": "^4.21.1",
+    "openai": "^4.73.0",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "^0.14.10"
@@ -48,5 +52,18 @@
     "@supabase/supabase-js": {
       "@supabase/gotrue-js": "2.61.0"
     }
-  }
+  },
+  "description": "The idea of this project is to aggregate and analyze investment news with machine learning. I want to test how machine learning can be used with investment sector and if it (or this software) can be used when doing investment decisions.",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project/issues"
+  },
+  "homepage": "https://github.com/Akukoskela/Investment-News-Aggregator-and-Analysis-Tool-project#readme"
 }

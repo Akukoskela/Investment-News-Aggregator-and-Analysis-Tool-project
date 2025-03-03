@@ -1,101 +1,138 @@
 import { Component } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { CommonModule } from '@angular/common';  // Sisältää *ngFor- ja *ngIf-direktiivit
-import { FormsModule } from '@angular/forms';    // Mahdollistaa [(ngModel)]-sitoumuksen
-import { lastValueFrom } from 'rxjs';  // Importoi lastValueFrom, koska toPromise on vanhentunut
+import { HttpClient } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { environment } from 'src/environments/environment';
+import { GoogleGenerativeAI, HarmBlockThreshold, HarmCategory } from '@google/generative-ai';
 
 @Component({
   selector: 'app-chatbox',
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './chatbox.component.html',
-  styleUrls: ['./chatbox.component.css']
+  styleUrls: ['./chatbox.component.css'],
 })
 export class ChatboxComponent {
-  userInput: string = '';  // Käyttäjän kirjoittama kysymys
-  messages: { user: string, text: string }[] = [];  // Tallentaa kaikki chat-viestit
-  isOpen: boolean = false; // Määrittää, onko chatbox auki vai kiinni
+  userInput: string = '';
+  messages: { user: string, text: string }[] = [];
+  isOpen: boolean = false;
 
-  constructor(private http: HttpClient) {}  // HttpClient-injektio API-pyyntöjä varten
+  genAI: GoogleGenerativeAI;
+  model: any;
 
-  // Vaihtaa chat-ikkunan tilan auki/kiinni
+  constructor(private http: HttpClient) {
+    this.genAI = new GoogleGenerativeAI(environment.API_KEY);
+
+    const generationConfig = {
+      safetySettings: [
+        {
+          category: HarmCategory.HARM_CATEGORY_HARASSMENT,
+          threshold: HarmBlockThreshold.BLOCK_LOW_AND_ABOVE,
+        },
+      ],
+      temperature: 0.9,
+      top_p: 1,
+      top_k: 32,
+      maxOutputTokens: 100,
+    };
+
+    this.model = this.genAI.getGenerativeModel({
+      model: 'gemini-pro', // Käytettävä malli
+      ...generationConfig,
+    });
+  }
+
   toggleChatbox() {
     this.isOpen = !this.isOpen;
   }
 
-  // Lähettää viestin ja käsittelee tekoälyn vastauksen
   sendMessage() {
-    if (this.userInput.trim() === '') return;  // Tarkistaa, ettei syöte ole tyhjä
+    if (this.userInput.trim() === '') return;
 
-    // Lisää käyttäjän viesti viestilistaan
     this.messages.push({ user: 'Käyttäjä', text: this.userInput });
 
-    // Lähetä käyttäjän kysymys API:lle ja käsittele vastaus
-    this.getAIResponse(this.userInput).then(response => {
-      this.messages.push({ user: 'Tekoäly', text: response });
+    const headers = {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${environment.API_KEY}`,
+    };
 
-      // Vierittää aina viimeisimmän viestin näkyville
-      this.scrollToBottom();
+    const body = {
+      model: 'gemini-1.5-flash-latest',
+      messages: [{ role: 'user', content: this.userInput }],
+      max_tokens: 100,
+    };
+
+    this.http.post<{ choices: { message: { content: string } }[] }>(
+      environment.API_URL,
+      body,
+      { headers }
+    ).subscribe({
+      next: (response) => {
+        if (response.choices?.length) {
+          const aiResponse = response.choices[0].message.content;
+          this.messages.push({ user: 'Tekoäly', text: aiResponse });
+        } else {
+          this.messages.push({ user: 'Tekoäly', text: 'En ymmärtänyt pyyntöäsi.' });
+        }
+        this.scrollToBottom();
+      },
+      error: (err) => {
+        console.error('API-virhe:', err);
+        this.messages.push({ user: 'Tekoäly', text: 'Tapahtui virhe vastatessa.' });
+        this.scrollToBottom();
+      },
     });
 
-    // Tyhjennä käyttäjän syöte
     this.userInput = '';
-    // Vierittää aina viimeisimmän viestin näkyville
     this.scrollToBottom();
   }
 
-  // Funktio, joka vierittää chatin alareunaan aina uusimman viestin kohdalle
+  // Asynkroninen metodi GeminiPro-mallin testaukseen
+  async TestGeminiPro() {
+    const prompt = 'What is the largest number with a name?';
+    try {
+      const result = await this.model.generateContent(prompt);
+      const response = await result.response;
+      console.log(await response.text()); // Tulosta vastaus konsoliin
+    } catch (error) {
+      console.error('Virhe modelin käytössä:', error);
+    }
+  }
+
+  // Asynkroninen metodi GeminiProChat-mallin testaukseen
+  async TestGeminiProChat() {
+    try {
+      const chat = this.model.startChat({
+        history: [
+          {
+            role: 'user',
+            parts: 'Hi there!',
+          },
+          {
+            role: 'model',
+            parts: 'Great to meet you. What would you like to know?',
+          },
+        ],
+        generationConfig: {
+          maxOutputTokens: 100,
+        },
+      });
+
+      const prompt = 'What is the largest number with a name? Brief answer.';
+      const result = await chat.sendMessage(prompt);
+      const response = await result.response;
+      console.log(await response.text()); // Tulosta vastaus konsoliin
+    } catch (error) {
+      console.error('Virhe GeminiProChat-mallissa:', error);
+    }
+  }
+
   scrollToBottom() {
     setTimeout(() => {
       const chatContent = document.querySelector('.chatbox-content') as HTMLElement;
       if (chatContent) {
         chatContent.scrollTop = chatContent.scrollHeight;
       }
-    }, 100);  // Asetetaan pieni viive, jotta vieritys toimii oikein
-  }
-
-  // API-pyyntö OpenAI:n tekoälymallille
-  async getAIResponse(userMessage: string): Promise<string> {
-    const apiUrl = 'https://api.openai.com/v1/chat/completions';
-    const headers = {
-        // Vaihda tämä oikealla OpenAI API-avaimella
-    };
-
-    const body = {
-      model: 'gpt-3.5-turbo',
-      messages: [{ role: 'user', content: userMessage }],
-      max_tokens: 100
-    };
-
-    try {
-      const response: any = await lastValueFrom(this.http.post(apiUrl, body, { headers }));
-      
-      // API-vastaus onnistui
-      if (response && response.choices && response.choices.length > 0) {
-        return response.choices[0].message.content.trim();
-      } else {
-        console.error('Virhe: Tekoäly ei palannut odotettua vastausta', response);
-        return 'Pahoittelen, mutta en voi vastata tällä hetkellä.';
-      }
-    } catch (error: any) {  // Määritellään virheen tyyppi 'any'
-      // Virhetilanteet
-      if (error.status === 429) {
-        console.error('Liian monta pyyntöä. Odotetaan ennen uusinta pyyntöä...');
-        
-        // Odotetaan ennen uudelleenlähetystä (esimerkiksi 10 sekuntia)
-        await this.delay(10000); // 10 sekuntia (10000 ms)
-        
-        // Lähetetään pyyntö uudestaan
-        return this.getAIResponse(userMessage);
-      }
-
-      console.error('Virhe API-pyynnössä:', error);
-      return 'Pahoittelen, mutta en voi vastata tällä hetkellä.';
-    }
-  }
-
-  // Aputoiminto viiveen lisäämiseksi
-  private delay(ms: number): Promise<void> {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    }, 100);
   }
 }

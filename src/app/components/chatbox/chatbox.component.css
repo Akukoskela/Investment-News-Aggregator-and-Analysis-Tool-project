@@ -2,25 +2,35 @@
   position: fixed;
   bottom: 80px;
   right: 20px;
-  width: 400px;          /* Leveämpi chatbox */
-  max-height: 500px;     /* Korkeampi chatbox */
-  background-color: #fff;
-  border-radius: 16px;   /* Pyöristetymmät kulmat */
+  width: 400px;
+  max-height: 500px;
+  background-color: #1a1a1a;
+  /* Tumma musta */
+  border-radius: 16px;
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  transition: transform 0.3s ease;
-  transform: translateY(100%);
-  z-index: 9999; /* Chatbox näkyy muiden komponenttien päällä */
+  transition: transform 0.5s ease-in-out, width 0.5s ease-in-out, height 0.5s ease-in-out, border-radius 0.5s ease-in-out;
+  transform: scale(0.1);
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  z-index: 10000;
+  opacity: 0;
 }
 
 .chatbox-popup.open {
-  transform: translateY(0);
+  transform: scale(1);
+  width: 400px;
+  height: 500px;
+  border-radius: 16px;
+  opacity: 1;
 }
 
 .chatbox-header {
-  background-color: #0078D4;
+  background-color: #800020;
+  /* Viininpunainen */
   color: white;
   padding: 15px;
   cursor: pointer;
@@ -29,23 +39,54 @@
   font-size: 16px;
 }
 
+.chatbox-icon {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 70px;
+  height: 70px;
+  background-color: #800020;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  z-index: 10005;
+  /* Varmistaa, että ikoni näkyy varmasti */
+}
+
+.chatbox-icon:hover {
+  background-color: #a52a2a;
+  transform: scale(1.2);
+}
+
+.chatbox-icon::before {
+  content: '\1F5E3';
+  /* Chat-kuvake (puhekupla) Unicode-merkkinä */
+  font-size: 36px;
+  color: white;
+}
+
 .chatbox-content {
   padding: 15px;
   flex: 1;
   overflow-y: auto;
-  color: #333;
+  color: white;
   font-size: 16px;
   display: flex;
   flex-direction: column;
-  gap: 10px; /* Lisää tilaa viestien väliin */
-  max-height: calc(100% - 80px); /* Varmistaa, että viestit eivät mene ylös chatin yläosaan */
+  gap: 10px;
+  max-height: calc(100% - 80px);
 }
 
-/* Syötekenttä ja painike */
 .chatbox-input-area {
   display: flex;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #444;
   padding: 10px;
+  background-color: #262626;
+  /* Tumma sävy */
 }
 
 .chatbox-input-area input {
@@ -54,11 +95,14 @@
   border: none;
   outline: none;
   font-size: 16px;
+  background-color: #333;
+  color: white;
+  border-radius: 4px;
 }
 
 .chatbox-input-area button {
   padding: 12px 25px;
-  background-color: #0078D4;
+  background-color: #800020;
   color: white;
   border: none;
   cursor: pointer;
@@ -67,52 +111,43 @@
   font-size: 16px;
 }
 
-/* Käyttäjän viestit vasemmalle */
 .user-message {
-  align-self: flex-start; /* Vasemmalle */
-  background-color: #e8e8e8;  /* Vähemmän räikeä väri */
-  color: #333;
+  align-self: flex-start;
+  background-color: #4d4d4d;
+  color: white;
   padding: 12px;
-  border-radius: 16px;    /* Pyöristetymmät kulmat */
+  border-radius: 16px;
   margin: 8px 0;
-  max-width: 75%;         /* Käyttäjän viesti on hieman kapeampi */
+  max-width: 75%;
   word-wrap: break-word;
   font-size: 16px;
   white-space: pre-wrap;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lisää kevyen varjon viestille */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Tekoälyn viestit oikealle */
 .ai-message {
-  align-self: flex-end;   /* Oikealle */
-  background-color: #cce7ff; /* Haalea sininen tausta */
-  color: #333;
+  align-self: flex-end;
+  background-color: #800020;
+  color: white;
   padding: 12px;
-  border-radius: 16px;    /* Pyöristetymmät kulmat */
+  border-radius: 16px;
   margin: 8px 0;
-  max-width: 75%;         /* Tekoälyn viesti on myös kapeampi */
+  max-width: 75%;
   word-wrap: break-word;
   font-size: 16px;
   white-space: pre-wrap;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Lisää kevyen varjon viestille */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
-/* Rajoitetaan viestin pituutta */
-.chatbox-content {
-  max-height: calc(100% - 100px);  /* Rajoittaa viestien näkyvyyttä */
-  overflow-y: auto; /* Mahdollistaa vierityksen, jos viestejä on enemmän */
-}
-
-/* Scrollauksen ulkonäkö */
 .chatbox-content::-webkit-scrollbar {
   width: 8px;
 }
 
 .chatbox-content::-webkit-scrollbar-thumb {
-  background-color: #cccccc;
+  background-color: #800020;
   border-radius: 3px;
 }
 
 .chatbox-content::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: #333;
 }

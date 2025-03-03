@@ -1,3 +1,7 @@
+<!-- Chat-kuvake -->
+<div id="chatbox-icon" class="chatbox-icon" (click)="toggleChatbox()"></div>
+
+<!-- Chat-ikkuna -->
 <div class="chatbox-popup" [ngClass]="{'open': isOpen}">
   <!-- Klikattava otsikkopalkki chat-ikkunan avaamiseksi ja sulkemiseksi -->
   <div class="chatbox-header" (click)="toggleChatbox()">
@@ -7,7 +11,8 @@
   <!-- Chat-viestien sisältöalue -->
   <div class="chatbox-content">
     <div class="messages">
-      <p *ngFor="let message of messages" [ngClass]="{'user-message': message.user === 'Käyttäjä', 'ai-message': message.user === 'Tekoäly'}">
+      <p *ngFor="let message of messages"
+        [ngClass]="{'user-message': message.user === 'Käyttäjä', 'ai-message': message.user === 'Tekoäly'}">
         <strong>{{ message.user }}:</strong> {{ message.text }}
       </p>
     </div>
@@ -15,13 +20,7 @@
 
   <!-- Syötekenttä ja lähetä-painike, näkyvät vain kun chat-ikkuna on auki -->
   <div class="chatbox-input-area" *ngIf="isOpen">
-    <input 
-      type="text" 
-      [(ngModel)]="userInput" 
-      placeholder="Kirjoita kysymyksesi..." 
-      (keyup.enter)="sendMessage()" 
-    />
+    <input type="text" [(ngModel)]="userInput" placeholder="Kirjoita kysymyksesi..." (keyup.enter)="sendMessage()" />
     <button (click)="sendMessage()">Lähetä</button>
   </div>
 </div>
-
